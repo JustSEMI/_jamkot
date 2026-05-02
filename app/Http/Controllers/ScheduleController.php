@@ -9,7 +9,6 @@ class ScheduleController extends Controller
 {
     public function index()
     {
-        // Ambil data jadwal pertama, kalau ga ada kasih data kosong
         $schedule = Schedule::first() ?? new Schedule();
         return view('jadwal', compact('schedule'));
     }
@@ -29,6 +28,6 @@ class ScheduleController extends Controller
             ]
         );
 
-        return redirect()->back()->with('success', 'Jadwal berhasil diperbarui');
+        return back()->with('sukses', 'JADWAL BERHASIL DISIMPAN');
     }
 }

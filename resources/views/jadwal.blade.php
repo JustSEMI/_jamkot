@@ -20,8 +20,8 @@
 
             <nav class="sidebar-nav">
                 <a href="{{ route('panel') }}" class="nav-link">Panel Utama</a>
-                <a href="{{ route('jadwal') }}"
-                    class="nav-link {{ request()->routeIs('jadwal') ? 'active' : '' }}">Schedules</a>
+                <a href="{{ route('jadwal') }}" class="nav-link {{ request()->routeIs('jadwal') ? 'active' : '' }}">Schedules</a>
+                <a href="{{ route('settings.index') }}" class="nav-link">Settings</a>
             </nav>
 
             <div class="sidebar-footer">
@@ -51,11 +51,11 @@
                         </div>
                         <div class="input-group">
                             <label>Jam Mulai</label>
-                            <input type="time" name="jadwal_pagi_mulai" value="08:00">
+                            <input type="time" name="jadwal_pagi_mulai" value="{{ date('H:i', strtotime($schedule->pagi_mulai ?? '08:00')) }}">
                         </div>
                         <div class="input-group">
                             <label>Jam Selesai</label>
-                            <input type="time" name="jadwal_pagi_selesai" value="08:05">
+                            <input type="time" name="jadwal_pagi_selesai" value="{{ date('H:i', strtotime($schedule->pagi_selesai ?? '08:05')) }}">
                         </div>
                     </div>
 
@@ -66,11 +66,11 @@
                         </div>
                         <div class="input-group">
                             <label>Jam Mulai</label>
-                            <input type="time" name="jadwal_siang_mulai" value="12:00">
+                            <input type="time" name="jadwal_siang_mulai" value="{{ date('H:i', strtotime($schedule->siang_mulai ?? '12:00')) }}">
                         </div>
                         <div class="input-group">
                             <label>Jam Selesai</label>
-                            <input type="time" name="jadwal_siang_selesai" value="12:05">
+                            <input type="time" name="jadwal_siang_selesai" value="{{ date('H:i', strtotime($schedule->siang_selesai ?? '12:05')) }}">
                         </div>
                     </div>
 
@@ -81,11 +81,11 @@
                         </div>
                         <div class="input-group">
                             <label>Jam Mulai</label>
-                            <input type="time" name="jadwal_sore_mulai" value="16:00">
+                            <input type="time" name="jadwal_sore_mulai" value="{{ date('H:i', strtotime($schedule->sore_mulai ?? '16:00')) }}">
                         </div>
                         <div class="input-group">
                             <label>Jam Selesai</label>
-                            <input type="time" name="jadwal_sore_selesai" value="16:05">
+                            <input type="time" name="jadwal_sore_selesai" value="{{ date('H:i', strtotime($schedule->sore_selesai ?? '16:05')) }}">
                         </div>
                     </div>
 
@@ -103,7 +103,7 @@
                         <div class="input-group">
                             <label>Batas Kelembapan</label>
                             <div class="input-with-suffix">
-                                <input type="number" name="batas_kelembapan" value="80" min="0" max="100">
+                                <input type="number" name="batas_kelembapan" value="{{ $schedule->batas_kelembapan ?? 80 }}">
                                 <span>%</span>
                             </div>
                         </div>
@@ -118,6 +118,22 @@
         </div>
     </div>
 
+    @if(session('sukses'))
+    <div id="toast-sukses" class="toast-notification">
+        <span class="toast-text">{{ session('sukses') }}</span>
+    </div>
+
+    <script>
+        setTimeout(() => {
+            const toast = document.getElementById('toast-sukses');
+            if(toast) {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(20px)';
+                setTimeout(() => toast.remove(), 300);
+            }
+        }, 3000);
+    </script>
+    @endif
 </body>
 
 </html>

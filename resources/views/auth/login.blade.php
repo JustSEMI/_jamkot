@@ -46,7 +46,7 @@
 
             <button type="submit" class="btn-login">Login</button>
 
-            <p class="register-link">Don't have an account? <a href="{{ route('register') }}">Register here</a></p>
+            <p class="register-link">Don't have an account? <a href="#">Register here</a></p>
         </form>
 
         <div class="login-footer">

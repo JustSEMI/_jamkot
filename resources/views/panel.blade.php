@@ -18,6 +18,7 @@
             <nav class="sidebar-nav">
                 <a href="{{ route('panel') }}" class="nav-link active">Panel Utama</a>
                 <a href="{{ route('jadwal') }}" class="nav-link {{ request()->routeIs('jadwal') ? 'active' : '' }}">Schedules</a>
+                <a href="{{ route('settings.index') }}" class="nav-link {{ request()->routeIs('settings.index') ? 'active' : '' }}">Settings</a>    
             </nav>
 
             <div class="sidebar-footer">
