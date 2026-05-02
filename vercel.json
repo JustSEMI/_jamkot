@@ -6,20 +6,28 @@
     },
     "routes": [
         {
-            "src": "/(.*)",
-            "dest": "/api/index.php"
+            "src": "/build/(.*)",
+            "dest": "/public/build/"
         },
         {
             "src": "/css/(.*)",
             "dest": "/public/css/"
         },
         {
+            "src": "/images/(.*)",
+            "dest": "/public/images/"
+        },
+        {
             "src": "/js/(.*)",
             "dest": "/public/js/"
         },
         {
-            "src": "/images/(.*)",
-            "dest": "/public/images/"
+            "src": "/vendors/(.*)",
+            "dest": "/public/vendors/"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/api/index.php"
         }
     ],
     "env": {
