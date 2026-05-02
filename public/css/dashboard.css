@@ -1,0 +1,133 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #0a0a0a;
+    color: #ededed;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    background-color: #0a0a0a;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.brand-text {
+    font-size: 1.25rem;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+
+.nav-user {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.user-greeting {
+    font-size: 0.875rem;
+    color: #9ca3af;
+    letter-spacing: 0.02em;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+.user-greeting strong {
+    color: #ededed;
+    font-weight: 500;
+}
+
+.btn-logout {
+    background: transparent;
+    border: 1px solid #333333;
+    color: #ededed;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-logout:hover {
+    background-color: #ededed;
+    color: #0a0a0a;
+    border-color: #ededed;
+}
+
+.landing-view {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.content {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    flex: 1;
+    width: 100%;
+}
+
+.content-header.text-center h1 {
+    font-size: 3rem;
+    font-weight: 300;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
+}
+
+.content-header.text-center p {
+    color: #6b7280;
+    font-size: 1.125rem;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.action-area {
+    margin-top: 3rem;
+}
+
+.btn-panel {
+    display: inline-flex;
+    align-items: center;
+    background-color: #ededed;
+    color: #0a0a0a;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 1rem 2rem;
+    border-radius: 2rem;
+    font-size: 0.875rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.btn-panel:hover {
+    background-color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.1);
+}
+
+.dashboard-footer {
+    text-align: center;
+    padding: 2rem 0;
+    font-size: 0.75rem;
+    color: #4b5563;
+}
