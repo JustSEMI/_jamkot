@@ -8,4 +8,4 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::any('/sensor/data', [SensorController::class, 'store']);
+Route::any('/sensor/data', [SensorController::class, 'data']);

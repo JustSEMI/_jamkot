@@ -8,9 +8,21 @@ use App\Models\SensorLog;
 
 class SensorController extends Controller
 {
-    public function store(Request $request)
+    public function data(Request $request)
     {
-        // VALIDASI DATA MASUK
+        // GET DATA SENSOR
+        if ($request->isMethod('get')) {
+            $dataSensor = SensorLog::orderBy('created_at', 'desc')->limit(50)->get();
+
+            return response()->json([
+                'status' => 'SUCCESS',
+                'pesan'  => 'DATA SENSOR BERHASIL DIAMBIL',
+                'jumlah_data_ditampilkan' => $dataSensor->count(),
+                'data'   => $dataSensor
+            ]);
+        }
+
+        // POST DATA SENSOR
         $request->validate([
             'sensor_id'    => 'required|string',
             'suhu'         => 'required|numeric',
@@ -19,7 +31,7 @@ class SensorController extends Controller
             'pompa_status' => 'nullable|in:ON,OFF'
         ]);
 
-        // DATABASE
+        // SIMPAN KE DATABASE
         $log = SensorLog::create([
             'sensor_id'    => $request->sensor_id,
             'suhu'         => $request->suhu,
@@ -27,11 +39,11 @@ class SensorController extends Controller
             'cahaya'       => $request->cahaya,
             'pompa_status' => $request->pompa_status ?? 'OFF',
         ]);
-
+        
         // RESPONSE SUKSES
         return response()->json([
-            'status'  => 'success',
-            'message' => 'Data JAMKOT berhasil mendarat di server',
+            'status'  => 'SUCCESS',
+            'message' => 'DATA SENSOR BERHASIL DISIMPAN',
             'data'    => $log
         ], 201);
     }
