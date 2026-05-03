@@ -31,8 +31,8 @@ Route::middleware('auth')->group(function () {
     })->name('dashboard');
 
     Route::get('/panel', [PanelController::class, 'index'])->name('panel');
-    Route::get('/jadwal', [ScheduleController::class, 'index'])->name('jadwal');
-    Route::post('/jadwal', [ScheduleController::class, 'store'])->name('jadwal.store');
+    Route::get('/schedule', [ScheduleController::class, 'index'])->name('schedule');
+    Route::post('/schedule', [ScheduleController::class, 'store'])->name('schedule.store');
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
     Route::post('/settings/reset', [SettingsController::class, 'resetData'])->name('settings.reset');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

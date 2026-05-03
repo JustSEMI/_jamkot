@@ -16,6 +16,6 @@ class SettingsController extends Controller
     public function resetData()
     {
         SensorLog::truncate(); 
-        return back()->with('sukseshapus', 'DATA BERHASIL DIHAPUS!');
+        return back()->with('sukses', 'DATA BERHASIL DIHAPUS!');
     }
 }

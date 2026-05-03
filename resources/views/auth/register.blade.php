@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
     @vite('resources/js/app.js')
 </head>
+
 <body>
 
     <div class="login-container">
@@ -25,10 +27,11 @@
 
         <form class="login-form" action="{{ route('register') }}" method="POST">
             @csrf
-            
+
             <div class="input-group">
                 <label>Username</label>
-                <input type="text" name="username" placeholder="Masukkan username" value="{{ old('username') }}" required autofocus>
+                <input type="text" name="username" placeholder="Masukkan username" value="{{ old('username') }}"
+                    required autofocus>
             </div>
 
             <div class="input-group">
@@ -55,4 +58,5 @@
     </div>
 
 </body>
+
 </html>

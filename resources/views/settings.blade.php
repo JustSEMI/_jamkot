@@ -21,7 +21,7 @@
 
             <nav class="sidebar-nav">
                 <a href="{{ route('panel') }}" class="nav-link">Panel Utama</a>
-                <a href="{{ route('jadwal') }}" class="nav-link">Schedules</a>
+                <a href="{{ route('schedule') }}" class="nav-link">Schedules</a>
                 <a href="{{ route('settings.index') }}" class="nav-link active">Settings</a>
             </nav>
 
@@ -36,7 +36,7 @@
 
         <main class="panel-content">
             <header class="content-header">
-                <h1>Pengaturan</h1>
+                <h1>PENGATURAN</h1>
                 <p>Manajemen data dan sistem JAMKOT.</p>
             </header>
 
@@ -76,21 +76,28 @@
         </main>
     </div>
 
-    @if(session('sukseshapus'))
-        <div id="toast-sukses" class="toast-notification">
-            <span class="toast-text">{{ session('sukseshapus') }}</span>
-        </div>
+    @if(session('sukses'))
+        <div id="toast-modern" class="toast-wrapper">
+            <div class="toast-progress"></div>
 
-        <script>
-        setTimeout(() => {
-            const toast = document.getElementById('toast-sukses');
-            if(toast) {
-                toast.style.opacity = '0';
-                toast.style.transform = 'translateY(20px)';
-                setTimeout(() => toast.remove(), 300);
-            }
-        }, 3000);
-    </script>
+            <div class="toast-body">
+                <div class="toast-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </div>
+
+                <div class="toast-text">
+                    <h4>Success</h4>
+                    <p>{{ session('sukses') }}</p>
+                </div>
+
+                <!-- Tombol silang kalau mau ditutup manual sebelum bar abis -->
+                <button class="toast-close" onclick="tutupToastModern()">×</button>
+            </div>
+        </div>
+        <script src="{{ asset('js/toast.js') }}"></script>
     @endif
     <script>
         function bukaModal() {

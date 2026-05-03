@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
     @vite('resources/js/app.js')
 </head>
+
 <body>
     <div class="login-container">
         <div class="login-header">
@@ -20,7 +22,7 @@
             <div class="input-group">
                 <label for="email">Email Address</label>
                 <input type="email" id="email" name="email" required autofocus placeholder="admin@jamkot.local">
-                
+
                 @error('email')
                     <span style="color: #ef4444; font-size: 12px; margin-top: 5px; display: block;">{{ $message }}</span>
                 @enderror
@@ -33,4 +35,5 @@
         </form>
     </div>
 </body>
+
 </html>

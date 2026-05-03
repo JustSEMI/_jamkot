@@ -1,3 +1,6 @@
+/* public/css/auth.css */
+
+/* --- GLOBAL STYLES --- */
 * {
     margin: 0;
     padding: 0;
@@ -15,6 +18,7 @@ body {
     padding: 1.5rem;
 }
 
+/* --- LOGIN CONTAINER --- */
 .login-container {
     width: 100%;
     max-width: 24rem;
@@ -53,6 +57,7 @@ body {
     margin-bottom: 0.5rem;
 }
 
+/* --- PASSWORD HEADER --- */
 .password-header {
     display: flex;
     justify-content: space-between;
@@ -64,6 +69,7 @@ body {
     margin-bottom: 0;
 }
 
+/* --- FORGOT PASSWORD LINK --- */
 .forgot-link {
     font-size: 0.625rem;
     text-transform: uppercase;
@@ -73,6 +79,7 @@ body {
     transition: color 0.3s ease;
 }
 
+/* --- REGISTER LINK --- */
 .register-link {
     font-size: 0.75rem;
     text-align: center;

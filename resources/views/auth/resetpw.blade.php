@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
     @vite('resources/js/app.js')
 </head>
+
 <body>
     <div class="login-container">
         <div class="login-header">
@@ -19,8 +21,9 @@
             @csrf
             <div class="input-group">
                 <label for="password">Password Baru</label>
-                <input type="password" id="password" name="password" required autofocus placeholder="Minimal 8 karakter">
-                
+                <input type="password" id="password" name="password" required autofocus
+                    placeholder="Minimal 8 karakter">
+
                 @error('password')
                     <span style="color: #ef4444; font-size: 12px; margin-top: 5px; display: block;">{{ $message }}</span>
                 @enderror
@@ -30,4 +33,5 @@
         </form>
     </div>
 </body>
+
 </html>

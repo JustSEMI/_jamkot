@@ -1,3 +1,6 @@
+/* public/css/dashboard.css */
+
+/* --- GLOBAL STYLES --- */
 * {
     margin: 0;
     padding: 0;
@@ -46,6 +49,7 @@ body {
     align-items: center;
     gap: 0.25rem;
 }
+
 .user-greeting strong {
     color: #ededed;
     font-weight: 500;

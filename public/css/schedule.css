@@ -1,0 +1,229 @@
+/* public/css/schedule.css */
+
+/* --- GLOBAL STYLES --- */
+::-webkit-scrollbar {
+    display: none;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* --- BODY & LAYOUT --- */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #0a0a0a;
+    color: #ededed;
+}
+
+.table-container {
+    margin-top: 2rem;
+    overflow-x: auto;
+}
+
+.status-dot.siang {
+    background-color: #f59e0b;
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
+}
+
+.status-dot.backup {
+    background-color: #3b82f6;
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
+}
+
+.input-group {
+    margin-bottom: 1.25rem;
+    margin-top: 1.25rem;
+}
+
+.input-group:last-child {
+    margin-bottom: 0;
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #9ca3af;
+    margin-bottom: 0.5rem;
+}
+
+.input-group input {
+    width: 100%;
+    background-color: #050505;
+    border: 1px solid #222;
+    border-radius: 0.375rem;
+    padding: 0.75rem 1rem;
+    color: #ededed;
+    font-size: 0.875rem;
+    font-family: inherit;
+    transition: border-color 0.3s ease;
+    outline: none;
+    color-scheme: dark;
+}
+
+.input-group input:focus {
+    border-color: #6b7280;
+}
+
+.input-with-suffix {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-with-suffix input {
+    padding-right: 2.5rem;
+}
+
+.input-with-suffix span {
+    position: absolute;
+    right: 1rem;
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+.action-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 3rem;
+    padding-top: 2rem;
+}
+
+.btn-save {
+    background-color: #ededed;
+    color: #0a0a0a;
+    font-family: inherit;
+    font-weight: 500;
+    padding: 0.75rem 2rem;
+    border: none;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-save:hover {
+    background-color: #ffffff;
+    transform: scale(1.02);
+}
+
+
+/* --- TOAST NOTIFICATION --- */
+.toast-wrapper {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: #1c1c1c;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    width: 320px;
+    overflow: hidden;
+    z-index: 9999;
+    animation: slideInRight 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
+.toast-wrapper.ngilang {
+    animation: fadeOutDown 0.4s ease forwards;
+}
+
+.toast-progress {
+    height: 4px;
+    background: #4ade80;
+    width: 100%;
+    animation: progressShrink 3s linear forwards;
+}
+
+.toast-body {
+    display: flex;
+    padding: 16px;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.toast-icon {
+    background: #4ade80;
+    color: #111;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.toast-icon svg {
+    width: 16px;
+    height: 16px;
+}
+
+.toast-text {
+    flex-grow: 1;
+}
+
+.toast-text h4 {
+    margin: 0 0 4px 0;
+    color: #ededed;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.toast-text p {
+    margin: 0;
+    color: #9ca3af;
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+.toast-close {
+    background: transparent;
+    border: none;
+    color: #6b7280;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.2s;
+}
+
+.toast-close:hover {
+    color: #ededed;
+}
+
+/* --- KUMPULAN ANIMASINYA --- */
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOutDown {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+}
+
+@keyframes progressShrink {
+    from {
+        width: 100%;
+    }
+
+    to {
+        width: 0%;
+    }
+}

@@ -10,7 +10,7 @@ class ScheduleController extends Controller
     public function index()
     {
         $schedule = Schedule::first() ?? new Schedule();
-        return view('jadwal', compact('schedule'));
+        return view('schedule', compact('schedule'));
     }
 
     public function store(Request $request)
