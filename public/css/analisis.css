@@ -1,0 +1,72 @@
+/* public/css/analisis.css */
+
+.analysis-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.stat-card {
+    border-bottom: 3px solid transparent;
+}
+
+.stat-card:hover {
+    border-bottom-color: var(--warna-utama, #10b981);
+}
+
+.record-card {
+    padding: 2rem;
+}
+
+.record-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+}
+
+.record-icon {
+    font-size: 1.5rem;
+}
+
+.record-grid {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+}
+
+.record-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.record-item span {
+    font-size: 0.75rem;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.record-item strong {
+    font-size: 1.75rem;
+    font-weight: 300;
+    color: #ededed;
+}
+
+.record-card.high {
+    border-left: 4px solid #ef4444;
+}
+
+.record-card.low {
+    border-left: 4px solid #3b82f6;
+}
+
+.record-card.high .record-icon {
+    filter: drop-shadow(0 0 5px rgba(239, 68, 68, 0.4));
+}
+
+.record-card.low .record-icon {
+    filter: drop-shadow(0 0 5px rgba(59, 130, 246, 0.4));
+}

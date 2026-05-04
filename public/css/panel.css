@@ -23,11 +23,11 @@ body {
     overflow: hidden;
 }
 
+/* --- SIDEBAR --- */
 .sidebar {
     width: 260px;
     background-color: #050505;
     display: flex;
-    /* border-top: 1px solid #1a1a1a; */
     flex-direction: column;
     padding: 2rem 1.5rem;
 }
@@ -39,7 +39,6 @@ body {
     margin-bottom: 3rem;
 }
 
-/* --- NAVIGATION --- */
 .sidebar-nav {
     display: flex;
     flex-direction: column;
@@ -53,7 +52,14 @@ body {
     padding: 0.75rem 1rem;
     border-radius: 0.5rem;
     font-size: 0.875rem;
+    gap: 12px;
     transition: all 0.3s ease;
+}
+
+.nav-link i {
+    width: 20px;
+    text-align: center;
+    font-size: 1rem;
 }
 
 .nav-link:hover {
@@ -68,7 +74,6 @@ body {
 }
 
 .sidebar-footer {
-    /* border-top: 1px solid #1a1a1a; */
     padding-top: 1.5rem;
 }
 
@@ -80,6 +85,7 @@ body {
 }
 
 .btn-logout-sidebar {
+    
     width: 100%;
     background: transparent;
     border: 1px solid #333;
@@ -87,6 +93,10 @@ body {
     padding: 0.75rem;
     border-radius: 0.5rem;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     transition: all 0.3s;
 }
 
@@ -103,41 +113,78 @@ body {
     background-color: #0a0a0a;
 }
 
-.content-header h1 {
+.content-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.content-header-flex h1 {
     font-size: 2rem;
     font-weight: 300;
     margin-bottom: 0.5rem;
 }
 
-.content-header p {
+.content-header-flex p {
     color: #6b7280;
     font-size: 0.875rem;
+}
+
+/* --- WIDGET WAKTU --- */
+.datetime-widget {
+    text-align: right;
+}
+
+.time-display {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: #ededed;
+    margin-bottom: 2px;
+}
+
+.date-display {
+    font-size: 0.75rem;
+    color: #9ca3af;
+}
+
+/* --- GLOW UP CARDS --- */
+.glow-card {
+    background: #141414;
+    border: 1px solid #262626;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+}
+
+.glow-card:hover {
+    border-color: var(--warna-utama, #10b981);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
 }
 
 .summary-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.5rem;
-    margin-top: 3rem;
+    margin-top: 2rem;
 }
 
-.summary-card {
-    background-color: #111111;
-    border: 1px solid #1f1f1f;
-    border-radius: 0.75rem;
-    padding: 1.5rem;
+.summary-grid .glow-card:hover {
+    transform: translateY(-3px);
 }
 
 .card-title-wrapper {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
 }
 
 .card-title {
     font-size: 0.75rem;
     color: #9ca3af;
     text-transform: uppercase;
-    margin-bottom: 0.75rem;
+    letter-spacing: 0.05em;
 }
 
 .card-value {
@@ -151,35 +198,25 @@ body {
     color: #6b7280;
 }
 
-.card-desc.positive {
-    color: #10b981;
+/* Section Title Global */
+.section-title {
+    font-size: 1rem;
+    color: #ededed;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
-.status-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-}
-
-.status-dot.online {
-    background-color: #10b981;
-    box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
-}
-
-.status-dot.offline {
-    background-color: #ef4444;
-    box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
-}
-
-/* --- TABLE --- */
-.table-container {
+.chart-wrapper {
     margin-top: 2rem;
-    background-color: #111111;
-    border: 1px solid #1f1f1f;
-    border-radius: 0.75rem;
-    padding: 1.5rem;
 }
 
+.table-wrapper {
+    margin-top: 2rem;
+}
+
+/* --- TABLE & BUTTONS --- */
 .table-header {
     display: flex;
     justify-content: space-between;
@@ -187,20 +224,20 @@ body {
     margin-bottom: 1.5rem;
 }
 
-.table-header h3 {
-    font-size: 1.125rem;
-    font-weight: 400;
-}
-
 .btn-sm {
-    background: #ededed;
-    color: #0a0a0a;
+    background: var(--warna-utama, #10b981);
+    color: #111;
     border: none;
     padding: 0.5rem 1rem;
     border-radius: 0.375rem;
     cursor: pointer;
     font-size: 0.75rem;
-    font-weight: 500;
+    font-weight: 600;
+    transition: opacity 0.2s;
+}
+
+.btn-sm:hover {
+    opacity: 0.8;
 }
 
 .data-table {
@@ -223,12 +260,81 @@ body {
     font-size: 0.75rem;
 }
 
-/*.text-right { text-align: right !important; }*/
+.data-table tbody tr {
+    transition: background 0.2s;
+}
+
+.data-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+/* --- UTILITIES & STATUS --- */
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.status-dot.online {
+    background-color: var(--warna-utama, #10b981);
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+}
+
+.status-dot.offline {
+    background-color: #ef4444;
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
+}
 
 .badge.success {
     background-color: rgba(16, 185, 129, 0.1);
-    color: #10b981;
+    color: var(--warna-utama, #10b981);
     padding: 0.25rem 0.75rem;
     border-radius: 1rem;
     font-size: 0.75rem;
+}
+
+.text-muted { color: #9ca3af; }
+.text-positive { color: var(--warna-utama, #10b981); }
+.text-blue { color: #3b82f6; }
+.text-right { text-align: right; }
+.fw-bold { font-weight: 600; }
+
+/* --- CUSTOM TOOLTIP APEXCHARTS --- */
+.apexcharts-tooltip, 
+.apexcharts-tooltip.apexcharts-theme-light, 
+.apexcharts-tooltip.apexcharts-theme-dark {
+    background: #141414 !important;
+    border: 1px solid #262626 !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.8) !important;
+    border-radius: 0.5rem !important;
+    color: #ededed !important;
+    font-family: 'Inter', sans-serif !important;
+}
+
+.apexcharts-tooltip-title {
+    background: #0a0a0a !important;
+    border-bottom: 1px solid #262626 !important;
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 600 !important;
+    padding: 0.5rem 1rem !important;
+    font-size: 0.85rem !important;
+    color: #9ca3af !important;
+}
+
+.apexcharts-tooltip-text {
+    color: #ededed !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 0.85rem !important;
+    font-weight: 500 !important;
+}
+
+.apexcharts-tooltip-series-group {
+    padding: 0.5rem 1rem !important;
+    background: transparent !important;
+}
+
+.apexcharts-tooltip-marker {
+    margin-right: 0.75rem !important;
+    width: 10px !important;
+    height: 10px !important;
 }

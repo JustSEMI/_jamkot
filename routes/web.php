@@ -20,8 +20,8 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthController::class, 'authenticate'])
         ->middleware('throttle:5,1') 
         ->name('login.post');
-    //Route::get('/register', [AuthController::class, 'register'])->name('register');
-    //Route::post('/register', [AuthController::class, 'store']);
+    Route::get('/register', [AuthController::class, 'register'])->name('register');
+    Route::post('/register', [AuthController::class, 'store']);
 });
 
 // PROTEKSI HALAMAN DASHBOARD & PANEL
@@ -31,6 +31,8 @@ Route::middleware('auth')->group(function () {
     })->name('dashboard');
 
     Route::get('/panel', [PanelController::class, 'index'])->name('panel');
+    Route::get('/panel/export', [PanelController::class, 'exportCsv'])->name('panel.export');
+    Route::get('/analisis', [PanelController::class, 'analisis'])->name('analisis');
     Route::get('/schedule', [ScheduleController::class, 'index'])->name('schedule');
     Route::post('/schedule', [ScheduleController::class, 'store'])->name('schedule.store');
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
