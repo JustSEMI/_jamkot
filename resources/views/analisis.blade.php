@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/panel.css') }}">
     <link rel="stylesheet" href="{{ asset('css/analisis.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/mobile.css') }}">
     @vite('resources/js/app.js')
 </head>
 
@@ -16,8 +17,18 @@
 
     <div class="panel-layout">
         
+        <!-- MOBILE NAV -->
+        <header class="mobile-top-nav">
+            <div class="mobile-logo">JAMKOT</div>
+            <button class="btn-toggle-sidebar" id="sidebar-toggle">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </header>
+
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
         <!-- SIDEBAR -->
-        <aside class="sidebar">
+        <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <h2>JAMKOT</h2>
             </div>
@@ -119,5 +130,23 @@
         </main>
     </div>
 
+    <script>
+        // Sidebar Toggle Logic
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('show');
+            });
+        }
+
+        if (sidebarOverlay) {
+            sidebarOverlay.addEventListener('click', () => {
+                sidebar.classList.remove('show');
+            });
+        }
+    </script>
 </body>
 </html>
