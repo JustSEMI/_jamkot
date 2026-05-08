@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             fontSize: '40px',
                             fontWeight: 600,
                             color: '#ededed',
-                            formatter: function (val) { return val + "°C"; }
+                            formatter: function (val) { return (Number(val).toFixed(1)) + "°C"; }
                         }
                     }
                 }
@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             fontSize: '40px',
                             fontWeight: 600,
                             color: '#ededed',
-                            formatter: function (val) { return val + "%"; }
+                            formatter: function (val) { return (Number(val).toFixed(1)) + "%"; }
                         }
                     }
                 }
@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     track: { background: '#262626', strokeWidth: '100%' },
                     dataLabels: {
                         name: { show: false },
-                        value: { offsetY: -30, fontSize: '40px', fontWeight: 600, color: '#ededed', formatter: function (val) { return val + "°C"; } }
+                        value: { offsetY: -30, fontSize: '40px', fontWeight: 600, color: '#ededed', formatter: function (val) { return (Number(val).toFixed(1)) + "°C"; } }
                     }
                 }
             },
@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     track: { background: '#262626', strokeWidth: '100%' },
                     dataLabels: {
                         name: { show: false },
-                        value: { offsetY: -30, fontSize: '40px', fontWeight: 600, color: '#ededed', formatter: function (val) { return val + "%"; } }
+                        value: { offsetY: -30, fontSize: '40px', fontWeight: 600, color: '#ededed', formatter: function (val) { return (Number(val).toFixed(1)) + "%"; } }
                     }
                 }
             },
