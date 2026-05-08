@@ -16,7 +16,7 @@
 <body>
 
     <div class="panel-layout">
-        
+
         <!-- MOBILE NAV -->
         <header class="mobile-top-nav">
             <div class="mobile-logo">JAMKOT</div>
@@ -61,7 +61,7 @@
 
         <!-- KONTEN UTAMA -->
         <main class="panel-content">
-            
+
             <header class="content-header-flex">
                 <div>
                     <h1>ANALISIS DATA</h1>
@@ -71,15 +71,21 @@
 
             <!-- STATISTIK UTAMA -->
             <div class="summary-grid">
-                <div class="glow-card stat-card">
-                    <div class="card-title">RATA-RATA SUHU</div>
-                    <div class="card-value">{{ number_format($stats['avg_suhu'], 1) }}°C</div>
-                    <div class="card-desc">Dari {{ $stats['total_data'] }} rekaman data</div>
+                <div class="glow-card"
+                    style="display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 1.5rem;">
+                    <div style="width: 100%; position: relative; text-align: center;">
+                        <div class="card-title" style="margin: 0;">RATA-RATA SUHU</div>
+                    </div>
+                    <div id="gauge-avg-suhu" style="width: 100%; margin-top: 1rem;"></div>
+                    <div class="card-desc">Dari seluruh rekaman data</div>
                 </div>
 
-                <div class="glow-card stat-card">
-                    <div class="card-title">RATA-RATA KELEMBAPAN</div>
-                    <div class="card-value">{{ number_format($stats['avg_kelembapan'], 1) }}%</div>
+                <div class="glow-card"
+                    style="display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 1.5rem;">
+                    <div style="width: 100%; position: relative; text-align: center;">
+                        <div class="card-title" style="margin: 0;">RATA-RATA KELEMBAPAN</div>
+                    </div>
+                    <div id="gauge-avg-kelembapan" style="width: 100%; margin-top: 1rem;"></div>
                     <div class="card-desc">Target ideal: 85%</div>
                 </div>
 
@@ -130,23 +136,13 @@
         </main>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script>
-        // Sidebar Toggle Logic
-        const sidebar = document.getElementById('sidebar');
-        const sidebarToggle = document.getElementById('sidebar-toggle');
-        const sidebarOverlay = document.getElementById('sidebar-overlay');
-
-        if (sidebarToggle) {
-            sidebarToggle.addEventListener('click', () => {
-                sidebar.classList.toggle('show');
-            });
-        }
-
-        if (sidebarOverlay) {
-            sidebarOverlay.addEventListener('click', () => {
-                sidebar.classList.remove('show');
-            });
-        }
+        window.avgSuhu = {{ $stats['avg_suhu'] ?? 0 }};
+        window.avgKelembapan = {{ $stats['avg_kelembapan'] ?? 0 }};
     </script>
+    <script src="{{ asset('js/chart.js') }}"></script>
+    <script src="{{ asset('js/sidebar.js') }}"></script>
 </body>
+
 </html>

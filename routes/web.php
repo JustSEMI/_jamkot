@@ -20,8 +20,8 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthController::class, 'authenticate'])
         ->middleware('throttle:5,1') 
         ->name('login.post');
-    Route::get('/register', [wAuthController::class, 'register'])->name('register');
-    Route::post('/register', [AuthController::class, 'store']);
+    //Route::get('/register', [AuthController::class, 'register'])->name('register');
+    //Route::post('/register', [AuthController::class, 'store']);
 });
 
 // PROTEKSI HALAMAN DASHBOARD & PANEL
