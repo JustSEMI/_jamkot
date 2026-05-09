@@ -80,21 +80,6 @@
                 <div class="glow-card stat-card meter-card meter-card-humidity" style="--meter-angle: {{ min(max(($stats['avg_kelembapan'] ?? 0) / 100, 0), 1) * 180 }}deg;">
                     <div class="card-title">RATA-RATA KELEMBAPAN</div>
                     <div class="card-value">{{ number_format($stats['avg_kelembapan'], 1) }}%</div>
-                <div class="glow-card"
-                    style="display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 1.5rem;">
-                    <div style="width: 100%; position: relative; text-align: center;">
-                        <div class="card-title" style="margin: 0;">RATA-RATA SUHU</div>
-                    </div>
-                    <div id="gauge-avg-suhu" style="width: 100%; margin-top: 1rem;"></div>
-                    <div class="card-desc">Dari seluruh rekaman data</div>
-                </div>
-
-                <div class="glow-card"
-                    style="display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 1.5rem;">
-                    <div style="width: 100%; position: relative; text-align: center;">
-                        <div class="card-title" style="margin: 0;">RATA-RATA KELEMBAPAN</div>
-                    </div>
-                    <div id="gauge-avg-kelembapan" style="width: 100%; margin-top: 1rem;"></div>
                     <div class="card-desc">Target ideal: 85%</div>
                 </div>
 
@@ -148,14 +133,6 @@
         </main>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    <script>
-        window.avgSuhu = {{ $stats['avg_suhu'] ?? 0 }};
-        window.avgKelembapan = {{ $stats['avg_kelembapan'] ?? 0 }};
-    </script>
-    <script src="{{ asset('js/chart.js') }}"></script>
     <script src="{{ asset('js/sidebar.js') }}"></script>
 </body>
-</html>
-
 </html>

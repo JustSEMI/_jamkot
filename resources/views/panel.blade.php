@@ -84,32 +84,17 @@
                     <div class="card-value">{{ $latest->cahaya ?? '--' }} Lux</div>
                     <div class="card-desc">Sensor LDR</div>
                 </div>
-                <div class="glow-card"
-                    style="display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 1.5rem;">
-                    <div style="width: 100%; position: relative; text-align: center;">
-                        <div class="card-title" style="margin: 0;">SUHU RUANG</div>
-                        <div class="status-dot {{ $latest ? 'online' : 'offline' }}"
-                            style="position: absolute; right: 0; top: 0;"></div>
-                    </div>
-
-                    <div id="gauge-suhu" style="width: 100%; margin-top: 1rem;"></div>
-
-                    <!-- margin-top negatifnya udah gue buang di sini -->
+                <div class="glow-card sensor-meter-card sensor-meter-temperature" style="--meter-angle: {{ min(max(($latest->suhu ?? 0) / 40, 0), 1) * 180 }}deg;">
+                    <div class="card-title">SUHU RUANG</div>
+                    <div class="status-dot {{ $latest ? 'online' : 'offline' }}"></div>
+                    <div class="card-value">{{ number_format($latest->suhu ?? 0, 1) }}°C</div>
                     <div class="card-desc">Target: 22°C - 28°C</div>
                 </div>
 
-                <!-- KARTU KELEMBAPAN (SPEEDOMETER) -->
-                <div class="glow-card"
-                    style="display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 1.5rem;">
-                    <div style="width: 100%; position: relative; text-align: center;">
-                        <div class="card-title" style="margin: 0;">KELEMBAPAN UDARA</div>
-                        <div class="status-dot {{ $latest ? 'online' : 'offline' }}"
-                            style="position: absolute; right: 0; top: 0;"></div>
-                    </div>
-
-                    <div id="gauge-kelembapan" style="width: 100%; margin-top: 1rem;"></div>
-
-                    <!-- margin-top negatifnya udah gue buang di sini -->
+                <div class="glow-card sensor-meter-card sensor-meter-humidity" style="--meter-angle: {{ min(max(($latest->kelembapan ?? 0) / 100, 0), 1) * 180 }}deg;">
+                    <div class="card-title">KELEMBAPAN UDARA</div>
+                    <div class="status-dot {{ $latest ? 'online' : 'offline' }}"></div>
+                    <div class="card-value">{{ number_format($latest->kelembapan ?? 0, 1) }}%</div>
                     <div class="card-desc {{ ($latest->kelembapan ?? 0) >= $targetKelembapan ? 'text-positive' : '' }}">
                         Target Minimal: {{ $targetKelembapan }}%
                     </div>

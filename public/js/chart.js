@@ -28,7 +28,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 type: 'area',
                 toolbar: { show: false },
                 background: 'transparent',
-                fontFamily: 'Inter, sans-serif'
+                fontFamily: 'Inter, sans-serif',
+                animations: {
+                    enabled: true,
+                    easing: 'easeinout',
+                    speed: 900,
+                    animateGradually: {
+                        enabled: true,
+                        delay: 120
+                    },
+                    dynamicAnimation: {
+                        enabled: true,
+                        speed: 450
+                    }
+                }
             },
             theme: { mode: 'dark' },
             colors: [warnaUtama, '#ef4444'],

@@ -1,6 +1,12 @@
 /* public/css/panel.css */
 
 /* --- GLOBAL STYLES --- */
+@property --meter-angle {
+    syntax: "<angle>";
+    inherits: true;
+    initial-value: 0deg;
+}
+
 ::-webkit-scrollbar {
     display: none;
 }
@@ -188,6 +194,90 @@ body {
     color: #6b7280;
 }
 
+.sensor-meter-card {
+    --meter-angle: 0deg;
+    height: 280px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    animation: meterCardIn 0.45s ease-out both;
+}
+
+.sensor-meter-card::before,
+.sensor-meter-card::after {
+    content: "";
+    position: absolute;
+    top: 5.25rem;
+    left: 50%;
+    width: 19rem;
+    height: 9.5rem;
+    transform: translateX(-50%);
+    border-radius: 19rem 19rem 0 0;
+    -webkit-mask: radial-gradient(farthest-side at 50% 100%, transparent calc(100% - 17px), #000 calc(100% - 16px));
+    mask: radial-gradient(farthest-side at 50% 100%, transparent calc(100% - 17px), #000 calc(100% - 16px));
+}
+
+.sensor-meter-card::before {
+    background: #242424;
+}
+
+.sensor-meter-card::after {
+    background:
+        conic-gradient(
+            from 270deg at 50% 100%,
+            var(--warna-utama, #10b981) 0 var(--meter-angle),
+            transparent var(--meter-angle) 180deg,
+            transparent 0
+        );
+    animation: meterSweep 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.sensor-meter-humidity::after {
+    background:
+        conic-gradient(
+            from 270deg at 50% 100%,
+            #9ca3af 0,
+            var(--warna-utama, #10b981) var(--meter-angle),
+            transparent var(--meter-angle) 180deg,
+            transparent 0
+        );
+}
+
+.sensor-meter-card .card-title {
+    position: absolute;
+    top: 1.75rem;
+    left: 1.5rem;
+    right: 1.5rem;
+    z-index: 1;
+}
+
+.sensor-meter-card .status-dot {
+    position: absolute;
+    top: 1.75rem;
+    right: 1.5rem;
+    z-index: 2;
+}
+
+.sensor-meter-card .card-value {
+    position: absolute;
+    top: 10.8rem;
+    left: 1.5rem;
+    right: 1.5rem;
+    z-index: 1;
+    margin: 0;
+    font-weight: 600;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+    animation: meterValueIn 0.55s ease-out 0.15s both;
+}
+
+.sensor-meter-card .card-desc {
+    position: absolute;
+    top: 14.3rem;
+    left: 1.5rem;
+    right: 1.5rem;
+    z-index: 1;
+}
+
 /* Section Title Global */
 .section-title {
     font-size: 1rem;
@@ -200,6 +290,7 @@ body {
 
 .chart-wrapper {
     margin-top: 2rem;
+    animation: meterCardIn 0.45s ease-out both;
 }
 
 .table-wrapper {
@@ -327,4 +418,46 @@ body {
     margin-right: 0.75rem !important;
     width: 10px !important;
     height: 10px !important;
+}
+
+.meter-card {
+    animation: meterCardIn 0.45s ease-out both;
+}
+
+.meter-card::after {
+    animation: meterSweep 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.meter-card .card-value {
+    animation: meterValueIn 0.55s ease-out 0.15s both;
+}
+
+@keyframes meterSweep {
+    from { --meter-angle: 0deg; }
+}
+
+@keyframes meterCardIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+}
+
+@keyframes meterValueIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sensor-meter-card,
+    .sensor-meter-card::after,
+    .sensor-meter-card .card-value,
+    .meter-card,
+    .meter-card::after,
+    .meter-card .card-value,
+    .chart-wrapper {
+        animation: none;
+    }
 }
