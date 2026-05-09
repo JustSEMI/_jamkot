@@ -35,16 +35,16 @@
 
             <nav class="sidebar-nav">
                 <a href="{{ route('panel') }}" class="nav-link {{ Route::is('panel') ? 'active' : '' }}">
-                    <i class="fa-solid fa-gauge-high"></i> Panel Utama
+                    Panel Utama
                 </a>
                 <a href="{{ route('analisis') }}" class="nav-link {{ Route::is('analisis') ? 'active' : '' }}">
-                    <i class="fa-solid fa-chart-simple"></i> Analisis
+                    Analisis
                 </a>
                 <a href="{{ route('schedule') }}" class="nav-link {{ Route::is('schedule') ? 'active' : '' }}">
-                    <i class="fa-solid fa-calendar-days"></i> Schedules
+                    Schedules
                 </a>
                 <a href="{{ route('settings.index') }}" class="nav-link {{ Route::is('settings.*') ? 'active' : '' }}">
-                    <i class="fa-solid fa-gear"></i> Settings
+                    Settings
                 </a>
             </nav>
 
@@ -53,7 +53,7 @@
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
                     <button type="submit" class="btn-logout-sidebar">
-                        <i class="fa-solid fa-right-from-bracket"></i> Logout
+                        Logout
                     </button>
                 </form>
             </div>

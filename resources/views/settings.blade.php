@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings | JAMKOT</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,0,0&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/panel.css') }}">
     <link rel="stylesheet" href="{{ asset('css/settings.css') }}">
@@ -35,16 +35,16 @@
 
             <nav class="sidebar-nav">
                 <a href="{{ route('panel') }}" class="nav-link {{ Route::is('panel') ? 'active' : '' }}">
-                    <i class="fa-solid fa-gauge-high"></i> Panel Utama
+                    Panel Utama
                 </a>
                 <a href="{{ route('analisis') }}" class="nav-link {{ Route::is('analisis') ? 'active' : '' }}">
-                    <i class="fa-solid fa-chart-simple"></i> Analisis
+                    Analisis
                 </a>
                 <a href="{{ route('schedule') }}" class="nav-link {{ Route::is('schedule') ? 'active' : '' }}">
-                    <i class="fa-solid fa-calendar-days"></i> Schedules
+                    Schedules
                 </a>
                 <a href="{{ route('settings.index') }}" class="nav-link {{ Route::is('settings.*') ? 'active' : '' }}">
-                    <i class="fa-solid fa-gear"></i> Settings
+                    Settings
                 </a>
             </nav>
 
@@ -53,7 +53,7 @@
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
                     <button type="submit" class="btn-logout-sidebar">
-                        <i class="fa-solid fa-right-from-bracket"></i> Logout
+                        Logout
                     </button>
                 </form>
             </div>
@@ -76,7 +76,7 @@
 
                     <div class="danger-zone">
                         <div class="danger-header">
-                            <span class="danger-icon">⚠️</span>
+                            <span class="danger-icon material-symbols-rounded">warning</span>
                             <h3>Zona Berbahaya</h3>
                         </div>
                         <p>Tindakan ini akan menghapus permanen seluruh riwayat suhu, kelembapan, dan status pompa dari
@@ -91,7 +91,7 @@
                         <!-- MODAL -->
                         <div id="modalReset" class="modal-overlay">
                             <div class="modal-box">
-                                <div class="modal-icon">⚠️</div>
+                                <div class="modal-icon material-symbols-rounded">warning</div>
                                 <h3 class="modal-title">Peringatan Keras!</h3>
                                 <p class="modal-text">Apakah Anda yakin ingin menghapus SEMUA data riwayat suhu dan
                                     kelembapan? Tindakan ini tidak bisa dibatalkan!</p>

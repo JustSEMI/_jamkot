@@ -31,6 +31,15 @@
 }
 
 .danger-icon {
+    width: 2rem;
+    height: 2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.12);
+    box-shadow: 0 0 16px rgba(239, 68, 68, 0.18);
     font-size: 1.25rem;
 }
 
@@ -133,8 +142,17 @@
 }
 
 .modal-icon {
-    font-size: 3.5rem;
-    margin-bottom: 1rem;
+    width: 4rem;
+    height: 4rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    border-radius: 999px;
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.12);
+    box-shadow: 0 0 24px rgba(239, 68, 68, 0.22);
+    font-size: 2rem;
     animation: pulseAlert 2s infinite;
 }
 
