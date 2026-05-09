@@ -8,35 +8,170 @@
 }
 
 .stat-card {
-    border-bottom: 3px solid transparent;
+    border-color: #262626;
 }
 
-.stat-card:hover {
-    border-bottom-color: var(--warna-utama, #10b981);
+.meter-card {
+    --meter-accent: var(--warna-utama, #10b981);
+    --meter-angle: 0deg;
+    min-height: 280px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    text-align: center;
+}
+
+.meter-card::before {
+    content: "";
+    position: absolute;
+    top: 5.15rem;
+    left: 50%;
+    width: min(64%, 19rem);
+    aspect-ratio: 1;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background:
+        conic-gradient(
+            from 270deg,
+            var(--meter-accent) 0 var(--meter-angle),
+            #242424 var(--meter-angle) 180deg,
+            transparent 0
+        );
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 17px), #000 calc(100% - 16px));
+    mask: radial-gradient(farthest-side, transparent calc(100% - 17px), #000 calc(100% - 16px));
+    clip-path: inset(0 0 50% 0);
+}
+
+.meter-card-temperature::before {
+    background:
+        conic-gradient(
+            from 270deg,
+            var(--warna-utama, #10b981) 0 var(--meter-angle),
+            #242424 var(--meter-angle) 180deg,
+            transparent 0
+        );
+}
+
+.meter-card-humidity::before {
+    background:
+        conic-gradient(
+            from 270deg,
+            #9ca3af 0,
+            var(--warna-utama, #10b981) var(--meter-angle),
+            #242424 var(--meter-angle) 180deg,
+            transparent 0
+        );
+}
+
+.meter-card .card-title {
+    position: absolute;
+    top: 1.75rem;
+    left: 1.5rem;
+    right: 1.5rem;
+    z-index: 1;
+}
+
+.meter-card .card-value {
+    position: relative;
+    z-index: 1;
+    margin-top: 5.5rem;
+    font-weight: 600;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+}
+
+.meter-card .card-desc {
+    position: relative;
+    z-index: 1;
 }
 
 .record-card {
-    padding: 2rem;
+    min-height: 188px;
+    padding: 2rem 2.25rem;
 }
 
 .record-header {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1.75rem;
+}
+
+.total-log-card {
+    min-height: 280px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    text-align: center;
+}
+
+.total-log-card .card-title {
+    position: absolute;
+    top: 1.75rem;
+    left: 1.5rem;
+    right: 1.5rem;
+    z-index: 1;
+    text-align: center;
+}
+
+.total-log-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2.25rem;
+    text-align: center;
+}
+
+.total-log-icon {
+    width: 3rem;
+    height: 3rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.75rem;
+    border-radius: 999px;
+    color: var(--warna-utama, #10b981);
+    background: rgba(16, 185, 129, 0.1);
+    box-shadow: 0 0 22px rgba(16, 185, 129, 0.16);
+    font-size: 1.55rem;
+}
+
+.total-log-card .card-value {
+    margin-bottom: 0.25rem;
+    font-size: 2.45rem;
+    font-weight: 500;
+    line-height: 1;
 }
 
 .record-icon {
-    font-size: 1.5rem;
+    width: 2.25rem;
+    height: 2.25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    font-size: 1.35rem;
+    color: var(--warna-utama, #10b981);
+    background: rgba(16, 185, 129, 0.1);
 }
 
 .record-grid {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
     text-align: center;
 }
 
 .record-item {
+    flex: 1;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -51,22 +186,25 @@
 
 .record-item strong {
     font-size: 1.75rem;
-    font-weight: 300;
+    font-weight: 400;
     color: #ededed;
+    line-height: 1.15;
 }
 
 .record-card.high {
-    border-left: 4px solid #ef4444;
+    border-left: 4px solid var(--warna-utama, #10b981);
 }
 
 .record-card.low {
-    border-left: 4px solid #3b82f6;
+    border-left: 4px solid #9ca3af;
 }
 
 .record-card.high .record-icon {
-    filter: drop-shadow(0 0 5px rgba(239, 68, 68, 0.4));
+    box-shadow: 0 0 18px rgba(16, 185, 129, 0.22);
 }
 
 .record-card.low .record-icon {
-    filter: drop-shadow(0 0 5px rgba(59, 130, 246, 0.4));
+    color: #d1d5db;
+    background: rgba(156, 163, 175, 0.12);
+    box-shadow: 0 0 18px rgba(156, 163, 175, 0.18);
 }
