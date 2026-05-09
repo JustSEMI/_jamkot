@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jadwal Penyiraman | JAMKOT</title>
+    <title>SCHEDULE | JAMKOT</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/panel.css') }}">
@@ -17,7 +17,7 @@
 
     <div class="panel-layout">
 
-        <!-- MOBILE NAV -->
+        <!-- NAVBAR -->
         <header class="mobile-top-nav">
             <div class="mobile-logo">JAMKOT</div>
             <button class="btn-toggle-sidebar" id="sidebar-toggle">
@@ -59,7 +59,7 @@
             </div>
         </aside>
 
-        <!-- KONTEN UTAMA -->
+        <!-- MAIN CONTENT -->
         <main class="panel-content">
             <header class="content-header-flex">
                 <div>
@@ -127,7 +127,7 @@
                     </div>
                 </div>
 
-                <!-- SMART BACKUP -->
+                <!-- SMART-BACKUP -->
                 <div class="schedule-card smart-backup-card">
                     <div class="smart-backup-info">
                         <div class="smart-backup-header">
@@ -150,7 +150,7 @@
                     </div>
                 </div>
 
-                <!-- TOMBOL SIMPAN -->
+                <!-- SAVE -->
                 <div class="action-row">
                     <button type="submit" class="btn-save">Simpan Konfigurasi</button>
                 </div>
@@ -159,7 +159,7 @@
         </main>
     </div>
 
-    <!-- TOAST NOTIFICATION -->
+    <!-- TOAST-NOTIFICATION -->
     @if(session('sukses'))
         <div id="toast-modern" class="toast-wrapper">
             <div class="toast-progress"></div>
@@ -182,25 +182,7 @@
         </div>
         <script src="{{ asset('js/toast.js') }}"></script>
     @endif
-
-    <script>
-        // Sidebar Toggle Logic
-        const sidebar = document.getElementById('sidebar');
-        const sidebarToggle = document.getElementById('sidebar-toggle');
-        const sidebarOverlay = document.getElementById('sidebar-overlay');
-
-        if (sidebarToggle) {
-            sidebarToggle.addEventListener('click', () => {
-                sidebar.classList.toggle('show');
-            });
-        }
-
-        if (sidebarOverlay) {
-            sidebarOverlay.addEventListener('click', () => {
-                sidebar.classList.remove('show');
-            });
-        }
-    </script>
+    <script src="{{ asset('js/sidebar.js') }}"></script>
 </body>
 
 </html>

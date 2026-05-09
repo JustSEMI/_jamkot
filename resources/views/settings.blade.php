@@ -123,13 +123,13 @@
                 <div class="toast-text">
                     <h4>Success</h4>
                     <p>{{ session('sukses') }}</p>
-                </div>
+                </div>s
                 <button class="toast-close" onclick="tutupToastModern()">×</button>
             </div>
         </div>
         <script src="{{ asset('js/toast.js') }}"></script>
     @endif
-
+    <script src="{{ asset('js/sidebar.js') }}"></script>
     <!-- MODAL SCRIPTS -->
     <script>
         function bukaModal() {
@@ -140,23 +140,6 @@
         }
         function gasReset() {
             document.getElementById('resetForm').submit();
-        }
-
-        // Sidebar Toggle Logic
-        const sidebar = document.getElementById('sidebar');
-        const sidebarToggle = document.getElementById('sidebar-toggle');
-        const sidebarOverlay = document.getElementById('sidebar-overlay');
-
-        if (sidebarToggle) {
-            sidebarToggle.addEventListener('click', () => {
-                sidebar.classList.toggle('show');
-            });
-        }
-
-        if (sidebarOverlay) {
-            sidebarOverlay.addEventListener('click', () => {
-                sidebar.classList.remove('show');
-            });
         }
     </script>
 </body>

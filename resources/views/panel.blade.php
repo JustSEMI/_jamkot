@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | JAMKOT</title>
+    <title>PANEL | JAMKOT</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/panel.css') }}">
@@ -15,8 +15,8 @@
 <body>
 
     <div class="panel-layout">
-        
-        <!-- MOBILE NAV -->
+
+        <!-- NAVBAR -->
         <header class="mobile-top-nav">
             <div class="mobile-logo">JAMKOT</div>
             <button class="btn-toggle-sidebar" id="sidebar-toggle">
@@ -58,7 +58,7 @@
             </div>
         </aside>
 
-        <!-- KONTEN UTAMA -->
+        <!-- MAIN-CONTENT -->
         <main class="panel-content">
 
             <header class="content-header-flex">
@@ -67,14 +67,14 @@
                     <p>Pantau status perangkat dan indikator lingkungan secara real-time.</p>
                 </div>
 
-                <!-- WIDGET WAKTU -->
+                <!-- JAM -->
                 <div class="datetime-widget">
                     <div id="realtime-clock" class="time-display">00:00:00</div>
                     <div id="realtime-date" class="date-display">Memuat...</div>
                 </div>
             </header>
 
-            <!-- KARTU RINGKASAN -->
+            <!-- DATA-REALTIME -->
             <div class="summary-grid">
                 <div class="glow-card">
                     <div class="card-title-wrapper">
@@ -84,35 +84,45 @@
                     <div class="card-value">{{ $latest->cahaya ?? '--' }} Lux</div>
                     <div class="card-desc">Sensor LDR</div>
                 </div>
-
-                <div class="glow-card">
-                    <div class="card-title-wrapper">
-                        <div class="card-title">SUHU RUANG</div>
-                        <div class="status-dot {{ $latest ? 'online' : 'offline' }}"></div>
+                <div class="glow-card"
+                    style="display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 1.5rem;">
+                    <div style="width: 100%; position: relative; text-align: center;">
+                        <div class="card-title" style="margin: 0;">SUHU RUANG</div>
+                        <div class="status-dot {{ $latest ? 'online' : 'offline' }}"
+                            style="position: absolute; right: 0; top: 0;"></div>
                     </div>
-                    <div class="card-value">{{ $latest->suhu ?? '--' }}°C</div>
+
+                    <div id="gauge-suhu" style="width: 100%; margin-top: 1rem;"></div>
+
+                    <!-- margin-top negatifnya udah gue buang di sini -->
                     <div class="card-desc">Target: 22°C - 28°C</div>
                 </div>
 
-                <div class="glow-card">
-                    <div class="card-title-wrapper">
-                        <div class="card-title">KELEMBAPAN UDARA</div>
-                        <div class="status-dot {{ $latest ? 'online' : 'offline' }}"></div>
+                <!-- KARTU KELEMBAPAN (SPEEDOMETER) -->
+                <div class="glow-card"
+                    style="display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 1.5rem;">
+                    <div style="width: 100%; position: relative; text-align: center;">
+                        <div class="card-title" style="margin: 0;">KELEMBAPAN UDARA</div>
+                        <div class="status-dot {{ $latest ? 'online' : 'offline' }}"
+                            style="position: absolute; right: 0; top: 0;"></div>
                     </div>
-                    <div class="card-value">{{ $latest->kelembapan ?? '--' }}%</div>
+
+                    <div id="gauge-kelembapan" style="width: 100%; margin-top: 1rem;"></div>
+
+                    <!-- margin-top negatifnya udah gue buang di sini -->
                     <div class="card-desc {{ ($latest->kelembapan ?? 0) >= $targetKelembapan ? 'text-positive' : '' }}">
                         Target Minimal: {{ $targetKelembapan }}%
                     </div>
                 </div>
             </div>
 
-            <!-- GRAFIK -->
+            <!-- APEXCHART -->
             <div class="glow-card chart-wrapper">
                 <h3 class="section-title">Tren Suhu & Kelembapan</h3>
                 <div id="chart-jamkot"></div>
             </div>
 
-            <!-- TABEL RIWAYAT DATA (Clean Version) -->
+            <!-- LOG-SENSOR -->
             <div class="glow-card table-wrapper">
                 <div class="table-header">
                     <h3 class="section-title" style="margin: 0;">Log Sensor Terakhir</h3>
@@ -160,27 +170,11 @@
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script>
         window.dataJamkot = @json($riwayatGrafik);
+        window.currentSuhu = {{ $latest->suhu ?? 0 }};
+        window.currentKelembapan = {{ $latest->kelembapan ?? 0 }};
     </script>
     <script src="{{ asset('js/chart.js') }}"></script>
-
-    <script>
-        // Sidebar Toggle Logic
-        const sidebar = document.getElementById('sidebar');
-        const sidebarToggle = document.getElementById('sidebar-toggle');
-        const sidebarOverlay = document.getElementById('sidebar-overlay');
-
-        if (sidebarToggle) {
-            sidebarToggle.addEventListener('click', () => {
-                sidebar.classList.toggle('show');
-            });
-        }
-
-        if (sidebarOverlay) {
-            sidebarOverlay.addEventListener('click', () => {
-                sidebar.classList.remove('show');
-            });
-        }
-    </script>
+    <script src="{{ asset('js/sidebar.js') }}"></script>
 
 </body>
 
