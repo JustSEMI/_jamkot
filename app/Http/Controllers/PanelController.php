@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SensorLog; // <-- Modelnya pakai SensorLog ya cik!
+use App\Models\SensorLog;
 use Illuminate\Http\Request;
 
 class PanelController extends Controller
