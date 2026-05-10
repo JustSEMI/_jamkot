@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     setInterval(fetchRealtimeData, 5000);
 
     function fetchRealtimeData() {
-        fetch('/api/panel/data?t=' + new Date().getTime())
+        fetch('/panel/data/realtime?t=' + new Date().getTime())
             .then(response => response.json())
             .then(data => {
                 updateCards(data.latest, data.targetKelembapan);

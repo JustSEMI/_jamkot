@@ -31,7 +31,7 @@ Route::middleware('auth')->group(function () {
     })->name('dashboard');
 
     Route::get('/panel', [PanelController::class, 'index'])->name('panel');
-    Route::get('/api/panel/data', [PanelController::class, 'realtimeData'])->name('api.panel.data');
+    Route::get('/panel/data/realtime', [PanelController::class, 'realtimeData'])->name('panel.data.realtime');
     Route::get('/panel/export', [PanelController::class, 'exportCsv'])->name('panel.export');
     Route::get('/analisis', [PanelController::class, 'analisis'])->name('analisis');
     Route::get('/schedule', [ScheduleController::class, 'index'])->name('schedule');
