@@ -158,9 +158,9 @@
         window.currentSuhu = {{ $latest->suhu ?? 0 }};
         window.currentKelembapan = {{ $latest->kelembapan ?? 0 }};
     </script>
-    <script src="{{ asset('js/chart.js') }}"></script>
-    <script src="{{ asset('js/sidebar.js') }}"></script>
-    <script src="{{ asset('js/realtime.js') }}"></script>
+    <script src="{{ asset('js/chart.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/sidebar.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/realtime.js') }}?v={{ time() }}"></script>
 
 </body>
 
