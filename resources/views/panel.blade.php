@@ -76,27 +76,27 @@
 
             <!-- DATA-REALTIME -->
             <div class="summary-grid">
-                <div class="glow-card">
+                <div class="glow-card" id="card-cahaya">
                     <div class="card-title-wrapper">
                         <div class="card-title">INTENSITAS CAHAYA</div>
-                        <div class="status-dot {{ $latest ? 'online' : 'offline' }}"></div>
+                        <div class="status-dot status-cahaya {{ $latest ? 'online' : 'offline' }}"></div>
                     </div>
-                    <div class="card-value">{{ $latest->cahaya ?? '--' }} Lux</div>
+                    <div class="card-value" id="val-cahaya">{{ $latest->cahaya ?? '--' }} Lux</div>
                     <div class="card-desc">Sensor LDR</div>
                 </div>
-                <div class="glow-card sensor-meter-card sensor-meter-temperature" style="--meter-angle: {{ min(max(($latest->suhu ?? 0) / 40, 0), 1) * 180 }}deg;">
+                <div class="glow-card sensor-meter-card sensor-meter-temperature" id="card-suhu" style="--meter-angle: {{ min(max(($latest->suhu ?? 0) / 40, 0), 1) * 180 }}deg;">
                     <div class="card-title">SUHU RUANG</div>
-                    <div class="status-dot {{ $latest ? 'online' : 'offline' }}"></div>
-                    <div class="card-value">{{ number_format($latest->suhu ?? 0, 1) }}°C</div>
+                    <div class="status-dot status-suhu {{ $latest ? 'online' : 'offline' }}"></div>
+                    <div class="card-value" id="val-suhu">{{ number_format($latest->suhu ?? 0, 1) }}°C</div>
                     <div class="card-desc">Target: 22°C - 28°C</div>
                 </div>
 
-                <div class="glow-card sensor-meter-card sensor-meter-humidity" style="--meter-angle: {{ min(max(($latest->kelembapan ?? 0) / 100, 0), 1) * 180 }}deg;">
+                <div class="glow-card sensor-meter-card sensor-meter-humidity" id="card-kelembapan" style="--meter-angle: {{ min(max(($latest->kelembapan ?? 0) / 100, 0), 1) * 180 }}deg;">
                     <div class="card-title">KELEMBAPAN UDARA</div>
-                    <div class="status-dot {{ $latest ? 'online' : 'offline' }}"></div>
-                    <div class="card-value">{{ number_format($latest->kelembapan ?? 0, 1) }}%</div>
-                    <div class="card-desc {{ ($latest->kelembapan ?? 0) >= $targetKelembapan ? 'text-positive' : '' }}">
-                        Target Minimal: {{ $targetKelembapan }}%
+                    <div class="status-dot status-kelembapan {{ $latest ? 'online' : 'offline' }}"></div>
+                    <div class="card-value" id="val-kelembapan">{{ number_format($latest->kelembapan ?? 0, 1) }}%</div>
+                    <div class="card-desc" id="desc-kelembapan" class="{{ ($latest->kelembapan ?? 0) >= $targetKelembapan ? 'text-positive' : '' }}">
+                        Target Minimal: <span id="val-target-kelembapan">{{ $targetKelembapan }}</span>%
                     </div>
                 </div>
             </div>
@@ -125,7 +125,7 @@
                             <th class="text-right">NILAI (H | T)</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="table-body-log">
                         @forelse($riwayatTabel as $log)
                             <tr>
                                 <td class="text-muted">{{ $log->created_at->diffForHumans() }}</td>
@@ -160,6 +160,7 @@
     </script>
     <script src="{{ asset('js/chart.js') }}"></script>
     <script src="{{ asset('js/sidebar.js') }}"></script>
+    <script src="{{ asset('js/realtime.js') }}"></script>
 
 </body>
 

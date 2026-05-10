@@ -29,6 +29,39 @@ class PanelController extends Controller
             'targetKelembapan' => $targetKelembapan
         ]);
     }
+
+    public function realtimeData()
+    {
+        $latest = SensorLog::latest()->first();
+        $riwayatTabel = SensorLog::latest()->take(5)->get();
+        
+        $riwayatTabel = $riwayatTabel->map(function ($log) {
+            return [
+                'time_diff' => $log->created_at->diffForHumans(),
+                'sensor_id' => $log->sensor_id,
+                'pompa_status' => $log->pompa_status,
+                'kelembapan' => $log->kelembapan,
+                'suhu' => $log->suhu,
+            ];
+        });
+
+        $riwayatGrafik = SensorLog::latest()->take(20)->get()->reverse()->values();
+
+        return response()->json([
+            'latest' => [
+                'cahaya' => $latest->cahaya ?? '--',
+                'suhu' => number_format($latest->suhu ?? 0, 1),
+                'kelembapan' => number_format($latest->kelembapan ?? 0, 1),
+                'suhu_raw' => $latest->suhu ?? 0,
+                'kelembapan_raw' => $latest->kelembapan ?? 0,
+                'is_online' => $latest ? true : false,
+            ],
+            'riwayatTabel' => $riwayatTabel,
+            'riwayatGrafik' => $riwayatGrafik,
+            'targetKelembapan' => 85
+        ]);
+    }
+
     public function analisis()
     {
         $stats = [
