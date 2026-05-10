@@ -74,8 +74,8 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         if (document.querySelector("#chart-jamkot")) {
-            var chartArea = new ApexCharts(document.querySelector("#chart-jamkot"), optionsArea);
-            chartArea.render();
+            window.chartArea = new ApexCharts(document.querySelector("#chart-jamkot"), optionsArea);
+            window.chartArea.render();
         }
     }
 
