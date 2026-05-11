@@ -438,8 +438,8 @@ html[data-ui-version="v1"] .spinner-modern {
     height: 55px !important;
     background-color: var(--m3-primary) !important;
     border: none !important;
-    border-radius: 42% 58% 70% 30% / 45% 45% 55% 55% !important;
-    animation: pixelMorph 2.2s infinite linear !important;
+    border-radius: 0 !important; /* Reset border-radius to let clip-path handle shape geometry */
+    animation: pixelMorph 1.2s infinite ease-in-out !important; /* Fast, snappy and expressive M3 curves */
     box-shadow: 0 8px 24px rgba(128, 222, 197, 0.25) !important;
 }
 
@@ -522,22 +522,26 @@ html[data-ui-version="v1"] .page-transition-overlay {
     -webkit-backdrop-filter: blur(14px) !important;
 }
 
-/* --- PIXEL MORPHING BLOB LOADING SPINNER --- */
+/* --- PIXEL DESIGN 3 MULTI-SHAPE VECTOR MORPHING (OVAL -> 4-SIDED COOKIE -> 12-SIDED COOKIE) --- */
 @keyframes pixelMorph {
     0% {
-        border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
+        /* Shape 1: Oval (parametric ellipse mapped to 24 points) */
+        clip-path: polygon(98.0% 50.0%, 96.4% 57.8%, 91.6% 65.0%, 83.9% 71.2%, 74.0% 76.0%, 62.4% 79.0%, 50.0% 80.0%, 37.6% 79.0%, 26.0% 76.0%, 16.1% 71.2%, 8.4% 65.0%, 3.6% 57.8%, 2.0% 50.0%, 3.6% 42.2%, 8.4% 35.0%, 16.1% 28.8%, 26.0% 24.0%, 37.6% 21.0%, 50.0% 20.0%, 62.4% 21.0%, 74.0% 24.0%, 83.9% 28.8%, 91.6% 35.0%, 96.4% 42.2%);
         transform: rotate(0deg);
     }
-    33% {
-        border-radius: 70% 30% 52% 48% / 60% 40% 60% 40%;
+    33.3% {
+        /* Shape 2: 4-Sided Cookie (rounded 4-lobed flower/star) */
+        clip-path: polygon(98.0% 50.0%, 92.5% 61.4%, 81.2% 68.0%, 72.6% 72.6%, 68.0% 81.2%, 61.4% 92.5%, 50.0% 98.0%, 38.6% 92.5%, 32.0% 81.2%, 27.4% 72.6%, 18.8% 68.0%, 7.5% 61.4%, 2.0% 50.0%, 7.5% 38.6%, 18.8% 32.0%, 27.4% 27.4%, 32.0% 18.8%, 38.6% 7.5%, 50.0% 2.0%, 61.4% 7.5%, 68.0% 18.8%, 72.6% 27.4%, 81.2% 32.0%, 92.5% 38.6%);
         transform: rotate(120deg);
     }
-    66% {
-        border-radius: 40% 60% 30% 70% / 40% 60% 40% 60%;
+    66.6% {
+        /* Shape 3: 12-Sided Cookie (scalloped biscuit/sunburst) */
+        clip-path: polygon(100.0% 50.0%, 88.6% 60.4%, 93.3% 75.0%, 78.3% 78.3%, 75.0% 93.3%, 60.4% 88.6%, 50.0% 100.0%, 39.6% 88.6%, 25.0% 93.3%, 21.7% 78.3%, 6.7% 75.0%, 11.4% 60.4%, 0.0% 50.0%, 11.4% 39.6%, 6.7% 25.0%, 21.7% 21.7%, 25.0% 6.7%, 39.6% 11.4%, 50.0% 0.0%, 60.4% 11.4%, 75.0% 6.7%, 78.3% 21.7%, 93.3% 25.0%, 88.6% 39.6%);
         transform: rotate(240deg);
     }
     100% {
-        border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
+        /* Seamless return to Shape 1 */
+        clip-path: polygon(98.0% 50.0%, 96.4% 57.8%, 91.6% 65.0%, 83.9% 71.2%, 74.0% 76.0%, 62.4% 79.0%, 50.0% 80.0%, 37.6% 79.0%, 26.0% 76.0%, 16.1% 71.2%, 8.4% 65.0%, 3.6% 57.8%, 2.0% 50.0%, 3.6% 42.2%, 8.4% 35.0%, 16.1% 28.8%, 26.0% 24.0%, 37.6% 21.0%, 50.0% 20.0%, 62.4% 21.0%, 74.0% 24.0%, 83.9% 28.8%, 91.6% 35.0%, 96.4% 42.2%);
         transform: rotate(360deg);
     }
 }
@@ -547,8 +551,8 @@ html[data-ui-version="v1"] .transition-spinner {
     height: 60px !important;
     background-color: var(--m3-primary) !important;
     border: none !important;
-    border-radius: 42% 58% 70% 30% / 45% 45% 55% 55% !important;
-    animation: pixelMorph 2.2s infinite linear !important;
+    border-radius: 0 !important; /* Reset radius since clip-path defines the boundaries */
+    animation: pixelMorph 1.2s infinite ease-in-out !important; /* Fast, snappy and expressive M3 curves */
     box-shadow: 0 8px 24px rgba(128, 222, 197, 0.25) !important;
 }
 
@@ -640,4 +644,47 @@ html[data-ui-version="v1"] .dashboard-footer {
     color: var(--m3-on-surface-variant) !important;
     font-family: var(--m3-font) !important;
     padding: 2.5rem 3.5rem !important;
+}
+
+/* --- MOBILE & RESPONSIVE REFINEMENTS (MATERIAL YOU) --- */
+html[data-ui-version="v1"] .mobile-top-nav {
+    background-color: var(--m3-surface-container-low) !important;
+    border-bottom: 1px solid var(--m3-outline-variant) !important;
+}
+
+html[data-ui-version="v1"] .mobile-logo {
+    color: var(--m3-primary) !important;
+    font-family: var(--m3-font) !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.12em !important;
+}
+
+html[data-ui-version="v1"] .btn-toggle-sidebar {
+    color: var(--m3-on-surface) !important;
+}
+
+html[data-ui-version="v1"] .sidebar-overlay {
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    background: rgba(17, 20, 19, 0.45) !important;
+}
+
+@media (max-width: 768px) {
+    html[data-ui-version="v1"] .panel-content {
+        padding: 1.25rem 1rem !important; /* Perfect spacing for narrow mobile viewports */
+    }
+    
+    html[data-ui-version="v1"] .datetime-widget {
+        border-top: 1px solid var(--m3-outline-variant) !important;
+    }
+    
+    /* Optimize cards and grids inside M3 on mobile */
+    html[data-ui-version="v1"] .glow-card {
+        padding: 1.25rem !important;
+        border-radius: 20px !important;
+    }
+    
+    html[data-ui-version="v1"] .summary-grid {
+        gap: 1rem !important;
+    }
 }
