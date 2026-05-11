@@ -195,18 +195,33 @@
             
             const overlay = document.getElementById('page-transition-overlay');
             const panelContent = document.querySelector('.panel-content');
-            if (overlay) {
-                overlay.classList.remove('hidden');
-            }
+            
+            // 1. Smoothly fade out the page content and reveal the blurred transition overlay
             if (panelContent) {
                 panelContent.classList.remove('loaded');
             }
+            if (overlay) {
+                overlay.classList.remove('hidden');
+            }
             
+            // 2. Wait for exit animations to finish, then hot-swap variables instantly
             setTimeout(() => {
                 localStorage.setItem('jamkot-ui-version', version);
                 document.documentElement.setAttribute('data-ui-version', version);
                 updateUiCards(version);
-                window.location.reload();
+                
+                // Dispatch custom event to let chart.js dynamically repaint graphs on-the-fly
+                window.dispatchEvent(new CustomEvent('ui-theme-changed', { detail: { version } }));
+                
+                // 3. Keep the gorgeous Liquid Blob spinning for a brief moment, then fade back in
+                setTimeout(() => {
+                    if (panelContent) {
+                        panelContent.classList.add('loaded');
+                    }
+                    if (overlay) {
+                        overlay.classList.add('hidden');
+                    }
+                }, 400); // Perfect timing for satisfying organic liquid visual feedback
             }, 300);
         }
 

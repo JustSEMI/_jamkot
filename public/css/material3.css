@@ -39,14 +39,24 @@ html[data-ui-version="v1"] {
     --m3-font: 'Outfit', 'Roboto', sans-serif;
 }
 
+/* --- COMPOSITOR-ACCELERATED DYNAMIC SAGE GRADIENT --- */
+@keyframes dynamicGradientM3 {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
 /* --- BASE & LAYOUT CONTRAST FIX --- */
 html[data-ui-version="v1"] body,
 html[data-ui-version="v1"] .panel-layout,
 html[data-ui-version="v1"] .panel-content {
-    background-color: var(--m3-bg) !important;
+    background: linear-gradient(-45deg, #111413, #15221d, #0d1210, #192621, #111413) !important;
+    background-size: 300% 300% !important;
+    animation: dynamicGradientM3 25s ease infinite !important;
     color: var(--m3-on-surface) !important;
     font-family: var(--m3-font) !important;
     letter-spacing: 0.015em;
+    will-change: background-position;
 }
 
 /* --- SIDEBAR MENU (PIXEL FLOATING PILLS) --- */
@@ -408,39 +418,92 @@ html[data-ui-version="v1"] .toast-icon {
     color: var(--m3-on-primary-container) !important;
 }
 
-/* --- 3D VIEW PORT SPECIFIC --- */
+/* --- 3D VIEW PORT SPECIFIC (MATERIAL YOU STYLE) --- */
 html[data-ui-version="v1"] .canvas-wrapper {
-    background: radial-gradient(circle at center, #1b2421 0%, #111413 100%) !important;
+    background: radial-gradient(circle at center, #23352f 0%, #101412 100%) !important;
+    border: 1px solid var(--m3-outline-variant) !important;
+    border-radius: 28px !important;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 40px rgba(128, 222, 197, 0.04) !important;
+}
+
+html[data-ui-version="v1"] .loader-overlay {
+    background: rgba(17, 20, 19, 0.85) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    border-radius: 28px !important;
+}
+
+html[data-ui-version="v1"] .spinner-modern {
+    width: 55px !important;
+    height: 55px !important;
+    background-color: var(--m3-primary) !important;
     border: none !important;
-    border-radius: 24px !important;
+    border-radius: 42% 58% 70% 30% / 45% 45% 55% 55% !important;
+    animation: pixelMorph 2.2s infinite linear !important;
+    box-shadow: 0 8px 24px rgba(128, 222, 197, 0.25) !important;
+}
+
+html[data-ui-version="v1"] .progress-bar-container {
+    background-color: var(--m3-surface-container-highest) !important;
+    border-radius: 100px !important;
+    height: 8px !important;
+}
+
+html[data-ui-version="v1"] .progress-bar-fill {
+    background: var(--m3-primary) !important;
+    border-radius: 100px !important;
+    box-shadow: 0 0 12px rgba(128, 222, 197, 0.4) !important;
 }
 
 html[data-ui-version="v1"] .panel-card {
     background: var(--m3-surface-container) !important;
     border: none !important;
-    border-radius: 20px !important;
+    border-radius: 24px !important;
 }
 
 html[data-ui-version="v1"] .panel-card-title {
     color: var(--m3-primary) !important;
     border-bottom: 1px solid var(--m3-outline-variant) !important;
+    font-family: var(--m3-font) !important;
+    font-weight: 700 !important;
 }
 
 html[data-ui-version="v1"] .btn-control {
     background-color: var(--m3-surface-container-low) !important;
     color: var(--m3-on-surface) !important;
     border: 1px solid var(--m3-outline-variant) !important;
-    border-radius: 12px !important;
+    border-radius: 100px !important; /* Full modern M3 capsule shape */
+    padding: 0.65rem 1.25rem !important;
+    font-family: var(--m3-font) !important;
+    font-weight: 500 !important;
 }
 
 html[data-ui-version="v1"] .btn-control:hover {
     background-color: var(--m3-surface-container-high) !important;
+    border-color: var(--m3-primary) !important;
+    color: var(--m3-primary) !important;
 }
 
 html[data-ui-version="v1"] .btn-control.active {
     background-color: var(--m3-primary-container) !important;
     border-color: var(--m3-primary) !important;
     color: var(--m3-on-primary-container) !important;
+}
+
+html[data-ui-version="v1"] .instruction-item i {
+    color: var(--m3-primary) !important;
+}
+
+html[data-ui-version="v1"] .info-table tr {
+    border-color: var(--m3-outline-variant) !important;
+}
+
+html[data-ui-version="v1"] .info-label {
+    color: var(--m3-on-surface-variant) !important;
+}
+
+html[data-ui-version="v1"] .info-value {
+    color: var(--m3-on-surface) !important;
 }
 
 html[data-ui-version="v1"] .slider-input {
@@ -459,10 +522,34 @@ html[data-ui-version="v1"] .page-transition-overlay {
     -webkit-backdrop-filter: blur(14px) !important;
 }
 
+/* --- PIXEL MORPHING BLOB LOADING SPINNER --- */
+@keyframes pixelMorph {
+    0% {
+        border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
+        transform: rotate(0deg);
+    }
+    33% {
+        border-radius: 70% 30% 52% 48% / 60% 40% 60% 40%;
+        transform: rotate(120deg);
+    }
+    66% {
+        border-radius: 40% 60% 30% 70% / 40% 60% 40% 60%;
+        transform: rotate(240deg);
+    }
+    100% {
+        border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
+        transform: rotate(360deg);
+    }
+}
+
 html[data-ui-version="v1"] .transition-spinner {
-    border: 3px solid rgba(128, 222, 197, 0.1) !important;
-    border-top-color: var(--m3-primary) !important;
-    box-shadow: 0 0 20px rgba(128, 222, 197, 0.1) !important;
+    width: 60px !important;
+    height: 60px !important;
+    background-color: var(--m3-primary) !important;
+    border: none !important;
+    border-radius: 42% 58% 70% 30% / 45% 45% 55% 55% !important;
+    animation: pixelMorph 2.2s infinite linear !important;
+    box-shadow: 0 8px 24px rgba(128, 222, 197, 0.25) !important;
 }
 
 /* --- SETTINGS VERSION CARDS IN MATERIAL YOU (PIXEL STYLE) --- */
@@ -495,9 +582,14 @@ html[data-ui-version="v1"] .ui-version-card.active .ui-select-indicator {
 
 /* --- DASHBOARD LANDING VIEW OVERRIDES --- */
 html[data-ui-version="v1"] .navbar {
-    background-color: var(--m3-surface-container-low) !important;
+    background-color: transparent !important;
     border-bottom: 1px solid var(--m3-outline-variant) !important;
     font-family: var(--m3-font) !important;
+    padding: 1.75rem 3.5rem !important; /* Premium spacious padding aligned with panels */
+}
+
+html[data-ui-version="v1"] .landing-view {
+    padding: 4rem 3.5rem !important; /* Roomy, clean padding for the welcome area */
 }
 
 html[data-ui-version="v1"] .navbar .user-greeting {
@@ -544,7 +636,8 @@ html[data-ui-version="v1"] .btn-panel:hover {
 
 html[data-ui-version="v1"] .dashboard-footer {
     border-top: 1px solid var(--m3-outline-variant) !important;
-    background-color: var(--m3-surface-container-low) !important;
+    background-color: transparent !important;
     color: var(--m3-on-surface-variant) !important;
     font-family: var(--m3-font) !important;
+    padding: 2.5rem 3.5rem !important;
 }
