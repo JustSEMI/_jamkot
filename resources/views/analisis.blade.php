@@ -4,12 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- PREVENT FOUC & SETUP UI THEME -->
+    <script>
+        (function() {
+            const uiVersion = localStorage.getItem('jamkot-ui-version') || 'v2';
+            document.documentElement.setAttribute('data-ui-version', uiVersion);
+        })();
+    </script>
     <title>Analisis Data | JAMKOT</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,0,0&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/panel.css') }}">
     <link rel="stylesheet" href="{{ asset('css/analisis.css') }}">
     <link rel="stylesheet" href="{{ asset('css/mobile.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/material3.css') }}">
     @vite('resources/js/app.js')
 </head>
 

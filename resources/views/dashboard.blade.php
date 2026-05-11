@@ -4,10 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- PREVENT FOUC & SETUP UI THEME -->
+    <script>
+        (function() {
+            const uiVersion = localStorage.getItem('jamkot-ui-version') || 'v2';
+            document.documentElement.setAttribute('data-ui-version', uiVersion);
+        })();
+    </script>
     <title>Dashboard | JAMKOT</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/mobile.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/material3.css') }}">
     @vite('resources/js/app.js')
 </head>
 

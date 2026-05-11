@@ -1,0 +1,550 @@
+/* public/css/material3.css */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap');
+
+/* --- MONET SAGE DARK (PIXEL UI) VARIABLES --- */
+html[data-ui-version="v1"] {
+    --m3-bg: #111413;                      /* Dark Sage Charcoal Background */
+    --m3-primary: #80dec5;                 /* Pixel Mint/Sage Green */
+    --m3-on-primary: #00382d;              /* Dark Forest Green for text on primary */
+    --m3-primary-container: #1e4f43;       /* Medium Forest Teal */
+    --m3-on-primary-container: #9be6d1;    /* Light Mint Teal */
+    
+    --m3-secondary: #b0ccbc;               /* Pastel Green-Grey */
+    --m3-on-secondary: #1b3529;
+    --m3-secondary-container: #334b3e;
+    --m3-on-secondary-container: #cbe8d7;
+    
+    --m3-tertiary: #ffb68f;                /* Pastel Peach/Orange */
+    --m3-on-tertiary: #512400;
+    --m3-tertiary-container: #723b1a;
+    --m3-on-tertiary-container: #ffdbca;
+
+    --m3-surface: #111413;
+    --m3-on-surface: #e1e3e1;              /* Off-White Text */
+    --m3-surface-variant: #1a221f;         /* Setting Group / Card Background */
+    --m3-on-surface-variant: #a2aba7;      /* Sage Slate Grey for subtitles */
+    --m3-outline: #88938f;                 /* Slate border colors */
+    --m3-outline-variant: #2d3532;
+    
+    --m3-surface-container-low: #151a18;   /* Sidebar / Background low */
+    --m3-surface-container: #1b221f;       /* Standard Pixel Card background */
+    --m3-surface-container-high: #242c29;  /* Elevated/Hover container background */
+    --m3-surface-container-highest: #2b3531;
+    
+    --m3-error: #ffb4ab;
+    --m3-on-error: #690005;
+    --m3-error-container: #93000a;
+    --m3-on-error-container: #ffdad6;
+    
+    --m3-font: 'Outfit', 'Roboto', sans-serif;
+}
+
+/* --- BASE & LAYOUT CONTRAST FIX --- */
+html[data-ui-version="v1"] body,
+html[data-ui-version="v1"] .panel-layout,
+html[data-ui-version="v1"] .panel-content {
+    background-color: var(--m3-bg) !important;
+    color: var(--m3-on-surface) !important;
+    font-family: var(--m3-font) !important;
+    letter-spacing: 0.015em;
+}
+
+/* --- SIDEBAR MENU (PIXEL FLOATING PILLS) --- */
+html[data-ui-version="v1"] .sidebar {
+    background-color: var(--m3-surface-container-low) !important;
+    border-right: 1px solid var(--m3-outline-variant) !important;
+    padding: 2.25rem 1.15rem !important;
+    width: 260px;
+}
+
+html[data-ui-version="v1"] .sidebar-header h2 {
+    font-family: var(--m3-font);
+    font-weight: 700;
+    color: var(--m3-primary);
+    font-size: 1.45rem;
+    letter-spacing: 0.08em;
+    margin-bottom: 2.5rem;
+    padding-left: 0.75rem;
+}
+
+html[data-ui-version="v1"] .sidebar-nav {
+    gap: 0.45rem !important;
+}
+
+/* Clean Floating Pills with No Bugs */
+html[data-ui-version="v1"] .nav-link {
+    font-family: var(--m3-font);
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: var(--m3-on-surface-variant);
+    padding: 0.75rem 1.25rem !important;
+    border-radius: 100px !important; /* Perfect Pill Shape */
+    display: block !important;
+    transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    border: none !important;
+    background: transparent !important;
+    margin: 0.15rem 0.25rem !important;
+}
+
+html[data-ui-version="v1"] .nav-link:hover {
+    background-color: var(--m3-surface-container-high) !important;
+    color: var(--m3-on-surface) !important;
+    transform: none !important;
+}
+
+html[data-ui-version="v1"] .nav-link.active {
+    background-color: var(--m3-primary-container) !important;
+    color: var(--m3-on-primary-container) !important;
+    font-weight: 600 !important;
+}
+
+html[data-ui-version="v1"] .sidebar-footer {
+    border-top: 1px solid var(--m3-outline-variant) !important;
+    padding-top: 1.5rem !important;
+}
+
+html[data-ui-version="v1"] .user-greeting {
+    color: var(--m3-on-surface-variant) !important;
+    font-weight: 500 !important;
+    padding-left: 0.5rem;
+    font-size: 0.825rem;
+    margin-bottom: 0.75rem;
+    display: block;
+}
+
+html[data-ui-version="v1"] .btn-logout-sidebar {
+    border-radius: 100px !important;
+    border: 1px solid var(--m3-outline) !important;
+    color: var(--m3-primary) !important;
+    background: transparent !important;
+    font-family: var(--m3-font) !important;
+    font-weight: 600 !important;
+    font-size: 0.825rem;
+    padding: 0.6rem 1.25rem !important;
+    width: 100%;
+    transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+html[data-ui-version="v1"] .btn-logout-sidebar:hover {
+    background-color: rgba(255, 180, 171, 0.08) !important;
+    border-color: var(--m3-error) !important;
+    color: var(--m3-error) !important;
+}
+
+/* --- HEADER AND DATETIME --- */
+html[data-ui-version="v1"] .content-header-flex h1 {
+    font-family: var(--m3-font) !important;
+    font-weight: 700;
+    color: var(--m3-on-surface) !important;
+    font-size: 1.85rem !important;
+    margin: 0;
+}
+
+html[data-ui-version="v1"] .content-header-flex p {
+    color: var(--m3-on-surface-variant) !important;
+    font-size: 0.875rem !important;
+}
+
+html[data-ui-version="v1"] .time-display {
+    color: var(--m3-primary) !important;
+    font-size: 1.85rem !important;
+    font-weight: 700 !important;
+}
+
+html[data-ui-version="v1"] .date-display {
+    color: var(--m3-on-surface-variant) !important;
+    font-size: 0.825rem !important;
+}
+
+/* --- PIXEL SURFACE CONTAINER CARDS (HIGH CONTRAST) --- */
+html[data-ui-version="v1"] .glow-card {
+    background: var(--m3-surface-container) !important;
+    border: none !important;
+    border-radius: 24px !important; /* Elegant 24px rounded cards */
+    box-shadow: none !important;
+    padding: 1.5rem 1.5rem !important;
+    transition: all 0.2s ease;
+}
+
+html[data-ui-version="v1"] .glow-card:hover {
+    background: var(--m3-surface-container-high) !important;
+    transform: translateY(-1px) !important;
+}
+
+html[data-ui-version="v1"] .card-title {
+    color: var(--m3-on-surface-variant) !important;
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.05em !important;
+}
+
+html[data-ui-version="v1"] .card-value {
+    color: var(--m3-on-surface) !important;
+    font-size: 2.25rem !important;
+    font-weight: 700 !important;
+    margin: 0.5rem 0 !important;
+}
+
+html[data-ui-version="v1"] .card-desc {
+    color: var(--m3-on-surface-variant) !important;
+    font-size: 0.8rem !important;
+}
+
+/* --- FIX FOR GEOMETRIC ARC GAUGES (SUHU & KELEMBAPAN) --- */
+html[data-ui-version="v1"] .sensor-meter-card::before,
+html[data-ui-version="v1"] .sensor-meter-card::after {
+    /* Keep original semi-circular geometry and radial masks! */
+    border-radius: 19rem 19rem 0 0 !important; 
+    top: 5.25rem !important;
+    width: 19rem !important;
+    height: 9.5rem !important;
+    -webkit-mask: radial-gradient(farthest-side at 50% 100%, transparent calc(100% - 17px), #000 calc(100% - 16px)) !important;
+    mask: radial-gradient(farthest-side at 50% 100%, transparent calc(100% - 17px), #000 calc(100% - 16px)) !important;
+}
+
+/* Colorize the Arc Tracks beautifully with Sage Green and Pastel Peach */
+html[data-ui-version="v1"] .sensor-meter-card::before {
+    background: var(--m3-surface-container-highest) !important;
+}
+
+html[data-ui-version="v1"] .sensor-meter-temperature::after {
+    background: conic-gradient(
+        from 270deg at 50% 100%,
+        var(--m3-primary) 0 var(--meter-angle),
+        transparent var(--meter-angle) 180deg,
+        transparent 0
+    ) !important;
+}
+
+html[data-ui-version="v1"] .sensor-meter-humidity::after {
+    background: conic-gradient(
+        from 270deg at 50% 100%,
+        var(--m3-secondary) 0,
+        var(--m3-tertiary) var(--meter-angle),
+        transparent var(--meter-angle) 180deg,
+        transparent 0
+    ) !important;
+}
+
+html[data-ui-version="v1"] .sensor-meter-card .card-value {
+    text-shadow: none !important;
+    color: var(--m3-on-surface) !important;
+}
+
+html[data-ui-version="v1"] .section-title {
+    color: var(--m3-on-surface) !important;
+    font-weight: 700 !important;
+    font-size: 1.05rem !important;
+}
+
+/* --- PIXEL TABLE LISTINGS --- */
+html[data-ui-version="v1"] .data-table th {
+    color: var(--m3-on-surface-variant) !important;
+    font-size: 0.775rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.08em !important;
+    font-weight: 700 !important;
+    border-bottom: 2px solid var(--m3-outline-variant) !important;
+    padding: 0.9rem 1.15rem !important;
+}
+
+html[data-ui-version="v1"] .data-table td {
+    border-bottom: 1px solid var(--m3-outline-variant) !important;
+    color: var(--m3-on-surface) !important;
+    padding: 1rem 1.15rem !important;
+    font-size: 0.85rem !important;
+}
+
+html[data-ui-version="v1"] .data-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.015) !important;
+}
+
+/* --- BADGES & STATUS INDICATORS --- */
+html[data-ui-version="v1"] .badge.success {
+    background-color: var(--m3-primary-container) !important;
+    color: var(--m3-on-primary-container) !important;
+    font-weight: 600 !important;
+    border-radius: 100px !important;
+    padding: 0.35rem 0.85rem !important;
+    font-size: 0.725rem !important;
+    border: none !important;
+}
+
+html[data-ui-version="v1"] .status-dot.online {
+    background-color: var(--m3-primary) !important;
+    box-shadow: 0 0 8px rgba(128, 222, 197, 0.3) !important;
+}
+
+html[data-ui-version="v1"] .status-dot.offline {
+    background-color: var(--m3-error) !important;
+    box-shadow: none !important;
+}
+
+/* --- PIXEL STYLE PILL ACTIONS --- */
+html[data-ui-version="v1"] .btn-sm, 
+html[data-ui-version="v1"] .btn-save,
+html[data-ui-version="v1"] .btn-danger,
+html[data-ui-version="v1"] .btn-cancel {
+    border-radius: 100px !important; /* Perfect Pill button */
+    font-family: var(--m3-font) !important;
+    font-weight: 600 !important;
+    font-size: 0.825rem !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    padding: 0.65rem 1.35rem !important;
+    transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+    border: none !important;
+    cursor: pointer !important;
+}
+
+html[data-ui-version="v1"] .btn-sm,
+html[data-ui-version="v1"] .btn-save {
+    background-color: var(--m3-primary) !important;
+    color: var(--m3-on-primary) !important;
+}
+
+html[data-ui-version="v1"] .btn-sm:hover,
+html[data-ui-version="v1"] .btn-save:hover {
+    background-color: var(--m3-on-primary-container) !important;
+    color: var(--m3-primary-container) !important;
+    transform: translateY(-1px) !important;
+}
+
+html[data-ui-version="v1"] .btn-danger {
+    background-color: var(--m3-error) !important;
+    color: var(--m3-on-error) !important;
+}
+
+html[data-ui-version="v1"] .btn-danger:hover {
+    background-color: var(--m3-error-container) !important;
+    color: var(--m3-on-error-container) !important;
+    transform: translateY(-1px) !important;
+}
+
+html[data-ui-version="v1"] .btn-cancel {
+    background-color: var(--m3-surface-container-high) !important;
+    color: var(--m3-on-surface) !important;
+    border: 1px solid var(--m3-outline) !important;
+}
+
+html[data-ui-version="v1"] .btn-cancel:hover {
+    background-color: var(--m3-surface-container-highest) !important;
+    transform: translateY(-1px) !important;
+}
+
+/* --- SCHEDULES STYLINGS --- */
+html[data-ui-version="v1"] .schedule-card {
+    background: var(--m3-surface-container) !important;
+    border-radius: 24px !important;
+    border: none !important;
+}
+
+html[data-ui-version="v1"] .schedule-card:hover {
+    background: var(--m3-surface-container-high) !important;
+}
+
+html[data-ui-version="v1"] .input-time-modern {
+    background-color: var(--m3-surface-container-highest) !important;
+    color: var(--m3-on-surface) !important;
+    border: 1px solid var(--m3-outline-variant) !important;
+    border-radius: 12px !important;
+    padding: 0.6rem 1.1rem !important;
+    font-family: var(--m3-font) !important;
+}
+
+html[data-ui-version="v1"] .input-time-modern:focus {
+    border-color: var(--m3-primary) !important;
+    box-shadow: 0 0 0 3px rgba(128, 222, 197, 0.15) !important;
+}
+
+/* --- SETTINGS ZONA BAHAYA --- */
+html[data-ui-version="v1"] .danger-zone {
+    border: 1px solid var(--m3-error-container) !important;
+    background: rgba(255, 180, 171, 0.02) !important;
+    border-radius: 20px !important;
+}
+
+html[data-ui-version="v1"] .danger-zone:hover {
+    background: rgba(255, 180, 171, 0.04) !important;
+}
+
+html[data-ui-version="v1"] .danger-icon {
+    background-color: var(--m3-error-container) !important;
+    color: var(--m3-on-error-container) !important;
+    box-shadow: none !important;
+}
+
+/* --- MODAL DIALOGS PIXEL STYLE --- */
+html[data-ui-version="v1"] .modal-box {
+    background: var(--m3-surface-container-high) !important;
+    border: none !important;
+    border-radius: 24px !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+    padding: 2rem !important;
+}
+
+html[data-ui-version="v1"] .modal-icon {
+    background: var(--m3-error-container) !important;
+    color: var(--m3-on-error-container) !important;
+    box-shadow: none !important;
+    width: 3.5rem !important;
+    height: 3.5rem !important;
+    font-size: 1.75rem !important;
+}
+
+/* --- TOAST SNACKBAR PIXEL STYLE --- */
+html[data-ui-version="v1"] .toast-wrapper {
+    background: var(--m3-surface-container-highest) !important;
+    border-radius: 16px !important;
+    border: 1px solid var(--m3-outline-variant) !important;
+}
+
+html[data-ui-version="v1"] .toast-progress {
+    background: var(--m3-primary) !important;
+}
+
+html[data-ui-version="v1"] .toast-icon {
+    background: var(--m3-primary-container) !important;
+    color: var(--m3-on-primary-container) !important;
+}
+
+/* --- 3D VIEW PORT SPECIFIC --- */
+html[data-ui-version="v1"] .canvas-wrapper {
+    background: radial-gradient(circle at center, #1b2421 0%, #111413 100%) !important;
+    border: none !important;
+    border-radius: 24px !important;
+}
+
+html[data-ui-version="v1"] .panel-card {
+    background: var(--m3-surface-container) !important;
+    border: none !important;
+    border-radius: 20px !important;
+}
+
+html[data-ui-version="v1"] .panel-card-title {
+    color: var(--m3-primary) !important;
+    border-bottom: 1px solid var(--m3-outline-variant) !important;
+}
+
+html[data-ui-version="v1"] .btn-control {
+    background-color: var(--m3-surface-container-low) !important;
+    color: var(--m3-on-surface) !important;
+    border: 1px solid var(--m3-outline-variant) !important;
+    border-radius: 12px !important;
+}
+
+html[data-ui-version="v1"] .btn-control:hover {
+    background-color: var(--m3-surface-container-high) !important;
+}
+
+html[data-ui-version="v1"] .btn-control.active {
+    background-color: var(--m3-primary-container) !important;
+    border-color: var(--m3-primary) !important;
+    color: var(--m3-on-primary-container) !important;
+}
+
+html[data-ui-version="v1"] .slider-input {
+    background: var(--m3-surface-container-highest) !important;
+    border-radius: 100px !important;
+}
+
+html[data-ui-version="v1"] .slider-input::-webkit-slider-thumb {
+    background: var(--m3-primary) !important;
+}
+
+/* --- TRANSITION OVERLAY FOR PIXEL DARK --- */
+html[data-ui-version="v1"] .page-transition-overlay {
+    background: rgba(17, 20, 19, 0.6) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+}
+
+html[data-ui-version="v1"] .transition-spinner {
+    border: 3px solid rgba(128, 222, 197, 0.1) !important;
+    border-top-color: var(--m3-primary) !important;
+    box-shadow: 0 0 20px rgba(128, 222, 197, 0.1) !important;
+}
+
+/* --- SETTINGS VERSION CARDS IN MATERIAL YOU (PIXEL STYLE) --- */
+html[data-ui-version="v1"] .ui-version-card {
+    border: 1px solid var(--m3-outline-variant) !important;
+    background: var(--m3-surface-container-low) !important;
+    border-radius: 20px !important;
+}
+
+html[data-ui-version="v1"] .ui-version-card:hover {
+    background: var(--m3-surface-container-high) !important;
+}
+
+html[data-ui-version="v1"] .ui-version-card.active {
+    border-color: var(--m3-primary) !important;
+    background: var(--m3-primary-container) !important;
+}
+
+html[data-ui-version="v1"] .ui-version-card.active .ui-version-info h3 {
+    color: var(--m3-on-primary-container) !important;
+}
+
+html[data-ui-version="v1"] .ui-version-card.active .ui-version-info p {
+    color: var(--m3-on-surface-variant) !important;
+}
+
+html[data-ui-version="v1"] .ui-version-card.active .ui-select-indicator {
+    color: var(--m3-primary) !important;
+}
+
+/* --- DASHBOARD LANDING VIEW OVERRIDES --- */
+html[data-ui-version="v1"] .navbar {
+    background-color: var(--m3-surface-container-low) !important;
+    border-bottom: 1px solid var(--m3-outline-variant) !important;
+    font-family: var(--m3-font) !important;
+}
+
+html[data-ui-version="v1"] .navbar .user-greeting {
+    color: var(--m3-on-surface) !important;
+}
+
+html[data-ui-version="v1"] .btn-logout {
+    border-radius: 100px !important;
+    background-color: transparent !important;
+    border: 1px solid var(--m3-outline) !important;
+    color: var(--m3-primary) !important;
+    font-family: var(--m3-font) !important;
+    font-weight: 600 !important;
+    padding: 0.5rem 1.25rem !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+
+html[data-ui-version="v1"] .btn-logout:hover {
+    background-color: rgba(255, 180, 171, 0.08) !important;
+    border-color: var(--m3-error) !important;
+    color: var(--m3-error) !important;
+}
+
+html[data-ui-version="v1"] .btn-panel {
+    border-radius: 100px !important;
+    background-color: var(--m3-primary) !important;
+    color: var(--m3-on-primary) !important;
+    font-family: var(--m3-font) !important;
+    font-weight: 700 !important;
+    box-shadow: none !important;
+    padding: 1rem 2rem !important;
+    transition: all 0.22s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+html[data-ui-version="v1"] .btn-panel:hover {
+    background-color: var(--m3-on-primary-container) !important;
+    color: var(--m3-primary-container) !important;
+    transform: scale(1.03) !important;
+}
+
+html[data-ui-version="v1"] .dashboard-footer {
+    border-top: 1px solid var(--m3-outline-variant) !important;
+    background-color: var(--m3-surface-container-low) !important;
+    color: var(--m3-on-surface-variant) !important;
+    font-family: var(--m3-font) !important;
+}

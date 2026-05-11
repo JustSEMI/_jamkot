@@ -4,12 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- PREVENT FOUC & SETUP UI THEME -->
+    <script>
+        (function() {
+            const uiVersion = localStorage.getItem('jamkot-ui-version') || 'v2';
+            document.documentElement.setAttribute('data-ui-version', uiVersion);
+        })();
+    </script>
     <title>Settings | JAMKOT</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,0,0&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/panel.css') }}">
     <link rel="stylesheet" href="{{ asset('css/settings.css') }}">
     <link rel="stylesheet" href="{{ asset('css/mobile.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/material3.css') }}">
     @vite('resources/js/app.js')
 </head>
 
@@ -107,6 +115,42 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- PILIHAN DESAIN ANTARMUKA -->
+                <div class="glow-card settings-card" style="margin-top: 2rem;">
+                    <h2 class="section-title" style="margin: 0 0 0.5rem 0; color: #ededed;">Desain Antarmuka (UI Version)</h2>
+                    <p class="text-muted" style="margin-bottom: 2rem;">Pilih gaya visual antarmuka sistem JAMKOT yang paling cocok dengan preferensi Anda.</p>
+                    
+                    <div class="ui-version-selector-grid">
+                        <!-- Card UI V2 (Neon Glow Dark) -->
+                        <div class="ui-version-card" id="ui-card-v2" onclick="setUiVersion('v2')">
+                            <div class="ui-preview-icon glow-v2">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            </div>
+                            <div class="ui-version-info">
+                                <h3>UI V2: Neon Glow Dark</h3>
+                                <p>Tema default gelap dengan pendaran neon futuristik yang modern.</p>
+                            </div>
+                            <div class="ui-select-indicator">
+                                <i class="fa-solid fa-circle-check"></i>
+                            </div>
+                        </div>
+
+                        <!-- Card UI V1 (Material 3 Expressive) -->
+                        <div class="ui-version-card" id="ui-card-v1" onclick="setUiVersion('v1')">
+                            <div class="ui-preview-icon m3-v1">
+                                <i class="fa-solid fa-palette"></i>
+                            </div>
+                            <div class="ui-version-info">
+                                <h3>UI V1: Material 3 Expressive</h3>
+                                <p>Desain premium berbasis Google Material Design 3 dengan lekukan ekspresif, warna tonal pastel, dan tata letak dinamis.</p>
+                            </div>
+                            <div class="ui-select-indicator">
+                                <i class="fa-solid fa-circle-check"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </main>
@@ -144,6 +188,47 @@
         function gasReset() {
             document.getElementById('resetForm').submit();
         }
+
+        // --- UI VERSION CONTROLLERS ---
+        function setUiVersion(version) {
+            if (localStorage.getItem('jamkot-ui-version') === version) return;
+            
+            const overlay = document.getElementById('page-transition-overlay');
+            const panelContent = document.querySelector('.panel-content');
+            if (overlay) {
+                overlay.classList.remove('hidden');
+            }
+            if (panelContent) {
+                panelContent.classList.remove('loaded');
+            }
+            
+            setTimeout(() => {
+                localStorage.setItem('jamkot-ui-version', version);
+                document.documentElement.setAttribute('data-ui-version', version);
+                updateUiCards(version);
+                window.location.reload();
+            }, 300);
+        }
+
+        function updateUiCards(activeVersion) {
+            const cardV1 = document.getElementById('ui-card-v1');
+            const cardV2 = document.getElementById('ui-card-v2');
+            
+            if (cardV1 && cardV2) {
+                if (activeVersion === 'v1') {
+                    cardV1.classList.add('active');
+                    cardV2.classList.remove('active');
+                } else {
+                    cardV2.classList.add('active');
+                    cardV1.classList.remove('active');
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentUi = localStorage.getItem('jamkot-ui-version') || 'v2';
+            updateUiCards(currentUi);
+        });
     </script>
 </body>
 

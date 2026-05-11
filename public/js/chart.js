@@ -2,10 +2,19 @@
 
 document.addEventListener('DOMContentLoaded', function () {
     const rawData = window.dataJamkot;
+    
+    // --- DETERMINE UI PREFERENCE ---
+    const isM3 = localStorage.getItem('jamkot-ui-version') === 'v1';
+    const chartTextColors = isM3 ? '#a2aba7' : '#6b7280';
+    const chartGridBorder = isM3 ? '#242c29' : '#1f1f1f';
+    const chartThemeMode = 'dark';
+    const gaugeTrackBg = isM3 ? '#242c29' : '#262626';
+    const gaugeLabelColor = isM3 ? '#e1e3e1' : '#ededed';
+
     if (!rawData || rawData.length === 0) {
         if (document.querySelector("#chart-jamkot")) {
             document.querySelector("#chart-jamkot").innerHTML =
-                "<div style='text-align: center; color: #6b7280; padding: 2rem 0; font-size: 0.875rem;'>Belum ada data sensor untuk menampilkan grafik.</div>";
+                `<div style='text-align: center; color: ${chartTextColors}; padding: 2rem 0; font-size: 0.875rem;'>Belum ada data sensor untuk menampilkan grafik.</div>`;
         }
     } else {
         const chartData = rawData;
@@ -18,6 +27,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const kelembapanSeries = chartData.map(item => item.kelembapan);
         const warnaUtama = getComputedStyle(document.documentElement).getPropertyValue('--warna-utama').trim() || '#10b981';
 
+        // Choose chart series colors dynamically
+        const seriesColors = isM3 ? ['#80dec5', '#ffb68f'] : [warnaUtama, '#ef4444'];
+
         var optionsArea = {
             series: [
                 { name: 'Kelembapan (%)', data: kelembapanSeries },
@@ -28,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 type: 'area',
                 toolbar: { show: false },
                 background: 'transparent',
-                fontFamily: 'Inter, sans-serif',
+                fontFamily: 'Outfit, Inter, sans-serif',
                 animations: {
                     enabled: true,
                     easing: 'easeinout',
@@ -43,21 +55,21 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 }
             },
-            theme: { mode: 'dark' },
-            colors: [warnaUtama, '#ef4444'],
+            theme: { mode: chartThemeMode },
+            colors: seriesColors,
             dataLabels: { enabled: false },
             stroke: { curve: 'smooth', width: 2 },
             xaxis: {
                 categories: waktuLabels,
-                labels: { style: { colors: '#6b7280' } },
+                labels: { style: { colors: chartTextColors } },
                 axisBorder: { show: false },
                 axisTicks: { show: false }
             },
             yaxis: {
-                labels: { style: { colors: '#6b7280' } }
+                labels: { style: { colors: chartTextColors } }
             },
             grid: {
-                borderColor: '#1f1f1f',
+                borderColor: chartGridBorder,
                 strokeDashArray: 4,
                 yaxis: { lines: { show: true } }
             },
@@ -65,12 +77,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 type: 'gradient',
                 gradient: {
                     shadeIntensity: 1,
-                    opacityFrom: 0.3,
+                    opacityFrom: 0.35,
                     opacityTo: 0.05,
                     stops: [0, 100]
                 }
             },
-            legend: { position: 'top', horizontalAlign: 'right' }
+            legend: { 
+                position: 'top', 
+                horizontalAlign: 'right',
+                labels: { colors: isM3 ? '#1c1b1f' : '#ededed' }
+            }
         };
 
         if (document.querySelector("#chart-jamkot")) {
@@ -81,6 +97,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const currentSuhu = window.currentSuhu || 0;
     const currentKelembapan = window.currentKelembapan || 0;
+    
+    // Suhu Gauge (Current)
     if (document.querySelector("#gauge-suhu")) {
         var optionsGaugeSuhu = {
             series: [currentSuhu],
@@ -89,20 +107,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 height: 360,
                 sparkline: { enabled: true }
             },
-            colors: ['#10b981'],
+            colors: [isM3 ? '#6750a4' : '#10b981'],
             plotOptions: {
                 radialBar: {
                     startAngle: -90,
                     endAngle: 90,
                     hollow: { size: '75%' },
-                    track: { background: '#262626', strokeWidth: '100%' },
+                    track: { background: gaugeTrackBg, strokeWidth: '100%' },
                     dataLabels: {
                         name: { show: false },
                         value: {
                             offsetY: -30,
                             fontSize: '40px',
                             fontWeight: 600,
-                            color: '#ededed',
+                            color: gaugeLabelColor,
                             formatter: function (val) { return (Number(val).toFixed(1)) + "°C"; }
                         }
                     }
@@ -111,13 +129,22 @@ document.addEventListener('DOMContentLoaded', function () {
             grid: { padding: { top: 0, bottom: -60, left: -20, right: -20 } },
             fill: {
                 type: 'gradient',
-                gradient: { shade: 'dark', type: 'horizontal', gradientToColors: ['#ef4444'], inverseColors: false, opacityFrom: 1, opacityTo: 1, stops: [0, 100] }
+                gradient: { 
+                    shade: isM3 ? 'light' : 'dark', 
+                    type: 'horizontal', 
+                    gradientToColors: [isM3 ? '#7d5260' : '#ef4444'], 
+                    inverseColors: false, 
+                    opacityFrom: 1, 
+                    opacityTo: 1, 
+                    stops: [0, 100] 
+                }
             },
-            stroke: { lineCap: 'square' }
+            stroke: { lineCap: isM3 ? 'round' : 'square' }
         };
         new ApexCharts(document.querySelector("#gauge-suhu"), optionsGaugeSuhu).render();
     }
 
+    // Kelembapan Gauge (Current)
     if (document.querySelector("#gauge-kelembapan")) {
         var optionsGaugeKelembapan = {
             series: [currentKelembapan],
@@ -126,20 +153,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 height: 360,
                 sparkline: { enabled: true }
             },
-            colors: ['#ef4444'],
+            colors: [isM3 ? '#7d5260' : '#ef4444'],
             plotOptions: {
                 radialBar: {
                     startAngle: -90,
                     endAngle: 90,
                     hollow: { size: '75%' },
-                    track: { background: '#262626', strokeWidth: '100%' },
+                    track: { background: gaugeTrackBg, strokeWidth: '100%' },
                     dataLabels: {
                         name: { show: false },
                         value: {
                             offsetY: -30,
                             fontSize: '40px',
                             fontWeight: 600,
-                            color: '#ededed',
+                            color: gaugeLabelColor,
                             formatter: function (val) { return (Number(val).toFixed(1)) + "%"; }
                         }
                     }
@@ -148,15 +175,25 @@ document.addEventListener('DOMContentLoaded', function () {
             grid: { padding: { top: 0, bottom: -60, left: -20, right: -20 } },
             fill: {
                 type: 'gradient',
-                gradient: { shade: 'dark', type: 'horizontal', gradientToColors: ['#3b82f6'], inverseColors: false, opacityFrom: 1, opacityTo: 1, stops: [0, 100] }
+                gradient: { 
+                    shade: isM3 ? 'light' : 'dark', 
+                    type: 'horizontal', 
+                    gradientToColors: [isM3 ? '#625b71' : '#3b82f6'], 
+                    inverseColors: false, 
+                    opacityFrom: 1, 
+                    opacityTo: 1, 
+                    stops: [0, 100] 
+                }
             },
-            stroke: { lineCap: 'square' }
+            stroke: { lineCap: isM3 ? 'round' : 'square' }
         };
         new ApexCharts(document.querySelector("#gauge-kelembapan"), optionsGaugeKelembapan).render();
     }
 
     const avgSuhu = window.avgSuhu || 0;
     const avgKelembapan = window.avgKelembapan || 0;
+    
+    // Suhu Rata-rata (Avg) Gauge
     if (document.querySelector("#gauge-avg-suhu")) {
         var optionsAvgSuhu = {
             series: [avgSuhu],
@@ -165,29 +202,38 @@ document.addEventListener('DOMContentLoaded', function () {
                 height: 360,
                 sparkline: { enabled: true }
             },
-            colors: ['#10b981'],
+            colors: [isM3 ? '#6750a4' : '#10b981'],
             plotOptions: {
                 radialBar: {
                     startAngle: -90,
                     endAngle: 90,
                     hollow: { size: '75%' },
-                    track: { background: '#262626', strokeWidth: '100%' },
+                    track: { background: gaugeTrackBg, strokeWidth: '100%' },
                     dataLabels: {
                         name: { show: false },
-                        value: { offsetY: -30, fontSize: '40px', fontWeight: 600, color: '#ededed', formatter: function (val) { return (Number(val).toFixed(1)) + "°C"; } }
+                        value: { offsetY: -30, fontSize: '40px', fontWeight: 600, color: gaugeLabelColor, formatter: function (val) { return (Number(val).toFixed(1)) + "°C"; } }
                     }
                 }
             },
             grid: { padding: { top: 0, bottom: -60, left: -20, right: -20 } },
             fill: {
                 type: 'gradient',
-                gradient: { shade: 'dark', type: 'horizontal', gradientToColors: ['#ef4444'], inverseColors: false, opacityFrom: 1, opacityTo: 1, stops: [0, 100] }
+                gradient: { 
+                    shade: isM3 ? 'light' : 'dark', 
+                    type: 'horizontal', 
+                    gradientToColors: [isM3 ? '#7d5260' : '#ef4444'], 
+                    inverseColors: false, 
+                    opacityFrom: 1, 
+                    opacityTo: 1, 
+                    stops: [0, 100] 
+                }
             },
             stroke: { lineCap: 'round' }
         };
         new ApexCharts(document.querySelector("#gauge-avg-suhu"), optionsAvgSuhu).render();
     }
 
+    // Kelembapan Rata-rata (Avg) Gauge
     if (document.querySelector("#gauge-avg-kelembapan")) {
         var optionsAvgKelembapan = {
             series: [avgKelembapan],
@@ -196,23 +242,31 @@ document.addEventListener('DOMContentLoaded', function () {
                 height: 360,
                 sparkline: { enabled: true }
             },
-            colors: ['#ef4444'],
+            colors: [isM3 ? '#7d5260' : '#ef4444'],
             plotOptions: {
                 radialBar: {
                     startAngle: -90,
                     endAngle: 90,
                     hollow: { size: '75%' },
-                    track: { background: '#262626', strokeWidth: '100%' },
+                    track: { background: gaugeTrackBg, strokeWidth: '100%' },
                     dataLabels: {
                         name: { show: false },
-                        value: { offsetY: -30, fontSize: '40px', fontWeight: 600, color: '#ededed', formatter: function (val) { return (Number(val).toFixed(1)) + "%"; } }
+                        value: { offsetY: -30, fontSize: '40px', fontWeight: 600, color: gaugeLabelColor, formatter: function (val) { return (Number(val).toFixed(1)) + "%"; } }
                     }
                 }
             },
             grid: { padding: { top: 0, bottom: -60, left: -20, right: -20 } },
             fill: {
                 type: 'gradient',
-                gradient: { shade: 'dark', type: 'horizontal', gradientToColors: ['#3b82f6'], inverseColors: false, opacityFrom: 1, opacityTo: 1, stops: [0, 100] }
+                gradient: { 
+                    shade: isM3 ? 'light' : 'dark', 
+                    type: 'horizontal', 
+                    gradientToColors: [isM3 ? '#625b71' : '#3b82f6'], 
+                    inverseColors: false, 
+                    opacityFrom: 1, 
+                    opacityTo: 1, 
+                    stops: [0, 100] 
+                }
             },
             stroke: { lineCap: 'round' }
         };
