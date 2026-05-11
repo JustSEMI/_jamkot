@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PanelController;
 use App\Http\Controllers\ResetPasswordController;
@@ -9,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 
 // LOGIN PAGE
 Route::get('/', function () {
-    return redirect()->route('dashboard');
+    return redirect()->route('login');
 });
 
 // ANTI BRUTE FORCE LOGIN
@@ -22,21 +23,32 @@ Route::middleware('guest')->group(function () {
     // Route::post('/register', [AuthController::class, 'store']);
 });
 
+// PROTEKSI HALAMAN ADMIN
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin/users', [AdminController::class, 'index'])->name('admin.users');
+    Route::post('/admin/users/{user}/permissions', [AdminController::class, 'updatePermissions'])->name('admin.users.permissions');
+});
+
 // PROTEKSI HALAMAN DASHBOARD & PANEL
 Route::middleware('auth')->group(function () {
+    // Dashboard hanya untuk user biasa (admin langsung ke panel)
     Route::get('/dashboard', function () {
+        if (auth()->user()->isAdmin()) {
+            return redirect()->route('panel');
+        }
+
         return view('dashboard');
     })->name('dashboard');
 
-    Route::get('/panel', [PanelController::class, 'index'])->name('panel');
-    Route::get('/panel/data/realtime', [PanelController::class, 'realtimeData'])->name('panel.data.realtime');
-    Route::get('/panel/export', [PanelController::class, 'exportCsv'])->name('panel.export');
-    Route::get('/analisis', [PanelController::class, 'analisis'])->name('analisis');
-    Route::get('/schedule', [ScheduleController::class, 'index'])->name('schedule');
-    Route::post('/schedule', [ScheduleController::class, 'store'])->name('schedule.store');
-    Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
-    Route::post('/settings/reset', [SettingsController::class, 'resetData'])->name('settings.reset');
-    Route::get('/view3d', [PanelController::class, 'view3d'])->name('view3d');
+    Route::get('/panel', [PanelController::class, 'index'])->middleware('permission:panel')->name('panel');
+    Route::get('/panel/data/realtime', [PanelController::class, 'realtimeData'])->middleware('permission:panel')->name('panel.data.realtime');
+    Route::get('/panel/export', [PanelController::class, 'exportCsv'])->middleware('permission:panel')->name('panel.export');
+    Route::get('/analisis', [PanelController::class, 'analisis'])->middleware('permission:analisis')->name('analisis');
+    Route::get('/schedule', [ScheduleController::class, 'index'])->middleware('permission:schedule')->name('schedule');
+    Route::post('/schedule', [ScheduleController::class, 'store'])->middleware('permission:schedule')->name('schedule.store');
+    Route::get('/settings', [SettingsController::class, 'index'])->middleware('permission:settings')->name('settings.index');
+    Route::post('/settings/reset', [SettingsController::class, 'resetData'])->middleware('permission:settings')->name('settings.reset');
+    Route::get('/view3d', [PanelController::class, 'view3d'])->middleware('permission:view3d')->name('view3d');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 

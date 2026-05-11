@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
 
 class AuthController extends Controller
 {
-    
     public function register()
     {
         return view('auth.register');
@@ -20,27 +19,27 @@ class AuthController extends Controller
     {
         // VALIDASI
         $validated = $request->validate([
-            'username' => 'required|unique:user,username|max:50', 
-            'email'    => 'required|email|unique:user,email|max:100',
+            'username' => 'required|unique:user,username|max:50',
+            'email' => 'required|email|unique:user,email|max:100',
             'password' => 'required|min:5|confirmed',
         ], [
             'username.unique' => 'Username ini sudah dipakai, cari yang lain cik!',
             'email.unique' => 'Email ini sudah terdaftar.',
             'password.confirmed' => 'Konfirmasi password nggak cocok.',
-            'password.min' => 'Password minimal 5 karakter.'
+            'password.min' => 'Password minimal 5 karakter.',
         ]);
 
         // SEND DATABASE
         $user = User::create([
             'username' => $validated['username'],
-            'email'    => $validated['email'],
+            'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
         ]);
 
         // AUTO LOGIN
         return view('auth.login')->with('success', 'Registrasi berhasil! Silakan login dengan akun baru Anda.');
     }
-    
+
     // LOGIN PAGE
     public function showLoginForm()
     {
@@ -54,10 +53,15 @@ class AuthController extends Controller
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
+
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('dashboard');
+
+            $redirectTo = Auth::user()->isAdmin() ? route('panel') : route('dashboard');
+
+            return redirect()->intended($redirectTo);
         }
+
         return back()->withErrors([
             'email' => 'Kredensial yang diberikan tidak cocok dengan data kami.',
         ])->onlyInput('email');
@@ -69,6 +73,7 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
         return redirect('/');
     }
 }
