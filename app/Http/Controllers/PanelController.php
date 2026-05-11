@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\SensorLog;
-use Illuminate\Http\Request;
 
 class PanelController extends Controller
 {
@@ -26,7 +25,7 @@ class PanelController extends Controller
             'riwayatTabel' => $riwayatTabel,
             'riwayatGrafik' => $riwayatGrafik,
             'persentaseTarget' => $persentaseTarget,
-            'targetKelembapan' => $targetKelembapan
+            'targetKelembapan' => $targetKelembapan,
         ]);
     }
 
@@ -34,7 +33,7 @@ class PanelController extends Controller
     {
         $latest = SensorLog::latest()->first();
         $riwayatTabel = SensorLog::latest()->take(5)->get();
-        
+
         $riwayatTabel = $riwayatTabel->map(function ($log) {
             return [
                 'time_diff' => $log->created_at->diffForHumans(),
@@ -58,10 +57,10 @@ class PanelController extends Controller
             ],
             'riwayatTabel' => $riwayatTabel,
             'riwayatGrafik' => $riwayatGrafik,
-            'targetKelembapan' => 85
+            'targetKelembapan' => 85,
         ])->header('Cache-Control', 'no-cache, no-store, must-revalidate')
-          ->header('Pragma', 'no-cache')
-          ->header('Expires', '0');
+            ->header('Pragma', 'no-cache')
+            ->header('Expires', '0');
     }
 
     public function analisis()
@@ -78,27 +77,28 @@ class PanelController extends Controller
 
         return view('analisis', compact('stats'));
     }
+
     public function exportCsv()
     {
-        $fileName = 'Laporan_Sensor_JAMKOT_' . date('Y-m-d_H-i-s') . '.csv';
+        $fileName = 'Laporan_Sensor_JAMKOT_'.date('Y-m-d_H-i-s').'.csv';
 
         $headers = [
-            "Content-type" => "text/csv",
-            "Content-Disposition" => "attachment; filename=$fileName",
-            "Pragma" => "no-cache",
-            "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
-            "Expires" => "0"
+            'Content-type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename=$fileName",
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires' => '0',
         ];
 
         $callback = function () {
             $file = fopen('php://output', 'w');
 
-            fprintf($file, chr(0xEF) . chr(0xBB) . chr(0xBF));
-            fputs($file, "sep=,\n");
+            fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF));
+            fwrite($file, "sep=,\n");
 
             fputcsv($file, ['ID', 'WAKTU CATAT', 'SENSOR ID', 'SUHU (°C)', 'KELEMBAPAN (%)', 'STATUS POMPA']);
 
-            \App\Models\SensorLog::orderBy('created_at', 'desc')->chunk(500, function ($logs) use ($file) {
+            SensorLog::orderBy('created_at', 'desc')->chunk(500, function ($logs) use ($file) {
                 foreach ($logs as $log) {
                     fputcsv($file, [
                         $log->id,
@@ -106,7 +106,7 @@ class PanelController extends Controller
                         $log->sensor_id,
                         $log->suhu,
                         $log->kelembapan,
-                        $log->pompa_status
+                        $log->pompa_status,
                     ]);
                 }
             });
@@ -115,5 +115,10 @@ class PanelController extends Controller
         };
 
         return response()->stream($callback, 200, $headers);
+    }
+
+    public function view3d()
+    {
+        return view('view3d');
     }
 }

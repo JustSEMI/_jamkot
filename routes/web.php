@@ -1,13 +1,11 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\PanelController;
+use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\SettingsController;
 use Illuminate\Support\Facades\Route;
-
-
 
 // LOGIN PAGE
 Route::get('/', function () {
@@ -18,10 +16,10 @@ Route::get('/', function () {
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AuthController::class, 'authenticate'])
-        ->middleware('throttle:5,1') 
+        ->middleware('throttle:5,1')
         ->name('login.post');
-    //Route::get('/register', [AuthController::class, 'register'])->name('register');
-    //Route::post('/register', [AuthController::class, 'store']);
+    // Route::get('/register', [AuthController::class, 'register'])->name('register');
+    // Route::post('/register', [AuthController::class, 'store']);
 });
 
 // PROTEKSI HALAMAN DASHBOARD & PANEL
@@ -38,6 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/schedule', [ScheduleController::class, 'store'])->name('schedule.store');
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
     Route::post('/settings/reset', [SettingsController::class, 'resetData'])->name('settings.reset');
+    Route::get('/view3d', [PanelController::class, 'view3d'])->name('view3d');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 

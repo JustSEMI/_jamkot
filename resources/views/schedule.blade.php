@@ -46,6 +46,9 @@
                 <a href="{{ route('settings.index') }}" class="nav-link {{ Route::is('settings.*') ? 'active' : '' }}">
                     Settings
                 </a>
+                <a href="{{ route('view3d') }}" class="nav-link {{ Route::is('view3d') ? 'active' : '' }}">
+                    3D View
+                </a>
             </nav>
 
             <div class="sidebar-footer">
