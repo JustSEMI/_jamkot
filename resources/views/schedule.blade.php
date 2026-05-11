@@ -42,21 +42,36 @@
             </div>
 
             <nav class="sidebar-nav">
+                @if(auth()->user()->canAccess('panel'))
                 <a href="{{ route('panel') }}" class="nav-link {{ Route::is('panel') ? 'active' : '' }}">
                     Panel Utama
                 </a>
+                @endif
+                @if(auth()->user()->canAccess('analisis'))
                 <a href="{{ route('analisis') }}" class="nav-link {{ Route::is('analisis') ? 'active' : '' }}">
                     Analisis
                 </a>
+                @endif
+                @if(auth()->user()->canAccess('schedule'))
                 <a href="{{ route('schedule') }}" class="nav-link {{ Route::is('schedule') ? 'active' : '' }}">
                     Schedules
                 </a>
+                @endif
+                @if(auth()->user()->canAccess('settings'))
                 <a href="{{ route('settings.index') }}" class="nav-link {{ Route::is('settings.*') ? 'active' : '' }}">
                     Settings
                 </a>
+                @endif
+                @if(auth()->user()->canAccess('view3d'))
                 <a href="{{ route('view3d') }}" class="nav-link {{ Route::is('view3d') ? 'active' : '' }}">
                     3D View
                 </a>
+                @endif
+                @if(auth()->user()->isAdmin())
+                <a href="{{ route('admin.users') }}" class="nav-link nav-link-admin {{ Route::is('admin.*') ? 'active' : '' }}">
+                    Kelola User
+                </a>
+                @endif
             </nav>
 
             <div class="sidebar-footer">
