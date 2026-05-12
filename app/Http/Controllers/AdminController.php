@@ -30,6 +30,7 @@ class AdminController extends Controller
             'can_schedule' => ['nullable', 'boolean'],
             'can_view3d' => ['nullable', 'boolean'],
             'can_settings' => ['nullable', 'boolean'],
+            'can_admin' => ['nullable', 'boolean'],
         ]);
 
         $user->update([
@@ -38,6 +39,7 @@ class AdminController extends Controller
             'can_schedule' => $request->boolean('can_schedule'),
             'can_view3d' => $request->boolean('can_view3d'),
             'can_settings' => $request->boolean('can_settings'),
+            'can_admin' => $request->boolean('can_admin'),
         ]);
 
         return back()->with('sukses', "Permission untuk {$user->username} berhasil diperbarui.");

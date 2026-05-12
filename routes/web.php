@@ -24,7 +24,7 @@ Route::middleware('guest')->group(function () {
 });
 
 // PROTEKSI HALAMAN ADMIN
-Route::middleware(['auth', 'admin'])->group(function () {
+Route::middleware(['auth', 'permission:admin'])->group(function () {
     Route::get('/admin/users', [AdminController::class, 'index'])->name('admin.users');
     Route::post('/admin/users/{user}/permissions', [AdminController::class, 'updatePermissions'])->name('admin.users.permissions');
 });

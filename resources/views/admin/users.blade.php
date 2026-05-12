@@ -136,7 +136,7 @@
         }
 
         .perm-col {
-            text-align: center;
+            text-align: center !important;
         }
 
         .save-perm-btn {
@@ -262,6 +262,27 @@
                 text-align: center !important;
             }
         }
+
+        /* Expand container for Material 3 on desktop to prevent horizontal scrolling/sliding */
+        @media (min-width: 992px) {
+            html[data-ui-version="v1"] .settings-container {
+                max-width: 960px !important;
+                width: 100%;
+            }
+            html[data-ui-version="v1"] .users-table-wrapper {
+                overflow-x: visible !important;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            html[data-ui-version="v1"] .settings-container {
+                max-width: 1100px !important;
+                width: 100%;
+            }
+            html[data-ui-version="v1"] .users-table-wrapper {
+                overflow-x: visible !important;
+            }
+        }
     </style>
     @vite('resources/js/app.js')
 </head>
@@ -295,6 +316,12 @@
             </div>
 
             <nav class="sidebar-nav">
+                @if(auth()->user()->canAccess('admin'))
+                <a href="{{ route('admin.users') }}" class="nav-link nav-link-admin {{ Route::is('admin.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-users-gear"></i>
+                    <span>Admin</span>
+                </a>
+                @endif
                 @if(auth()->user()->canAccess('panel'))
                 <a href="{{ route('panel') }}" class="nav-link {{ Route::is('panel') ? 'active' : '' }}">
                     <i class="fa-solid fa-gauge"></i>
@@ -323,12 +350,6 @@
                 <a href="{{ route('view3d') }}" class="nav-link {{ Route::is('view3d') ? 'active' : '' }}">
                     <i class="fa-solid fa-cube"></i>
                     <span>3D View</span>
-                </a>
-                @endif
-                @if(auth()->user()->isAdmin())
-                <a href="{{ route('admin.users') }}" class="nav-link nav-link-admin {{ Route::is('admin.*') ? 'active' : '' }}">
-                    <i class="fa-solid fa-users-gear"></i>
-                    <span>Kelola User</span>
                 </a>
                 @endif
             </nav>
@@ -399,6 +420,7 @@
                                     <th class="perm-col">Schedules</th>
                                     <th class="perm-col">3D View</th>
                                     <th class="perm-col">Settings</th>
+                                    <th class="perm-col">Kelola User</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -415,7 +437,7 @@
                                         </td>
 
                                         @php 
-                                            $perms = ['panel', 'analisis', 'schedule', 'view3d', 'settings']; 
+                                            $perms = ['panel', 'analisis', 'schedule', 'view3d', 'settings', 'admin']; 
                                             $formId = 'form_user_' . $user->id;
                                         @endphp
 
@@ -434,7 +456,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="7">
+                                        <td colspan="8">
                                             <div class="empty-state">
                                                 <span class="material-symbols-rounded">group</span>
                                                 Belum ada user terdaftar.
@@ -486,12 +508,12 @@
             <span>Schedule</span>
         </a>
         @endif
-        @if(auth()->user()->isAdmin())
+        @if(auth()->user()->canAccess('admin'))
         <a href="{{ route('admin.users') }}" class="bottom-nav-link {{ Route::is('admin.*') ? 'active' : '' }}">
             <div class="bottom-nav-icon-wrapper">
                 <i class="fa-solid fa-users-gear"></i>
             </div>
-            <span>Users</span>
+            <span>Admin</span>
         </a>
         @else
         <a href="{{ route('settings.index') }}" class="bottom-nav-link {{ Route::is('settings.*') ? 'active' : '' }}">
