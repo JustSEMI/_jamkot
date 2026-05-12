@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\SensorLog;
+use Illuminate\Http\Request;
+
 
 class PanelController extends Controller
 {
@@ -31,10 +33,14 @@ class PanelController extends Controller
 
     public function realtimeData()
     {
-        $latest = SensorLog::latest()->first();
-        $riwayatTabel = SensorLog::latest()->take(5)->get();
+        // Data Realtime
+        $allRecent = SensorLog::latest()->take(20)->get();
+        
+        $latest = $allRecent->first();
+        $riwayatGrafik = $allRecent->reverse()->values();
+        $riwayatTabelRaw = $allRecent->take(5);
 
-        $riwayatTabel = $riwayatTabel->map(function ($log) {
+        $riwayatTabel = $riwayatTabelRaw->map(function ($log) {
             return [
                 'time_diff' => $log->created_at->diffForHumans(),
                 'sensor_id' => $log->sensor_id,
@@ -43,8 +49,6 @@ class PanelController extends Controller
                 'suhu' => $log->suhu,
             ];
         });
-
-        $riwayatGrafik = SensorLog::latest()->take(20)->get()->reverse()->values();
 
         return response()->json([
             'latest' => [
@@ -63,19 +67,30 @@ class PanelController extends Controller
             ->header('Expires', '0');
     }
 
-    public function analisis()
+    public function analisis(Request $request)
     {
-        $stats = [
-            'total_data' => SensorLog::count(),
-            'avg_suhu' => SensorLog::avg('suhu'),
-            'avg_kelembapan' => SensorLog::avg('kelembapan'),
-            'max_suhu' => SensorLog::max('suhu'),
-            'min_suhu' => SensorLog::min('suhu'),
-            'max_kelembapan' => SensorLog::max('kelembapan'),
-            'min_kelembapan' => SensorLog::min('kelembapan'),
-        ];
+        $date = $request->get('date');
+        $limit = $request->get('limit', 10);
 
-        return view('analisis', compact('stats'));
+        // Statistik Utama
+        $stats = SensorLog::selectRaw('
+            COUNT(*) as total_data,
+            AVG(suhu) as avg_suhu,
+            AVG(kelembapan) as avg_kelembapan,
+            MAX(suhu) as max_suhu,
+            MIN(suhu) as min_suhu,
+            MAX(kelembapan) as max_kelembapan,
+            MIN(kelembapan) as min_kelembapan
+        ')->first()->toArray();
+
+        // Filter Log
+        $query = SensorLog::query();
+        if ($date) {
+            $query->whereDate('created_at', $date);
+        }
+        $logs = $query->latest()->take($limit)->get();
+
+        return view('analisis', compact('stats', 'logs', 'date', 'limit'));
     }
 
     public function exportCsv()

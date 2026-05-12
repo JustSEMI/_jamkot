@@ -1190,5 +1190,38 @@ html[data-ui-version="v1"] .register-link a {
 
 html[data-ui-version="v1"] .login-footer p {
     color: var(--m3-on-surface-variant) !important;
+}
+
+/* --- Mobile Nav M3 --- */
+html[data-ui-version="v1"] .mobile-top-nav {
+    background: var(--m3-surface-container-low) !important;
+    border-bottom: 1px solid var(--m3-outline-variant) !important;
+    padding: 0.75rem 1.5rem !important;
+}
+
+html[data-ui-version="v1"] .mobile-logo {
+    color: var(--m3-primary) !important;
     font-family: var(--m3-font) !important;
+    font-weight: 700 !important;
+    font-size: 1.15rem !important;
+}
+
+html[data-ui-version="v1"] .btn-toggle-sidebar {
+    color: var(--m3-on-surface-variant) !important;
+    width: 48px !important;
+    height: 48px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 100px !important;
+    transition: background 0.2s ease !important;
+}
+
+html[data-ui-version="v1"] .btn-toggle-sidebar:active {
+    background: var(--m3-surface-container-highest) !important;
+}
+
+html[data-ui-version="v1"] .sidebar-overlay {
+    background: rgba(0, 0, 0, 0.4) !important;
+    backdrop-filter: blur(8px) !important;
 }
