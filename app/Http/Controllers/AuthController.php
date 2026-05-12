@@ -34,6 +34,13 @@ class AuthController extends Controller
             'username' => $validated['username'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
+            'role' => 'user',
+            'can_panel' => true,
+            'can_analisis' => true,
+            'can_settings' => true,
+            'can_view3d' => true,
+            'can_schedule' => false,
+            'can_admin' => false,
         ]);
 
         // AUTO LOGIN
