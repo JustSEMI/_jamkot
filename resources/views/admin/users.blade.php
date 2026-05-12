@@ -227,6 +227,41 @@
             margin-bottom: 0.75rem;
             opacity: 0.4;
         }
+
+        /* Material 3 Adaptive Buttons Overrides - Expressive & Thumb-friendly */
+        html[data-ui-version="v1"] .save-perm-btn {
+            background: var(--m3-primary) !important;
+            color: #111 !important;
+            border-radius: 20px !important;
+            font-family: var(--m3-font) !important;
+            font-weight: 600 !important;
+            padding: 0.5rem 1.25rem !important;
+            font-size: 0.8rem !important;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+            box-shadow: 0 2px 6px rgba(128, 222, 197, 0.15) !important;
+            border: none !important;
+        }
+
+        html[data-ui-version="v1"] .save-perm-btn:hover {
+            background: var(--m3-primary) !important;
+            transform: scale(1.05) !important;
+            box-shadow: 0 6px 18px rgba(128, 222, 197, 0.3) !important;
+            opacity: 1 !important;
+        }
+
+        html[data-ui-version="v1"] .save-perm-btn:active {
+            transform: scale(0.95) !important;
+        }
+
+        @media (max-width: 839px) {
+            html[data-ui-version="v1"] .save-perm-btn {
+                padding: 0.65rem 1rem !important; /* Larger touch targets for mobile */
+                font-size: 0.825rem !important;
+                width: 100% !important;
+                display: block !important;
+                text-align: center !important;
+            }
+        }
     </style>
     @vite('resources/js/app.js')
 </head>
@@ -241,6 +276,14 @@
             <button class="btn-toggle-sidebar" id="sidebar-toggle">
                 <i class="fa-solid fa-bars"></i>
             </button>
+            <div class="mobile-top-actions">
+                <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+                    @csrf
+                    <button type="submit" class="btn-mobile-logout" title="Logout">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
+                </form>
+            </div>
         </header>
 
         <div class="sidebar-overlay" id="sidebar-overlay"></div>
@@ -252,33 +295,51 @@
             </div>
 
             <nav class="sidebar-nav">
+                @if(auth()->user()->canAccess('panel'))
                 <a href="{{ route('panel') }}" class="nav-link {{ Route::is('panel') ? 'active' : '' }}">
-                    Panel Utama
+                    <i class="fa-solid fa-gauge"></i>
+                    <span>Panel Utama</span>
                 </a>
+                @endif
+                @if(auth()->user()->canAccess('analisis'))
                 <a href="{{ route('analisis') }}" class="nav-link {{ Route::is('analisis') ? 'active' : '' }}">
-                    Analisis
+                    <i class="fa-solid fa-chart-simple"></i>
+                    <span>Analisis</span>
                 </a>
+                @endif
+                @if(auth()->user()->canAccess('schedule'))
                 <a href="{{ route('schedule') }}" class="nav-link {{ Route::is('schedule') ? 'active' : '' }}">
-                    Schedules
+                    <i class="fa-solid fa-clock"></i>
+                    <span>Schedules</span>
                 </a>
+                @endif
+                @if(auth()->user()->canAccess('settings'))
                 <a href="{{ route('settings.index') }}" class="nav-link {{ Route::is('settings.*') ? 'active' : '' }}">
-                    Settings
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Settings</span>
                 </a>
+                @endif
+                @if(auth()->user()->canAccess('view3d'))
                 <a href="{{ route('view3d') }}" class="nav-link {{ Route::is('view3d') ? 'active' : '' }}">
-                    3D View
+                    <i class="fa-solid fa-cube"></i>
+                    <span>3D View</span>
                 </a>
-                <!-- ADMIN ONLY -->
+                @endif
+                @if(auth()->user()->isAdmin())
                 <a href="{{ route('admin.users') }}" class="nav-link nav-link-admin {{ Route::is('admin.*') ? 'active' : '' }}">
-                    Kelola User
+                    <i class="fa-solid fa-users-gear"></i>
+                    <span>Kelola User</span>
                 </a>
+                @endif
             </nav>
 
             <div class="sidebar-footer">
                 <span class="user-greeting">Halo, {{ auth()->user()->username ?? 'admin' }}</span>
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
-                    <button type="submit" class="btn-logout-sidebar">
-                        Logout
+                    <button type="submit" class="btn-logout-sidebar" title="Logout">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>Logout</span>
                     </button>
                 </form>
             </div>
@@ -398,6 +459,57 @@
     </div>
 
     <script src="{{ asset('js/sidebar.js') }}"></script>
+
+    <!-- BOTTOM NAV FOR MOBILE (M3 Only) -->
+    <nav class="bottom-nav">
+        @if(auth()->user()->canAccess('panel'))
+        <a href="{{ route('panel') }}" class="bottom-nav-link {{ Route::is('panel') ? 'active' : '' }}">
+            <div class="bottom-nav-icon-wrapper">
+                <i class="fa-solid fa-gauge"></i>
+            </div>
+            <span>Panel</span>
+        </a>
+        @endif
+        @if(auth()->user()->canAccess('analisis'))
+        <a href="{{ route('analisis') }}" class="bottom-nav-link {{ Route::is('analisis') ? 'active' : '' }}">
+            <div class="bottom-nav-icon-wrapper">
+                <i class="fa-solid fa-chart-simple"></i>
+            </div>
+            <span>Analisis</span>
+        </a>
+        @endif
+        @if(auth()->user()->canAccess('schedule'))
+        <a href="{{ route('schedule') }}" class="bottom-nav-link {{ Route::is('schedule') ? 'active' : '' }}">
+            <div class="bottom-nav-icon-wrapper">
+                <i class="fa-solid fa-clock"></i>
+            </div>
+            <span>Schedule</span>
+        </a>
+        @endif
+        @if(auth()->user()->isAdmin())
+        <a href="{{ route('admin.users') }}" class="bottom-nav-link {{ Route::is('admin.*') ? 'active' : '' }}">
+            <div class="bottom-nav-icon-wrapper">
+                <i class="fa-solid fa-users-gear"></i>
+            </div>
+            <span>Users</span>
+        </a>
+        @else
+        <a href="{{ route('settings.index') }}" class="bottom-nav-link {{ Route::is('settings.*') ? 'active' : '' }}">
+            <div class="bottom-nav-icon-wrapper">
+                <i class="fa-solid fa-gear"></i>
+            </div>
+            <span>Settings</span>
+        </a>
+        @endif
+        @if(auth()->user()->canAccess('view3d'))
+        <a href="{{ route('view3d') }}" class="bottom-nav-link {{ Route::is('view3d') ? 'active' : '' }}">
+            <div class="bottom-nav-icon-wrapper">
+                <i class="fa-solid fa-cube"></i>
+            </div>
+            <span>3D View</span>
+        </a>
+        @endif
+    </nav>
 </body>
 
 </html>
