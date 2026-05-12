@@ -1,4 +1,10 @@
 document.addEventListener('DOMContentLoaded', function () {
+    // Cache to prevent unnecessary DOM updates and flickering
+    let lastLatestJson = '';
+    let lastTargetKelembapan = null;
+    let lastTableDataJson = '';
+    let lastChartDataJson = '';
+
     // Polling interval 5 seconds
     setInterval(fetchRealtimeData, 5000);
 
@@ -14,6 +20,16 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function updateCards(latest, targetKelembapan) {
+        if (!latest) return;
+
+        // Check if data actually changed to avoid redundant layout shifts / animations
+        const currentJson = JSON.stringify(latest);
+        if (currentJson === lastLatestJson && targetKelembapan === lastTargetKelembapan) {
+            return;
+        }
+        lastLatestJson = currentJson;
+        lastTargetKelembapan = targetKelembapan;
+
         // Update Values
         if (document.getElementById('val-cahaya')) {
             document.getElementById('val-cahaya').innerText = latest.cahaya + ' Lux';
@@ -60,6 +76,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const tbody = document.getElementById('table-body-log');
         if (!tbody) return;
 
+        // Check if table data changed to avoid unnecessary DOM writes
+        const currentJson = JSON.stringify(riwayatTabel);
+        if (currentJson === lastTableDataJson) {
+            return;
+        }
+        lastTableDataJson = currentJson;
+
         if (!riwayatTabel || riwayatTabel.length === 0) {
             tbody.innerHTML = '<tr><td colspan="5" class="text-muted" style="text-align: center; padding: 2rem;">Belum ada data sensor masuk.</td></tr>';
             return;
@@ -90,6 +113,13 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!window.chartArea) return;
         if (!riwayatGrafik || riwayatGrafik.length === 0) return;
 
+        // Check if chart data actually changed to avoid unnecessary redraws/flickering
+        const currentJson = JSON.stringify(riwayatGrafik);
+        if (currentJson === lastChartDataJson) {
+            return;
+        }
+        lastChartDataJson = currentJson;
+
         const waktuLabels = riwayatGrafik.map(item => {
             let date = new Date(item.created_at);
             return date.getHours().toString().padStart(2, '0') + ':' + date.getMinutes().toString().padStart(2, '0');
@@ -98,15 +128,15 @@ document.addEventListener('DOMContentLoaded', function () {
         const suhuSeries = riwayatGrafik.map(item => item.suhu);
         const kelembapanSeries = riwayatGrafik.map(item => item.kelembapan);
 
+        // Update options and series in ONE atomic call to prevent double render cycles/flickering
         window.chartArea.updateOptions({
             xaxis: {
                 categories: waktuLabels
-            }
-        });
-
-        window.chartArea.updateSeries([
-            { name: 'Kelembapan (%)', data: kelembapanSeries },
-            { name: 'Suhu (°C)', data: suhuSeries }
-        ]);
+            },
+            series: [
+                { name: 'Kelembapan (%)', data: kelembapanSeries },
+                { name: 'Suhu (°C)', data: suhuSeries }
+            ]
+        }, false, true); // redrawPaths = false, animate = true for smooth transitions
     }
 });

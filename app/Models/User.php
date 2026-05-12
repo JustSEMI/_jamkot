@@ -2,14 +2,13 @@
 
 namespace App\Models;
 
-use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['username', 'email', 'password'])]
+#[Fillable(['username', 'email', 'password', 'role', 'can_panel', 'can_analisis', 'can_schedule', 'can_view3d', 'can_settings'])]
 #[Hidden(['password', 'remember_token'])]
 
 class User extends Authenticatable
@@ -19,10 +18,29 @@ class User extends Authenticatable
     protected $table = 'user';
 
     protected function casts(): array
-
     {
         return [
             'password' => 'hashed',
+            'can_panel' => 'boolean',
+            'can_analisis' => 'boolean',
+            'can_schedule' => 'boolean',
+            'can_view3d' => 'boolean',
+            'can_settings' => 'boolean',
         ];
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    /** @param string $permission  e.g. 'panel', 'analisis', 'schedule', 'view3d', 'settings' */
+    public function canAccess(string $permission): bool
+    {
+        if ($this->isAdmin()) {
+            return true;
+        }
+
+        return (bool) $this->{"can_{$permission}"};
     }
 }

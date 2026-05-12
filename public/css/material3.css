@@ -1,0 +1,1086 @@
+/* public/css/material3.css */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap');
+
+/* --- MONET SAGE DARK (PIXEL UI) VARIABLES --- */
+html[data-ui-version="v1"] {
+    --m3-bg: #111413;
+    /* Dark Sage Charcoal Background */
+    --m3-primary: #80dec5;
+    /* Pixel Mint/Sage Green */
+    --m3-on-primary: #00382d;
+    /* Dark Forest Green for text on primary */
+    --m3-primary-container: #1e4f43;
+    /* Medium Forest Teal */
+    --m3-on-primary-container: #9be6d1;
+    /* Light Mint Teal */
+
+    --m3-secondary: #b0ccbc;
+    /* Pastel Green-Grey */
+    --m3-on-secondary: #1b3529;
+    --m3-secondary-container: #334b3e;
+    --m3-on-secondary-container: #cbe8d7;
+
+    --m3-tertiary: #ffb68f;
+    /* Pastel Peach/Orange */
+    --m3-on-tertiary: #512400;
+    --m3-tertiary-container: #723b1a;
+    --m3-on-tertiary-container: #ffdbca;
+
+    --m3-surface: #111413;
+    --m3-on-surface: #e1e3e1;
+    /* Off-White Text */
+    --m3-surface-variant: #1a221f;
+    /* Setting Group / Card Background */
+    --m3-on-surface-variant: #a2aba7;
+    /* Sage Slate Grey for subtitles */
+    --m3-outline: #88938f;
+    /* Slate border colors */
+    --m3-outline-variant: #2d3532;
+
+    --m3-surface-container-low: #151a18;
+    /* Sidebar / Background low */
+    --m3-surface-container: #1b221f;
+    /* Standard Pixel Card background */
+    --m3-surface-container-high: #242c29;
+    /* Elevated/Hover container background */
+    --m3-surface-container-highest: #2b3531;
+
+    --m3-error: #ffb4ab;
+    --m3-on-error: #690005;
+    --m3-error-container: #93000a;
+    --m3-on-error-container: #ffdad6;
+
+    --m3-font: 'Outfit', 'Roboto', sans-serif;
+}
+
+/* --- COMPOSITOR-ACCELERATED DYNAMIC SAGE GRADIENT --- */
+@keyframes dynamicGradientM3 {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* --- BASE & LAYOUT CONTRAST FIX --- */
+html[data-ui-version="v1"] body,
+html[data-ui-version="v1"] .panel-layout,
+html[data-ui-version="v1"] .panel-content {
+    background: linear-gradient(-45deg, #111413, #15221d, #0d1210, #192621, #111413) !important;
+    background-size: 300% 300% !important;
+    animation: dynamicGradientM3 25s ease infinite !important;
+    color: var(--m3-on-surface) !important;
+    font-family: var(--m3-font) !important;
+    letter-spacing: 0.015em;
+    will-change: background-position;
+}
+
+/* --- SIDEBAR MENU (PIXEL FLOATING PILLS) --- */
+html[data-ui-version="v1"] .sidebar {
+    background-color: var(--m3-surface-container-low) !important;
+    border-right: 1px solid var(--m3-outline-variant) !important;
+    padding: 2.25rem 1.15rem !important;
+    width: 260px;
+    display: flex !important;
+    flex-direction: column !important;
+    transition: width 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), padding 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+}
+
+html[data-ui-version="v1"] .sidebar-header h2 {
+    font-family: var(--m3-font);
+    font-weight: 700;
+    color: var(--m3-primary);
+    font-size: 1.45rem;
+    letter-spacing: 0.08em;
+    margin-bottom: 2.5rem;
+    padding-left: 0.75rem;
+}
+
+html[data-ui-version="v1"] .sidebar-nav {
+    gap: 0.45rem !important;
+}
+
+/* Clean Floating Pills with No Bugs */
+html[data-ui-version="v1"] .nav-link {
+    font-family: var(--m3-font) !important;
+    font-weight: 500 !important;
+    font-size: 0.875rem !important;
+    color: var(--m3-on-surface-variant) !important;
+    padding: 0.75rem 1.25rem !important;
+    border-radius: 100px !important;
+    /* Perfect Pill Shape */
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+    border: none !important;
+    background: transparent !important;
+    margin: 0.15rem 0.25rem !important;
+    text-decoration: none !important;
+}
+
+html[data-ui-version="v1"] .nav-link i {
+    font-size: 1.1rem !important;
+    width: 24px !important;
+    text-align: center !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+}
+
+html[data-ui-version="v1"] .nav-link:hover {
+    background-color: var(--m3-surface-container-high) !important;
+    color: var(--m3-on-surface) !important;
+    transform: none !important;
+}
+
+html[data-ui-version="v1"] .nav-link.active {
+    background-color: var(--m3-primary-container) !important;
+    color: var(--m3-on-primary-container) !important;
+    font-weight: 600 !important;
+}
+
+html[data-ui-version="v1"] .sidebar-footer {
+    border-top: 1px solid var(--m3-outline-variant) !important;
+    padding-top: 1.5rem !important;
+}
+
+html[data-ui-version="v1"] .user-greeting {
+    color: var(--m3-on-surface-variant) !important;
+    font-weight: 500 !important;
+    padding-left: 0.5rem;
+    font-size: 0.825rem;
+    margin-bottom: 0.75rem;
+    display: block;
+}
+
+html[data-ui-version="v1"] .btn-logout-sidebar {
+    border-radius: 100px !important;
+    border: 1px solid var(--m3-outline) !important;
+    color: var(--m3-primary) !important;
+    background: transparent !important;
+    font-family: var(--m3-font) !important;
+    font-weight: 600 !important;
+    font-size: 0.825rem;
+    padding: 0.6rem 1.25rem !important;
+    width: 100%;
+    transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+html[data-ui-version="v1"] .btn-logout-sidebar:hover {
+    background-color: rgba(255, 180, 171, 0.08) !important;
+    border-color: var(--m3-error) !important;
+    color: var(--m3-error) !important;
+}
+
+/* --- HEADER AND DATETIME --- */
+html[data-ui-version="v1"] .content-header-flex h1 {
+    font-family: var(--m3-font) !important;
+    font-weight: 700;
+    color: var(--m3-on-surface) !important;
+    font-size: 1.85rem !important;
+    margin: 0;
+}
+
+html[data-ui-version="v1"] .content-header-flex p {
+    color: var(--m3-on-surface-variant) !important;
+    font-size: 0.875rem !important;
+}
+
+html[data-ui-version="v1"] .time-display {
+    color: var(--m3-primary) !important;
+    font-size: 1.85rem !important;
+    font-weight: 700 !important;
+}
+
+html[data-ui-version="v1"] .date-display {
+    color: var(--m3-on-surface-variant) !important;
+    font-size: 0.825rem !important;
+}
+
+/* --- PIXEL SURFACE CONTAINER CARDS (HIGH CONTRAST) --- */
+html[data-ui-version="v1"] .glow-card {
+    background: var(--m3-surface-container) !important;
+    border: none !important;
+    border-radius: 24px !important;
+    /* Elegant 24px rounded cards */
+    box-shadow: none !important;
+    padding: 1.5rem 1.5rem !important;
+    transition: all 0.2s ease;
+}
+
+html[data-ui-version="v1"] .glow-card:hover {
+    background: var(--m3-surface-container-high) !important;
+    transform: translateY(-1px) !important;
+}
+
+html[data-ui-version="v1"] .card-title {
+    color: var(--m3-on-surface-variant) !important;
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.05em !important;
+}
+
+html[data-ui-version="v1"] .card-value {
+    color: var(--m3-on-surface) !important;
+    font-size: 2.25rem !important;
+    font-weight: 700 !important;
+    margin: 0.5rem 0 !important;
+}
+
+html[data-ui-version="v1"] .card-desc {
+    color: var(--m3-on-surface-variant) !important;
+    font-size: 0.8rem !important;
+}
+
+/* --- FIX FOR GEOMETRIC ARC GAUGES (SUHU & KELEMBAPAN) --- */
+html[data-ui-version="v1"] .sensor-meter-card::before,
+html[data-ui-version="v1"] .sensor-meter-card::after {
+    /* Keep original semi-circular geometry and radial masks! */
+    border-radius: 19rem 19rem 0 0 !important;
+    top: 5.25rem !important;
+    width: 19rem !important;
+    height: 9.5rem !important;
+    -webkit-mask: radial-gradient(farthest-side at 50% 100%, transparent calc(100% - 17px), #000 calc(100% - 16px)) !important;
+    mask: radial-gradient(farthest-side at 50% 100%, transparent calc(100% - 17px), #000 calc(100% - 16px)) !important;
+}
+
+/* Colorize the Arc Tracks beautifully with Sage Green and Pastel Peach */
+html[data-ui-version="v1"] .sensor-meter-card::before {
+    background: var(--m3-surface-container-highest) !important;
+}
+
+html[data-ui-version="v1"] .sensor-meter-temperature::after {
+    background: conic-gradient(from 270deg at 50% 100%,
+            var(--m3-primary) 0 var(--meter-angle),
+            transparent var(--meter-angle) 180deg,
+            transparent 0) !important;
+}
+
+html[data-ui-version="v1"] .sensor-meter-humidity::after {
+    background: conic-gradient(from 270deg at 50% 100%,
+            var(--m3-secondary) 0,
+            var(--m3-tertiary) var(--meter-angle),
+            transparent var(--meter-angle) 180deg,
+            transparent 0) !important;
+}
+
+html[data-ui-version="v1"] .sensor-meter-card .card-value {
+    text-shadow: none !important;
+    color: var(--m3-on-surface) !important;
+}
+
+html[data-ui-version="v1"] .section-title {
+    color: var(--m3-on-surface) !important;
+    font-weight: 700 !important;
+    font-size: 1.05rem !important;
+}
+
+/* --- PIXEL TABLE LISTINGS --- */
+html[data-ui-version="v1"] .data-table th {
+    color: var(--m3-on-surface-variant) !important;
+    font-size: 0.775rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.08em !important;
+    font-weight: 700 !important;
+    border-bottom: 2px solid var(--m3-outline-variant) !important;
+    padding: 0.9rem 1.15rem !important;
+}
+
+html[data-ui-version="v1"] .data-table td {
+    border-bottom: 1px solid var(--m3-outline-variant) !important;
+    color: var(--m3-on-surface) !important;
+    padding: 1rem 1.15rem !important;
+    font-size: 0.85rem !important;
+}
+
+html[data-ui-version="v1"] .data-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.015) !important;
+}
+
+/* --- BADGES & STATUS INDICATORS --- */
+html[data-ui-version="v1"] .badge.success {
+    background-color: var(--m3-primary-container) !important;
+    color: var(--m3-on-primary-container) !important;
+    font-weight: 600 !important;
+    border-radius: 100px !important;
+    padding: 0.35rem 0.85rem !important;
+    font-size: 0.725rem !important;
+    border: none !important;
+}
+
+html[data-ui-version="v1"] .status-dot.online {
+    background-color: var(--m3-primary) !important;
+    box-shadow: 0 0 8px rgba(128, 222, 197, 0.3) !important;
+}
+
+html[data-ui-version="v1"] .status-dot.offline {
+    background-color: var(--m3-error) !important;
+    box-shadow: none !important;
+}
+
+/* --- PIXEL STYLE PILL ACTIONS --- */
+html[data-ui-version="v1"] .btn-sm,
+html[data-ui-version="v1"] .btn-save,
+html[data-ui-version="v1"] .btn-danger,
+html[data-ui-version="v1"] .btn-cancel {
+    border-radius: 100px !important;
+    /* Perfect Pill button */
+    font-family: var(--m3-font) !important;
+    font-weight: 600 !important;
+    font-size: 0.825rem !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    padding: 0.65rem 1.35rem !important;
+    transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+    border: none !important;
+    cursor: pointer !important;
+}
+
+html[data-ui-version="v1"] .btn-sm,
+html[data-ui-version="v1"] .btn-save {
+    background-color: var(--m3-primary) !important;
+    color: var(--m3-on-primary) !important;
+}
+
+html[data-ui-version="v1"] .btn-sm:hover,
+html[data-ui-version="v1"] .btn-save:hover {
+    background-color: var(--m3-on-primary-container) !important;
+    color: var(--m3-primary-container) !important;
+    transform: translateY(-1px) !important;
+}
+
+html[data-ui-version="v1"] .btn-danger {
+    background-color: var(--m3-error) !important;
+    color: var(--m3-on-error) !important;
+}
+
+html[data-ui-version="v1"] .btn-danger:hover {
+    background-color: var(--m3-error-container) !important;
+    color: var(--m3-on-error-container) !important;
+    transform: translateY(-1px) !important;
+}
+
+html[data-ui-version="v1"] .btn-cancel {
+    background-color: var(--m3-surface-container-high) !important;
+    color: var(--m3-on-surface) !important;
+    border: 1px solid var(--m3-outline) !important;
+}
+
+html[data-ui-version="v1"] .btn-cancel:hover {
+    background-color: var(--m3-surface-container-highest) !important;
+    transform: translateY(-1px) !important;
+}
+
+/* --- SCHEDULES STYLINGS --- */
+html[data-ui-version="v1"] .schedule-card {
+    background: var(--m3-surface-container) !important;
+    border-radius: 24px !important;
+    border: none !important;
+}
+
+html[data-ui-version="v1"] .schedule-card:hover {
+    background: var(--m3-surface-container-high) !important;
+}
+
+html[data-ui-version="v1"] .input-time-modern {
+    background-color: var(--m3-surface-container-highest) !important;
+    color: var(--m3-on-surface) !important;
+    border: 1px solid var(--m3-outline-variant) !important;
+    border-radius: 12px !important;
+    padding: 0.6rem 1.1rem !important;
+    font-family: var(--m3-font) !important;
+}
+
+html[data-ui-version="v1"] .input-time-modern:focus {
+    border-color: var(--m3-primary) !important;
+    box-shadow: 0 0 0 3px rgba(128, 222, 197, 0.15) !important;
+}
+
+/* --- SETTINGS ZONA BAHAYA --- */
+html[data-ui-version="v1"] .danger-zone {
+    border: 1px solid var(--m3-error-container) !important;
+    background: rgba(255, 180, 171, 0.02) !important;
+    border-radius: 20px !important;
+}
+
+html[data-ui-version="v1"] .danger-zone:hover {
+    background: rgba(255, 180, 171, 0.04) !important;
+}
+
+html[data-ui-version="v1"] .danger-icon {
+    background-color: var(--m3-error-container) !important;
+    color: var(--m3-on-error-container) !important;
+    box-shadow: none !important;
+}
+
+/* --- MODAL DIALOGS PIXEL STYLE --- */
+html[data-ui-version="v1"] .modal-box {
+    background: var(--m3-surface-container-high) !important;
+    border: none !important;
+    border-radius: 24px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+    padding: 2rem !important;
+}
+
+html[data-ui-version="v1"] .modal-icon {
+    background: var(--m3-error-container) !important;
+    color: var(--m3-on-error-container) !important;
+    box-shadow: none !important;
+    width: 3.5rem !important;
+    height: 3.5rem !important;
+    font-size: 1.75rem !important;
+}
+
+/* --- TOAST SNACKBAR PIXEL STYLE --- */
+html[data-ui-version="v1"] .toast-wrapper {
+    background: var(--m3-surface-container-highest) !important;
+    border-radius: 16px !important;
+    border: 1px solid var(--m3-outline-variant) !important;
+}
+
+html[data-ui-version="v1"] .toast-progress {
+    background: var(--m3-primary) !important;
+}
+
+html[data-ui-version="v1"] .toast-icon {
+    background: var(--m3-primary-container) !important;
+    color: var(--m3-on-primary-container) !important;
+}
+
+/* --- 3D VIEW PORT SPECIFIC (MATERIAL YOU STYLE) --- */
+html[data-ui-version="v1"] .canvas-wrapper {
+    background: radial-gradient(circle at center, #23352f 0%, #101412 100%) !important;
+    border: 1px solid var(--m3-outline-variant) !important;
+    border-radius: 28px !important;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 40px rgba(128, 222, 197, 0.04) !important;
+}
+
+html[data-ui-version="v1"] .loader-overlay {
+    background: rgba(17, 20, 19, 0.85) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    border-radius: 28px !important;
+}
+
+html[data-ui-version="v1"] .spinner-modern {
+    width: 55px !important;
+    height: 55px !important;
+    background-color: var(--m3-primary) !important;
+    border: none !important;
+    border-radius: 0 !important;
+    /* Reset border-radius to let clip-path handle shape geometry */
+    animation: pixelMorph 1.2s infinite ease-in-out !important;
+    /* Fast, snappy and expressive M3 curves */
+    box-shadow: 0 8px 24px rgba(128, 222, 197, 0.25) !important;
+}
+
+html[data-ui-version="v1"] .progress-bar-container {
+    background-color: var(--m3-surface-container-highest) !important;
+    border-radius: 100px !important;
+    height: 8px !important;
+}
+
+html[data-ui-version="v1"] .progress-bar-fill {
+    background: var(--m3-primary) !important;
+    border-radius: 100px !important;
+    box-shadow: 0 0 12px rgba(128, 222, 197, 0.4) !important;
+}
+
+html[data-ui-version="v1"] .panel-card {
+    background: var(--m3-surface-container) !important;
+    border: none !important;
+    border-radius: 24px !important;
+}
+
+html[data-ui-version="v1"] .panel-card-title {
+    color: var(--m3-primary) !important;
+    border-bottom: 1px solid var(--m3-outline-variant) !important;
+    font-family: var(--m3-font) !important;
+    font-weight: 700 !important;
+}
+
+html[data-ui-version="v1"] .btn-control {
+    background-color: var(--m3-surface-container-low) !important;
+    color: var(--m3-on-surface) !important;
+    border: 1px solid var(--m3-outline-variant) !important;
+    border-radius: 100px !important;
+    /* Full modern M3 capsule shape */
+    padding: 0.65rem 1.25rem !important;
+    font-family: var(--m3-font) !important;
+    font-weight: 500 !important;
+}
+
+html[data-ui-version="v1"] .btn-control:hover {
+    background-color: var(--m3-surface-container-high) !important;
+    border-color: var(--m3-primary) !important;
+    color: var(--m3-primary) !important;
+}
+
+html[data-ui-version="v1"] .btn-control.active {
+    background-color: var(--m3-primary-container) !important;
+    border-color: var(--m3-primary) !important;
+    color: var(--m3-on-primary-container) !important;
+}
+
+html[data-ui-version="v1"] .instruction-item i {
+    color: var(--m3-primary) !important;
+}
+
+html[data-ui-version="v1"] .info-table tr {
+    border-color: var(--m3-outline-variant) !important;
+}
+
+html[data-ui-version="v1"] .info-label {
+    color: var(--m3-on-surface-variant) !important;
+}
+
+html[data-ui-version="v1"] .info-value {
+    color: var(--m3-on-surface) !important;
+}
+
+html[data-ui-version="v1"] .slider-input {
+    background: var(--m3-surface-container-highest) !important;
+    border-radius: 100px !important;
+}
+
+html[data-ui-version="v1"] .slider-input::-webkit-slider-thumb {
+    background: var(--m3-primary) !important;
+}
+
+/* --- TRANSITION OVERLAY FOR PIXEL DARK --- */
+html[data-ui-version="v1"] .page-transition-overlay {
+    background: rgba(17, 20, 19, 0.6) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+}
+
+/* --- PIXEL DESIGN 3 MULTI-SHAPE VECTOR MORPHING (OVAL -> 4-SIDED COOKIE -> 12-SIDED COOKIE) --- */
+@keyframes pixelMorph {
+    0% {
+        /* Shape 1: Oval (parametric ellipse mapped to 24 points) */
+        clip-path: polygon(98.0% 50.0%, 96.4% 57.8%, 91.6% 65.0%, 83.9% 71.2%, 74.0% 76.0%, 62.4% 79.0%, 50.0% 80.0%, 37.6% 79.0%, 26.0% 76.0%, 16.1% 71.2%, 8.4% 65.0%, 3.6% 57.8%, 2.0% 50.0%, 3.6% 42.2%, 8.4% 35.0%, 16.1% 28.8%, 26.0% 24.0%, 37.6% 21.0%, 50.0% 20.0%, 62.4% 21.0%, 74.0% 24.0%, 83.9% 28.8%, 91.6% 35.0%, 96.4% 42.2%);
+        transform: rotate(0deg);
+    }
+
+    33.3% {
+        /* Shape 2: 4-Sided Cookie (rounded 4-lobed flower/star) */
+        clip-path: polygon(98.0% 50.0%, 92.5% 61.4%, 81.2% 68.0%, 72.6% 72.6%, 68.0% 81.2%, 61.4% 92.5%, 50.0% 98.0%, 38.6% 92.5%, 32.0% 81.2%, 27.4% 72.6%, 18.8% 68.0%, 7.5% 61.4%, 2.0% 50.0%, 7.5% 38.6%, 18.8% 32.0%, 27.4% 27.4%, 32.0% 18.8%, 38.6% 7.5%, 50.0% 2.0%, 61.4% 7.5%, 68.0% 18.8%, 72.6% 27.4%, 81.2% 32.0%, 92.5% 38.6%);
+        transform: rotate(120deg);
+    }
+
+    66.6% {
+        /* Shape 3: 12-Sided Cookie (scalloped biscuit/sunburst) */
+        clip-path: polygon(100.0% 50.0%, 88.6% 60.4%, 93.3% 75.0%, 78.3% 78.3%, 75.0% 93.3%, 60.4% 88.6%, 50.0% 100.0%, 39.6% 88.6%, 25.0% 93.3%, 21.7% 78.3%, 6.7% 75.0%, 11.4% 60.4%, 0.0% 50.0%, 11.4% 39.6%, 6.7% 25.0%, 21.7% 21.7%, 25.0% 6.7%, 39.6% 11.4%, 50.0% 0.0%, 60.4% 11.4%, 75.0% 6.7%, 78.3% 21.7%, 93.3% 25.0%, 88.6% 39.6%);
+        transform: rotate(240deg);
+    }
+
+    100% {
+        /* Seamless return to Shape 1 */
+        clip-path: polygon(98.0% 50.0%, 96.4% 57.8%, 91.6% 65.0%, 83.9% 71.2%, 74.0% 76.0%, 62.4% 79.0%, 50.0% 80.0%, 37.6% 79.0%, 26.0% 76.0%, 16.1% 71.2%, 8.4% 65.0%, 3.6% 57.8%, 2.0% 50.0%, 3.6% 42.2%, 8.4% 35.0%, 16.1% 28.8%, 26.0% 24.0%, 37.6% 21.0%, 50.0% 20.0%, 62.4% 21.0%, 74.0% 24.0%, 83.9% 28.8%, 91.6% 35.0%, 96.4% 42.2%);
+        transform: rotate(360deg);
+    }
+}
+
+html[data-ui-version="v1"] .transition-spinner {
+    width: 60px !important;
+    height: 60px !important;
+    background-color: var(--m3-primary) !important;
+    border: none !important;
+    border-radius: 0 !important;
+    /* Reset radius since clip-path defines the boundaries */
+    animation: pixelMorph 1.2s infinite ease-in-out !important;
+    /* Fast, snappy and expressive M3 curves */
+    box-shadow: 0 8px 24px rgba(128, 222, 197, 0.25) !important;
+}
+
+/* --- SETTINGS VERSION CARDS IN MATERIAL YOU (PIXEL STYLE) --- */
+html[data-ui-version="v1"] .ui-version-card {
+    border: 1px solid var(--m3-outline-variant) !important;
+    background: var(--m3-surface-container-low) !important;
+    border-radius: 20px !important;
+}
+
+html[data-ui-version="v1"] .ui-version-card:hover {
+    background: var(--m3-surface-container-high) !important;
+}
+
+html[data-ui-version="v1"] .ui-version-card.active {
+    border-color: var(--m3-primary) !important;
+    background: var(--m3-primary-container) !important;
+}
+
+html[data-ui-version="v1"] .ui-version-card.active .ui-version-info h3 {
+    color: var(--m3-on-primary-container) !important;
+}
+
+html[data-ui-version="v1"] .ui-version-card.active .ui-version-info p {
+    color: var(--m3-on-surface-variant) !important;
+}
+
+html[data-ui-version="v1"] .ui-version-card.active .ui-select-indicator {
+    color: var(--m3-primary) !important;
+}
+
+/* --- DASHBOARD LANDING VIEW OVERRIDES --- */
+html[data-ui-version="v1"] .navbar {
+    background-color: transparent !important;
+    border-bottom: 1px solid var(--m3-outline-variant) !important;
+    font-family: var(--m3-font) !important;
+    padding: 1.75rem 3.5rem !important;
+    /* Premium spacious padding aligned with panels */
+}
+
+html[data-ui-version="v1"] .landing-view {
+    padding: 4rem 3.5rem !important;
+    /* Roomy, clean padding for the welcome area */
+}
+
+html[data-ui-version="v1"] .navbar .user-greeting {
+    color: var(--m3-on-surface) !important;
+}
+
+html[data-ui-version="v1"] .btn-logout {
+    border-radius: 100px !important;
+    background-color: transparent !important;
+    border: 1px solid var(--m3-outline) !important;
+    color: var(--m3-primary) !important;
+    font-family: var(--m3-font) !important;
+    font-weight: 600 !important;
+    padding: 0.5rem 1.25rem !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+
+html[data-ui-version="v1"] .btn-logout:hover {
+    background-color: rgba(255, 180, 171, 0.08) !important;
+    border-color: var(--m3-error) !important;
+    color: var(--m3-error) !important;
+}
+
+html[data-ui-version="v1"] .btn-panel {
+    border-radius: 100px !important;
+    background-color: var(--m3-primary) !important;
+    color: var(--m3-on-primary) !important;
+    font-family: var(--m3-font) !important;
+    font-weight: 700 !important;
+    box-shadow: none !important;
+    padding: 1rem 2rem !important;
+    transition: all 0.22s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+html[data-ui-version="v1"] .btn-panel:hover {
+    background-color: var(--m3-on-primary-container) !important;
+    color: var(--m3-primary-container) !important;
+    transform: scale(1.03) !important;
+}
+
+html[data-ui-version="v1"] .dashboard-footer {
+    border-top: 1px solid var(--m3-outline-variant) !important;
+    background-color: transparent !important;
+    color: var(--m3-on-surface-variant) !important;
+    font-family: var(--m3-font) !important;
+    padding: 2.5rem 3.5rem !important;
+}
+
+/* --- ADAPTIVE DESIGN SYSTEM (COMPACT, MEDIUM, EXPANDED) --- */
+
+/* 1. Global Reset / Fallback for Non-M3 Themes (Neon Glow / v2) */
+/* Hide all Material 3 specific additions by default across all themes */
+.bottom-nav {
+    display: none !important;
+}
+
+.mobile-top-actions {
+    display: none !important;
+}
+
+.nav-link i,
+.btn-logout-sidebar i {
+    display: none !important;
+}
+
+/* 2. Enable Icons & Layout defaults specifically for Material 3 (v1) */
+html[data-ui-version="v1"] .nav-link i {
+    display: inline-flex !important;
+}
+
+html[data-ui-version="v1"] .btn-logout-sidebar i {
+    display: inline-flex !important;
+}
+
+/* Hide Bottom Nav on desktop for Material 3 by default */
+html[data-ui-version="v1"] .bottom-nav {
+    display: none !important;
+}
+
+/* --- EXPANDED VIEW (>= 840px) --- */
+@media (min-width: 840px) {
+    html[data-ui-version="v1"] .sidebar {
+        width: 260px !important;
+    }
+}
+
+/* --- MEDIUM VIEW (600px - 839px) - NAVIGATION RAIL --- */
+@media (min-width: 600px) and (max-width: 839px) {
+    html[data-ui-version="v1"] .sidebar {
+        width: 80px !important;
+        padding: 1.5rem 0.5rem !important;
+        align-items: center !important;
+    }
+
+    html[data-ui-version="v1"] .sidebar-header h2 {
+        font-size: 0px !important;
+        /* Hide original label text */
+        margin-bottom: 2rem !important;
+        text-align: center !important;
+        padding: 0 !important;
+    }
+
+    html[data-ui-version="v1"] .sidebar-header h2::after {
+        content: "JK" !important;
+        /* Show compact acronym */
+        font-size: 1.4rem !important;
+        font-weight: 700 !important;
+        letter-spacing: normal !important;
+    }
+
+    html[data-ui-version="v1"] .sidebar-nav {
+        align-items: center !important;
+        width: 100% !important;
+        gap: 0.75rem !important;
+    }
+
+    html[data-ui-version="v1"] .nav-link {
+        flex-direction: column !important;
+        gap: 4px !important;
+        padding: 8px 4px !important;
+        border-radius: 16px !important;
+        width: 100% !important;
+        margin: 0.1rem 0 !important;
+        font-size: 10px !important;
+        text-align: center !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    html[data-ui-version="v1"] .nav-link span {
+        display: block !important;
+        font-size: 9px !important;
+        font-weight: 500 !important;
+        max-width: 100% !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+
+    /* M3 active pill indicator surrounding the icon in Rail Mode */
+    html[data-ui-version="v1"] .nav-link i {
+        width: 56px !important;
+        height: 32px !important;
+        border-radius: 16px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    html[data-ui-version="v1"] .nav-link.active i {
+        background-color: var(--m3-primary-container) !important;
+        color: var(--m3-on-primary-container) !important;
+    }
+
+    html[data-ui-version="v1"] .nav-link.active {
+        background-color: transparent !important;
+        /* remove item-wide background */
+        color: var(--m3-on-surface) !important;
+    }
+
+    html[data-ui-version="v1"] .sidebar-footer {
+        width: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        border-top: 1px solid var(--m3-outline-variant) !important;
+        padding-top: 1.25rem !important;
+    }
+
+    html[data-ui-version="v1"] .user-greeting {
+        display: none !important;
+        /* Hide label in compact rail footer */
+    }
+
+    html[data-ui-version="v1"] .btn-logout-sidebar {
+        width: 44px !important;
+        height: 44px !important;
+        border-radius: 50% !important;
+        padding: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border: 1px solid var(--m3-outline) !important;
+        color: var(--m3-primary) !important;
+        background: transparent !important;
+    }
+
+    html[data-ui-version="v1"] .btn-logout-sidebar span {
+        display: none !important;
+    }
+
+    html[data-ui-version="v1"] .btn-logout-sidebar i {
+        font-size: 1.1rem !important;
+        display: inline-flex !important;
+    }
+}
+
+/* --- COMPACT VIEW (< 600px) - BOTTOM NAVIGATION --- */
+@media (max-width: 599px) {
+
+    html[data-ui-version="v1"] .sidebar,
+    html[data-ui-version="v1"] .sidebar-overlay {
+        display: none !important;
+    }
+
+    html[data-ui-version="v1"] .panel-layout {
+        flex-direction: column !important;
+        height: auto !important;
+        overflow: visible !important;
+    }
+
+    html[data-ui-version="v1"] .panel-content {
+        padding: 1.25rem 1rem 100px 1rem !important;
+        /* 100px bottom padding to avoid nav bar overlap */
+        width: 100% !important;
+        overflow-x: hidden !important;
+    }
+
+    html[data-ui-version="v1"] .mobile-top-nav {
+        display: flex !important;
+        padding: 0.85rem 1.25rem !important;
+        background-color: rgba(21, 26, 24, 0.75) !important;
+        backdrop-filter: blur(12px) !important;
+        -webkit-backdrop-filter: blur(12px) !important;
+        border-bottom: 1px solid rgba(128, 222, 197, 0.12) !important;
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 1000 !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    html[data-ui-version="v1"] .mobile-logo {
+        color: var(--m3-primary) !important;
+        font-family: var(--m3-font) !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.12em !important;
+    }
+
+    /* Hide sidebar-toggle on mobile because of Bottom Navigation */
+    html[data-ui-version="v1"] .btn-toggle-sidebar {
+        display: none !important;
+    }
+
+    html[data-ui-version="v1"] .mobile-top-actions {
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    html[data-ui-version="v1"] .btn-mobile-logout {
+        background: transparent !important;
+        border: none !important;
+        color: var(--m3-error) !important;
+        font-size: 1.2rem !important;
+        cursor: pointer !important;
+        padding: 4px 8px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    html[data-ui-version="v1"] .datetime-widget {
+        border-top: 1px solid var(--m3-outline-variant) !important;
+        text-align: left !important;
+        width: 100% !important;
+        padding-top: 0.75rem !important;
+    }
+
+    /* Material 3 Bottom Bar styling - ULTRA-EXPRESSIVE FLOATING GLASS BAR */
+    html[data-ui-version="v1"] .bottom-nav {
+        display: flex !important;
+        position: fixed !important;
+        bottom: 16px !important;
+        left: 16px !important;
+        right: 16px !important;
+        height: 72px !important;
+        background-color: rgba(27, 34, 31, 0.75) !important;
+        backdrop-filter: blur(16px) saturate(140%) !important;
+        -webkit-backdrop-filter: blur(16px) saturate(140%) !important;
+        border: 1px solid rgba(128, 222, 197, 0.18) !important;
+        border-radius: 28px !important;
+        z-index: 10000 !important;
+        justify-content: space-around !important;
+        align-items: center !important;
+        padding: 0 12px !important;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+        transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+    }
+
+    html[data-ui-version="v1"] .bottom-nav-link {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        color: var(--m3-on-surface-variant) !important;
+        text-decoration: none !important;
+        font-family: var(--m3-font) !important;
+        font-size: 10px !important;
+        font-weight: 500 !important;
+        gap: 4px !important;
+        flex: 1 !important;
+        height: 100% !important;
+        transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    }
+
+    html[data-ui-version="v1"] .bottom-nav-link:hover .bottom-nav-icon-wrapper i {
+        transform: scale(1.1) !important;
+        color: var(--m3-primary) !important;
+    }
+
+    html[data-ui-version="v1"] .bottom-nav-link span {
+        font-size: 10px !important;
+        font-weight: 500 !important;
+        transition: all 0.25s ease !important;
+    }
+
+    html[data-ui-version="v1"] .bottom-nav-link .bottom-nav-icon-wrapper {
+        width: 64px !important;
+        height: 32px !important;
+        border-radius: 16px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    }
+
+    html[data-ui-version="v1"] .bottom-nav-link .bottom-nav-icon-wrapper i {
+        font-size: 1.15rem !important;
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+        color: var(--m3-on-surface-variant) !important;
+    }
+
+    html[data-ui-version="v1"] .bottom-nav-link.active .bottom-nav-icon-wrapper {
+        background-color: var(--m3-primary-container) !important;
+        animation: m3-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards !important;
+        box-shadow: 0 4px 12px rgba(128, 222, 197, 0.15) !important;
+    }
+
+    html[data-ui-version="v1"] .bottom-nav-link.active .bottom-nav-icon-wrapper i {
+        color: var(--m3-primary) !important;
+        text-shadow: 0 0 10px rgba(128, 222, 197, 0.3) !important;
+    }
+
+    html[data-ui-version="v1"] .bottom-nav-link.active span {
+        color: var(--m3-primary) !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.02em !important;
+        text-shadow: 0 0 12px rgba(128, 222, 197, 0.2) !important;
+    }
+
+    html[data-ui-version="v1"] .glow-card {
+        padding: 1.25rem !important;
+        border-radius: 20px !important;
+    }
+
+    html[data-ui-version="v1"] .summary-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+    }
+}
+
+/* ==========================================================================
+   --- MATERIAL 3 (v1) GLOBAL EXPRESSIVE NAVIGATION ENHANCEMENTS ---
+   ========================================================================== */
+
+@keyframes m3-pop {
+    0% { transform: scale(0.85); }
+    55% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+}
+
+@keyframes m3-spring {
+    0% { transform: scale(1); }
+    30% { transform: scale(1.12); }
+    100% { transform: scale(1); }
+}
+
+/* Sidebar & Nav Rail Expressive Hover effects */
+html[data-ui-version="v1"] .nav-link {
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+html[data-ui-version="v1"] .nav-link:hover {
+    color: var(--m3-primary) !important;
+}
+
+html[data-ui-version="v1"] .nav-link:hover i {
+    transform: scale(1.1) !important;
+    color: var(--m3-primary) !important;
+}
+
+/* Active Pill elastic popup */
+html[data-ui-version="v1"] .nav-link.active i {
+    animation: m3-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards !important;
+    box-shadow: 0 4px 15px rgba(128, 222, 197, 0.2) !important;
+}
+
+/* Landing Page / Dashboard Navbar - Ultra Expressive Glassmorphism */
+html[data-ui-version="v1"] .dashboard-navbar {
+    background: rgba(21, 26, 24, 0.7) !important;
+    backdrop-filter: blur(16px) saturate(140%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(140%) !important;
+    border-bottom: 1px solid rgba(128, 222, 197, 0.15) !important;
+    padding: 1.5rem 3rem !important;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+}
+
+html[data-ui-version="v1"] .dashboard-navbar .brand {
+    color: var(--m3-primary) !important;
+    font-family: var(--m3-font) !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.15em !important;
+    text-shadow: 0 0 15px rgba(128, 222, 197, 0.25) !important;
+    transition: all 0.3s ease !important;
+}
+
+html[data-ui-version="v1"] .dashboard-navbar .brand:hover {
+    letter-spacing: 0.18em !important;
+    text-shadow: 0 0 25px rgba(128, 222, 197, 0.4) !important;
+}
+
+html[data-ui-version="v1"] .dashboard-navbar .btn-logout {
+    border: 1px solid var(--m3-primary) !important;
+    color: var(--m3-primary) !important;
+    background: rgba(128, 222, 197, 0.05) !important;
+    border-radius: 20px !important;
+    padding: 0.5rem 1.25rem !important;
+    font-weight: 600 !important;
+    font-family: var(--m3-font) !important;
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+html[data-ui-version="v1"] .dashboard-navbar .btn-logout:hover {
+    background: var(--m3-primary) !important;
+    color: #111 !important;
+    transform: scale(1.05) !important;
+    box-shadow: 0 6px 20px rgba(128, 222, 197, 0.35) !important;
+}
