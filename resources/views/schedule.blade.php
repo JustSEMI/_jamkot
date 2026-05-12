@@ -7,7 +7,7 @@
     <!-- PREVENT FOUC & SETUP UI THEME -->
     <script>
         (function() {
-            const uiVersion = localStorage.getItem('jamkot-ui-version') || 'v2';
+            const uiVersion = localStorage.getItem('jamkot-ui-version') || 'v1';
             document.documentElement.setAttribute('data-ui-version', uiVersion);
         })();
     </script>
@@ -19,6 +19,102 @@
     <link rel="stylesheet" href="{{ asset('css/mobile.css') }}">
     <link rel="stylesheet" href="{{ asset('css/material3.css') }}">
     @vite('resources/js/app.js')
+    <style>
+        /* --- MATERIAL 3 EXPRESSIVE OVERRIDES FOR SCHEDULE PAGE --- */
+        html[data-ui-version="v1"] .schedule-card {
+            background: var(--m3-surface-container) !important;
+            border: none !important;
+            border-radius: 28px !important;
+            padding: 2rem !important;
+            box-shadow: none !important;
+        }
+
+        html[data-ui-version="v1"] .schedule-card:hover {
+            background: var(--m3-surface-container-high) !important;
+            transform: translateY(-2px) !important;
+        }
+
+        html[data-ui-version="v1"] .card-header-flex {
+            border-bottom-color: var(--m3-outline-variant) !important;
+        }
+
+        html[data-ui-version="v1"] .schedule-card .card-title {
+            color: var(--m3-primary) !important;
+            font-family: var(--m3-font) !important;
+            font-weight: 700 !important;
+        }
+
+        html[data-ui-version="v1"] .input-group label {
+            color: var(--m3-on-surface-variant) !important;
+            font-family: var(--m3-font) !important;
+            font-weight: 600 !important;
+        }
+
+        html[data-ui-version="v1"] .input-time-modern {
+            background-color: var(--m3-surface-container-highest) !important;
+            color: var(--m3-on-surface) !important;
+            border: 1px solid var(--m3-outline-variant) !important;
+            border-radius: 16px !important;
+            font-family: var(--m3-font) !important;
+        }
+
+        html[data-ui-version="v1"] .input-time-modern:focus {
+            border-color: var(--m3-primary) !important;
+            box-shadow: 0 0 0 3px rgba(128, 222, 197, 0.15) !important;
+        }
+
+        html[data-ui-version="v1"] .input-time-modern::-webkit-calendar-picker-indicator {
+            filter: invert(1) brightness(0.9);
+            cursor: pointer;
+        }
+
+        html[data-ui-version="v1"] .smart-backup-header .title-blue {
+            color: var(--m3-primary) !important;
+        }
+
+        html[data-ui-version="v1"] .smart-backup-desc {
+            color: var(--m3-on-surface-variant) !important;
+            font-family: var(--m3-font) !important;
+        }
+
+        html[data-ui-version="v1"] .smart-backup-control {
+            background: var(--m3-surface-container-low) !important;
+            border: 1px solid var(--m3-outline-variant) !important;
+            border-radius: 20px !important;
+            padding: 1.25rem 2rem !important;
+        }
+
+        html[data-ui-version="v1"] .smart-backup-input-wrapper {
+            background: var(--m3-surface-container-highest) !important;
+            border-color: var(--m3-outline-variant) !important;
+            border-radius: 12px !important;
+        }
+
+        html[data-ui-version="v1"] .smart-backup-input-wrapper span {
+            color: var(--m3-on-surface-variant) !important;
+            font-weight: 600 !important;
+        }
+
+        html[data-ui-version="v1"] .status-dot.pagi {
+            background-color: #a8c7ff !important;
+            box-shadow: 0 0 10px rgba(168, 199, 255, 0.4) !important;
+        }
+        
+        html[data-ui-version="v1"] .status-dot.siang {
+            background-color: #f9d949 !important;
+            box-shadow: 0 0 10px rgba(249, 217, 73, 0.4) !important;
+        }
+
+        html[data-ui-version="v1"] .status-dot.sore {
+            background-color: var(--m3-tertiary) !important;
+            box-shadow: 0 0 10px rgba(255, 182, 143, 0.4) !important;
+        }
+
+        html[data-ui-version="v1"] .status-dot.backup {
+            background-color: var(--m3-primary) !important;
+            box-shadow: 0 0 10px rgba(128, 222, 197, 0.4) !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -117,7 +213,7 @@
                     <div class="schedule-card">
                         <div class="card-header-flex">
                             <h3 class="card-title">Sesi Pagi</h3>
-                            <div class="status-dot online"></div>
+                            <div class="status-dot pagi"></div>
                         </div>
                         <div class="input-group">
                             <label>JAM MULAI</label>
@@ -153,7 +249,7 @@
                     <div class="schedule-card">
                         <div class="card-header-flex">
                             <h3 class="card-title">Sesi Sore</h3>
-                            <div class="status-dot online"></div>
+                            <div class="status-dot sore"></div>
                         </div>
                         <div class="input-group">
                             <label>JAM MULAI</label>

@@ -47,12 +47,12 @@ document.addEventListener('DOMContentLoaded', function () {
             const warnaUtama = getComputedStyle(document.documentElement).getPropertyValue('--warna-utama').trim() || '#10b981';
 
             // Choose chart series colors dynamically
-            const seriesColors = isM3 ? ['#80dec5', '#ffb68f'] : [warnaUtama, '#ef4444'];
+            const seriesColors = isM3 ? ['#80dec5', '#ffb68f'] : ['#10b981', '#06b6d4'];
 
             var optionsArea = {
                 series: [
-                    { name: 'Kelembapan (%)', data: kelembapanSeries },
-                    { name: 'Suhu (°C)', data: suhuSeries }
+                    { name: 'Suhu (°C)', data: suhuSeries },
+                    { name: 'Kelembapan (%)', data: kelembapanSeries }
                 ],
                 chart: {
                     height: 300,

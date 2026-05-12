@@ -55,14 +55,24 @@ body {
 }
 
 /* --- STATUS DOTS --- */
+.status-dot.pagi {
+    background-color: #06b6d4;
+    box-shadow: 0 0 10px rgba(6, 182, 212, 0.4);
+}
+
 .status-dot.siang {
     background-color: #f59e0b;
     box-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
 }
 
+.status-dot.sore {
+    background-color: #f97316;
+    box-shadow: 0 0 10px rgba(249, 115, 22, 0.4);
+}
+
 .status-dot.backup {
-    background-color: #3b82f6;
-    box-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
+    background-color: var(--warna-utama, #10b981);
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
 }
 
 /* --- INPUTS & FORMS --- */
