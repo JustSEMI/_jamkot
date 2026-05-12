@@ -95,19 +95,24 @@
             font-weight: 600 !important;
         }
 
-        html[data-ui-version="v1"] .status-dot.online {
-            background-color: var(--m3-primary) !important;
-            box-shadow: 0 0 10px rgba(128, 222, 197, 0.4) !important;
+        html[data-ui-version="v1"] .status-dot.pagi {
+            background-color: #a8c7ff !important;
+            box-shadow: 0 0 10px rgba(168, 199, 255, 0.4) !important;
+        }
+        
+        html[data-ui-version="v1"] .status-dot.siang {
+            background-color: #f9d949 !important;
+            box-shadow: 0 0 10px rgba(249, 217, 73, 0.4) !important;
         }
 
-        html[data-ui-version="v1"] .status-dot.siang {
+        html[data-ui-version="v1"] .status-dot.sore {
             background-color: var(--m3-tertiary) !important;
             box-shadow: 0 0 10px rgba(255, 182, 143, 0.4) !important;
         }
 
         html[data-ui-version="v1"] .status-dot.backup {
-            background-color: var(--m3-secondary) !important;
-            box-shadow: 0 0 10px rgba(176, 204, 188, 0.4) !important;
+            background-color: var(--m3-primary) !important;
+            box-shadow: 0 0 10px rgba(128, 222, 197, 0.4) !important;
         }
     </style>
 </head>
@@ -208,7 +213,7 @@
                     <div class="schedule-card">
                         <div class="card-header-flex">
                             <h3 class="card-title">Sesi Pagi</h3>
-                            <div class="status-dot online"></div>
+                            <div class="status-dot pagi"></div>
                         </div>
                         <div class="input-group">
                             <label>JAM MULAI</label>
@@ -244,7 +249,7 @@
                     <div class="schedule-card">
                         <div class="card-header-flex">
                             <h3 class="card-title">Sesi Sore</h3>
-                            <div class="status-dot online"></div>
+                            <div class="status-dot sore"></div>
                         </div>
                         <div class="input-group">
                             <label>JAM MULAI</label>
