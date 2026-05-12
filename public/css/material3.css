@@ -1094,3 +1094,82 @@ html[data-ui-version="v1"] .dashboard-navbar .btn-logout:hover {
     transform: scale(1.05) !important;
     box-shadow: 0 6px 20px rgba(128, 222, 197, 0.35) !important;
 }
+
+/* ==========================================================================
+   --- MATERIAL 3 AUTH / LOGIN PAGES (PIXEL STYLE) ---
+   ========================================================================== */
+html[data-ui-version="v1"] .login-container {
+    background: var(--m3-surface-container) !important;
+    border-radius: 28px !important;
+    padding: 3rem 2.5rem !important;
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45) !important;
+    border: 1px solid rgba(128, 222, 197, 0.05) !important;
+}
+
+html[data-ui-version="v1"] .login-header h1 {
+    color: var(--m3-primary) !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.15em !important;
+    font-family: var(--m3-font) !important;
+}
+
+html[data-ui-version="v1"] .login-header p {
+    color: var(--m3-on-surface-variant) !important;
+    font-family: var(--m3-font) !important;
+}
+
+html[data-ui-version="v1"] .input-group label {
+    color: var(--m3-on-surface-variant) !important;
+    font-weight: 600 !important;
+    font-family: var(--m3-font) !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    font-size: 0.85rem !important;
+}
+
+html[data-ui-version="v1"] .input-group input {
+    background-color: var(--m3-surface-container-highest) !important;
+    border: 1px solid var(--m3-outline-variant) !important;
+    border-radius: 16px !important;
+    color: var(--m3-on-surface) !important;
+    padding: 0.85rem 1.25rem !important;
+    font-family: var(--m3-font) !important;
+    transition: all 0.2s ease !important;
+}
+
+html[data-ui-version="v1"] .input-group input:focus {
+    border-color: var(--m3-primary) !important;
+    box-shadow: 0 0 0 3px rgba(128, 222, 197, 0.1) !important;
+}
+
+html[data-ui-version="v1"] .btn-login {
+    background-color: var(--m3-primary) !important;
+    color: var(--m3-on-primary) !important;
+    border-radius: 100px !important;
+    font-weight: 700 !important;
+    padding: 0.85rem !important;
+    margin-top: 1rem !important;
+    font-family: var(--m3-font) !important;
+    font-size: 0.95rem !important;
+}
+
+html[data-ui-version="v1"] .btn-login:hover {
+    background-color: var(--m3-on-primary-container) !important;
+    color: var(--m3-primary-container) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 20px rgba(128, 222, 197, 0.2) !important;
+}
+
+html[data-ui-version="v1"] .forgot-link,
+html[data-ui-version="v1"] .register-link a {
+    color: var(--m3-primary) !important;
+    font-weight: 600 !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    font-size: 0.8rem !important;
+}
+
+html[data-ui-version="v1"] .login-footer p {
+    color: var(--m3-on-surface-variant) !important;
+    font-family: var(--m3-font) !important;
+}
