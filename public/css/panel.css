@@ -86,7 +86,7 @@ body {
 }
 
 .btn-logout-sidebar {
-    
+
     width: 100%;
     background: transparent;
     border: 1px solid #333;
@@ -151,7 +151,9 @@ body {
 }
 
 @keyframes transition-spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .content-header-flex {
@@ -268,24 +270,20 @@ body {
 
 .sensor-meter-card::after {
     background:
-        conic-gradient(
-            from 270deg at 50% 100%,
+        conic-gradient(from 270deg at 50% 100%,
             var(--warna-utama, #10b981) 0 var(--meter-angle),
             transparent var(--meter-angle) 180deg,
-            transparent 0
-        );
+            transparent 0);
     animation: meterSweep 1s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .sensor-meter-humidity::after {
     background:
-        conic-gradient(
-            from 270deg at 50% 100%,
+        conic-gradient(from 270deg at 50% 100%,
             #1e293b 0,
             #06b6d4 var(--meter-angle),
             transparent var(--meter-angle) 180deg,
-            transparent 0
-        );
+            transparent 0);
 }
 
 .sensor-meter-card .card-title {
@@ -424,15 +422,29 @@ body {
     font-size: 0.75rem;
 }
 
-.text-muted { color: #9ca3af; }
-.text-positive { color: var(--warna-utama, #10b981); }
-.text-blue { color: #3b82f6; }
-.text-right { text-align: right; }
-.fw-bold { font-weight: 600; }
+.text-muted {
+    color: #9ca3af;
+}
+
+.text-positive {
+    color: var(--warna-utama, #10b981);
+}
+
+.text-blue {
+    color: #3b82f6;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.fw-bold {
+    font-weight: 600;
+}
 
 /* --- CUSTOM TOOLTIP APEXCHARTS --- */
-.apexcharts-tooltip, 
-.apexcharts-tooltip.apexcharts-theme-light, 
+.apexcharts-tooltip,
+.apexcharts-tooltip.apexcharts-theme-light,
 .apexcharts-tooltip.apexcharts-theme-dark {
     background: #141414 !important;
     border: 1px solid #262626 !important;
@@ -483,7 +495,9 @@ body {
 }
 
 @keyframes meterSweep {
-    from { --meter-angle: 0deg; }
+    from {
+        --meter-angle: 0deg;
+    }
 }
 
 @keyframes meterCardIn {
@@ -501,6 +515,7 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
     .sensor-meter-card,
     .sensor-meter-card::after,
     .sensor-meter-card .card-value,

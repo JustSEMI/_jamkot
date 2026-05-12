@@ -917,6 +917,25 @@ html[data-ui-version="v1"] .bottom-nav {
         justify-content: center !important;
     }
 
+    html[data-ui-version="v1"] .btn-mobile-settings {
+        background: transparent !important;
+        border: none !important;
+        color: var(--m3-on-surface-variant) !important;
+        font-size: 1.2rem !important;
+        cursor: pointer !important;
+        padding: 4px 8px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin-right: 0.75rem !important;
+        text-decoration: none !important;
+        transition: opacity 0.2s !important;
+    }
+
+    html[data-ui-version="v1"] .btn-mobile-settings:hover {
+        opacity: 0.8 !important;
+    }
+
     html[data-ui-version="v1"] .datetime-widget {
         border-top: 1px solid var(--m3-outline-variant) !important;
         text-align: left !important;

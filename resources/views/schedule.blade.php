@@ -128,6 +128,17 @@
                 <i class="fa-solid fa-bars"></i>
             </button>
             <div class="mobile-top-actions">
+                @if(auth()->user()->canAccess('admin'))
+                    @if(Route::is('settings.index'))
+                    <a href="{{ route('panel') }}" class="btn-mobile-settings" title="Back to Panel">
+                        <i class="fa-solid fa-house"></i>
+                    </a>
+                    @else
+                    <a href="{{ route('settings.index') }}" class="btn-mobile-settings" title="Settings">
+                        <i class="fa-solid fa-gear"></i>
+                    </a>
+                    @endif
+                @endif
                 <form action="{{ route('logout') }}" method="POST" style="display: inline;">
                     @csrf
                     <button type="submit" class="btn-mobile-logout" title="Logout">
