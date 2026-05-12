@@ -7,7 +7,7 @@
     <!-- PREVENT FOUC & SETUP UI THEME -->
     <script>
         (function() {
-            const uiVersion = localStorage.getItem('jamkot-ui-version') || 'v2';
+            const uiVersion = localStorage.getItem('jamkot-ui-version') || 'v1';
             document.documentElement.setAttribute('data-ui-version', uiVersion);
         })();
     </script>
@@ -49,6 +49,12 @@
             </div>
 
             <nav class="sidebar-nav">
+                @if(auth()->user()->canAccess('admin'))
+                <a href="{{ route('admin.users') }}" class="nav-link nav-link-admin {{ Route::is('admin.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-users-gear"></i>
+                    <span>Admin</span>
+                </a>
+                @endif
                 @if(auth()->user()->canAccess('panel'))
                 <a href="{{ route('panel') }}" class="nav-link {{ Route::is('panel') ? 'active' : '' }}">
                     <i class="fa-solid fa-gauge"></i>
@@ -77,12 +83,6 @@
                 <a href="{{ route('view3d') }}" class="nav-link {{ Route::is('view3d') ? 'active' : '' }}">
                     <i class="fa-solid fa-cube"></i>
                     <span>3D View</span>
-                </a>
-                @endif
-                @if(auth()->user()->isAdmin())
-                <a href="{{ route('admin.users') }}" class="nav-link nav-link-admin {{ Route::is('admin.*') ? 'active' : '' }}">
-                    <i class="fa-solid fa-users-gear"></i>
-                    <span>Kelola User</span>
                 </a>
                 @endif
             </nav>
@@ -228,12 +228,12 @@
             <span>Schedule</span>
         </a>
         @endif
-        @if(auth()->user()->isAdmin())
+        @if(auth()->user()->canAccess('admin'))
         <a href="{{ route('admin.users') }}" class="bottom-nav-link {{ Route::is('admin.*') ? 'active' : '' }}">
             <div class="bottom-nav-icon-wrapper">
                 <i class="fa-solid fa-users-gear"></i>
             </div>
-            <span>Users</span>
+            <span>Admin</span>
         </a>
         @else
         <a href="{{ route('settings.index') }}" class="bottom-nav-link {{ Route::is('settings.*') ? 'active' : '' }}">

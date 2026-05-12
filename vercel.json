@@ -26,6 +26,10 @@
             "dest": "/public/vendors/"
         },
         {
+            "src": "/3d/(.*)",
+            "dest": "/public/3d/"
+        },
+        {
             "src": "/(.*)",
             "dest": "/api/index.php"
         }

@@ -7,7 +7,7 @@
     <!-- PREVENT FOUC & SETUP UI THEME -->
     <script>
         (function() {
-            const uiVersion = localStorage.getItem('jamkot-ui-version') || 'v2';
+            const uiVersion = localStorage.getItem('jamkot-ui-version') || 'v1';
             document.documentElement.setAttribute('data-ui-version', uiVersion);
         })();
     </script>
@@ -28,6 +28,7 @@
             width: 100%;
             border-collapse: collapse;
             font-size: 0.875rem;
+            min-width: 800px; /* Prevent column squishing and text/button clipping */
         }
 
         .users-table th {
@@ -136,20 +137,33 @@
         }
 
         .perm-col {
-            text-align: center;
+            text-align: center !important;
         }
 
         .save-perm-btn {
-            padding: 0.4rem 0.9rem;
-            font-size: 0.78rem;
-            border: none;
-            border-radius: 8px;
-            background: var(--warna-utama, #10b981);
-            color: #111;
+            background: var(--warna-utama, #10b981) !important;
+            color: #111 !important;
+            border-radius: 0.375rem !important; /* Default to Neon Glow 6px rounded */
+            font-family: inherit !important;
+            font-weight: 600 !important;
+            padding: 0.45rem 1.1rem !important;
+            font-size: 0.78rem !important;
+            border: 1px solid var(--warna-utama, #10b981) !important;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.1) !important;
+            transition: all 0.2s ease-in-out !important;
             cursor: pointer;
-            font-family: inherit;
-            font-weight: 600;
-            transition: opacity 0.2s;
+        }
+
+        .save-perm-btn:hover {
+            background: transparent !important;
+            color: var(--warna-utama, #10b981) !important;
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.4) !important;
+            transform: translateY(-2px) !important;
+            opacity: 1 !important;
+        }
+
+        .save-perm-btn:active {
+            transform: translateY(0) !important;
         }
 
         /* Material 3 Theme Overrides */
@@ -262,6 +276,67 @@
                 text-align: center !important;
             }
         }
+
+        /* Neon Glow (v2) Theme Overrides */
+        html[data-ui-version="v2"] .checkmark {
+            border-color: rgba(255, 255, 255, 0.2) !important;
+            background: rgba(255, 255, 255, 0.02) !important;
+            border-radius: 4px !important;
+        }
+
+        html[data-ui-version="v2"] .custom-checkbox:hover .checkmark {
+            border-color: var(--warna-utama, #10b981) !important;
+            box-shadow: 0 0 8px rgba(16, 185, 129, 0.2) !important;
+        }
+
+        html[data-ui-version="v2"] .custom-checkbox input:checked + .checkmark {
+            background: rgba(16, 185, 129, 0.12) !important;
+            border-color: var(--warna-utama, #10b981) !important;
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.4) !important;
+        }
+
+        html[data-ui-version="v2"] .checkmark::after {
+            border-color: var(--warna-utama, #10b981) !important;
+        }
+
+        html[data-ui-version="v2"] .users-table th {
+            color: #6b7280 !important;
+            font-weight: 500 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.05em !important;
+            font-size: 0.75rem !important;
+            border-bottom: 1px solid #262626 !important;
+        }
+
+        html[data-ui-version="v2"] .users-table td {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02) !important;
+            color: #ededed !important;
+        }
+
+        /* Icon theme sync */
+        html[data-ui-version="v1"] .icon-neon-only { display: none !important; }
+        html[data-ui-version="v2"] .icon-m3-only { display: none !important; }
+
+        /* Expand container on desktop to prevent horizontal scrolling/sliding and clipping on both themes */
+        @media (min-width: 769px) {
+            .settings-container {
+                max-width: 1100px !important;
+                width: 100%;
+            }
+            .users-table-wrapper {
+                overflow-x: auto !important; /* Enable smooth scrolling on intermediate desktop sizes */
+            }
+            /* Give more horizontal breathing room for wide tables on desktop */
+            .panel-content {
+                padding: 2rem 1.5rem !important;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .users-table-wrapper {
+                overflow-x: visible !important; /* Fully lock static when screen is wide enough */
+            }
+        }
     </style>
     @vite('resources/js/app.js')
 </head>
@@ -295,6 +370,12 @@
             </div>
 
             <nav class="sidebar-nav">
+                @if(auth()->user()->canAccess('admin'))
+                <a href="{{ route('admin.users') }}" class="nav-link nav-link-admin {{ Route::is('admin.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-users-gear"></i>
+                    <span>Admin</span>
+                </a>
+                @endif
                 @if(auth()->user()->canAccess('panel'))
                 <a href="{{ route('panel') }}" class="nav-link {{ Route::is('panel') ? 'active' : '' }}">
                     <i class="fa-solid fa-gauge"></i>
@@ -323,12 +404,6 @@
                 <a href="{{ route('view3d') }}" class="nav-link {{ Route::is('view3d') ? 'active' : '' }}">
                     <i class="fa-solid fa-cube"></i>
                     <span>3D View</span>
-                </a>
-                @endif
-                @if(auth()->user()->isAdmin())
-                <a href="{{ route('admin.users') }}" class="nav-link nav-link-admin {{ Route::is('admin.*') ? 'active' : '' }}">
-                    <i class="fa-solid fa-users-gear"></i>
-                    <span>Kelola User</span>
                 </a>
                 @endif
             </nav>
@@ -382,7 +457,9 @@
             <div class="settings-container">
                 <div class="glow-card settings-card">
                     <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
-                        <span class="material-symbols-rounded" style="color: var(--warna-utama, #10b981);">manage_accounts</span>
+                        <!-- Theme-aligned Icons -->
+                        <span class="material-symbols-rounded icon-m3-only" style="color: var(--warna-utama, #10b981);">manage_accounts</span>
+                        <i class="fa-solid fa-users icon-neon-only" style="color: var(--warna-utama, #10b981); font-size: 1.2rem;"></i>
                         <h2 class="section-title" style="margin: 0; color: #ededed;">Daftar Pengguna</h2>
                     </div>
                     <p class="text-muted" style="margin-bottom: 2rem; font-size: 0.85rem;">
@@ -399,6 +476,7 @@
                                     <th class="perm-col">Schedules</th>
                                     <th class="perm-col">3D View</th>
                                     <th class="perm-col">Settings</th>
+                                    <th class="perm-col">Kelola User</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -415,7 +493,7 @@
                                         </td>
 
                                         @php 
-                                            $perms = ['panel', 'analisis', 'schedule', 'view3d', 'settings']; 
+                                            $perms = ['panel', 'analisis', 'schedule', 'view3d', 'settings', 'admin']; 
                                             $formId = 'form_user_' . $user->id;
                                         @endphp
 
@@ -434,7 +512,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="7">
+                                        <td colspan="8">
                                             <div class="empty-state">
                                                 <span class="material-symbols-rounded">group</span>
                                                 Belum ada user terdaftar.
@@ -486,12 +564,12 @@
             <span>Schedule</span>
         </a>
         @endif
-        @if(auth()->user()->isAdmin())
+        @if(auth()->user()->canAccess('admin'))
         <a href="{{ route('admin.users') }}" class="bottom-nav-link {{ Route::is('admin.*') ? 'active' : '' }}">
             <div class="bottom-nav-icon-wrapper">
                 <i class="fa-solid fa-users-gear"></i>
             </div>
-            <span>Users</span>
+            <span>Admin</span>
         </a>
         @else
         <a href="{{ route('settings.index') }}" class="bottom-nav-link {{ Route::is('settings.*') ? 'active' : '' }}">
