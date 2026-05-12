@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- PREVENT FOUC & SETUP UI THEME -->
+    <!-- UI Theme Setup -->
     <script>
         (function() {
             const uiVersion = localStorage.getItem('jamkot-ui-version') || 'v1';
@@ -24,12 +24,9 @@
 
     <div class="panel-layout">
 
-        <!-- NAVBAR -->
+        <!-- Navigasi -->
         <header class="mobile-top-nav">
             <div class="mobile-logo">JAMKOT</div>
-            <button class="btn-toggle-sidebar" id="sidebar-toggle">
-                <i class="fa-solid fa-bars"></i>
-            </button>
             <div class="mobile-top-actions">
                 @if(auth()->user()->canAccess('admin'))
                     @if(Route::is('settings.index'))
@@ -110,7 +107,7 @@
             </div>
         </aside>
 
-        <!-- MAIN-CONTENT -->
+        <!-- Konten -->
         <main class="panel-content">
 
             <header class="content-header-flex">
@@ -119,14 +116,14 @@
                     <p>Pantau status perangkat dan indikator lingkungan secara real-time.</p>
                 </div>
 
-                <!-- JAM -->
+                <!-- Jam -->
                 <div class="datetime-widget">
                     <div id="realtime-clock" class="time-display">00:00:00</div>
                     <div id="realtime-date" class="date-display">Memuat...</div>
                 </div>
             </header>
 
-            <!-- DATA-REALTIME -->
+            <!-- Data Realtime -->
             <div class="summary-grid">
                 <div class="glow-card" id="card-cahaya">
                     <div class="card-title-wrapper">
@@ -153,52 +150,107 @@
                 </div>
             </div>
 
-            <!-- APEXCHART -->
+            <!-- Grafik -->
             <div class="glow-card chart-wrapper">
                 <h3 class="section-title">Tren Suhu & Kelembapan</h3>
                 <div id="chart-jamkot"></div>
             </div>
 
-            <!-- LOG-SENSOR -->
-            <div class="glow-card table-wrapper">
+            <!-- Log Sensor -->
+            <div class="glow-card table-wrapper" id="panel-log-card">
                 <div class="table-header">
                     <h3 class="section-title" style="margin: 0;">Log Sensor Terakhir</h3>
                     <a href="{{ route('panel.export') }}" class="btn-sm"
                         style="text-decoration: none; display: inline-block;">Unduh Laporan</a>
                 </div>
 
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>WAKTU</th>
-                            <th>ID DEVICE</th>
-                            <th>STATUS</th>
-                            <th>POMPA</th>
-                            <th class="text-right">NILAI (H | T)</th>
-                        </tr>
-                    </thead>
-                    <tbody id="table-body-log">
-                        @forelse($riwayatTabel as $log)
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
                             <tr>
-                                <td class="text-muted">{{ $log->created_at->diffForHumans() }}</td>
-                                <td>{{ $log->sensor_id }}</td>
-                                <td><span class="badge success">Tercatat</span></td>
-                                <td>
-                                    <span class="fw-bold {{ $log->pompa_status == 'ON' ? 'text-blue' : 'text-muted' }}">
-                                        {{ $log->pompa_status }}
-                                    </span>
-                                </td>
-                                <td class="text-right">{{ $log->kelembapan }}% | {{ $log->suhu }}°C</td>
+                                <th>WAKTU</th>
+                                <th>ID DEVICE</th>
+                                <th>STATUS</th>
+                                <th>POMPA</th>
+                                <th class="text-right">NILAI (H | T)</th>
                             </tr>
-                        @empty
-                            <tr>
-                                <td colspan="5" class="text-muted" style="text-align: center; padding: 2rem;">Belum ada data
-                                    sensor masuk.</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody id="table-body-log">
+                            @forelse($riwayatTabel as $log)
+                                <tr>
+                                    <td class="text-muted">{{ $log->created_at->diffForHumans() }}</td>
+                                    <td>{{ $log->sensor_id }}</td>
+                                    <td><span class="badge success">Tercatat</span></td>
+                                    <td>
+                                        <span class="fw-bold {{ $log->pompa_status == 'ON' ? 'text-blue' : 'text-muted' }}">
+                                            {{ $log->pompa_status }}
+                                        </span>
+                                    </td>
+                                    <td class="text-right">{{ $log->kelembapan }}% | {{ $log->suhu }}°C</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="text-muted" style="text-align: center; padding: 2rem;">Belum ada data
+                                        sensor masuk.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
             </div>
+
+            <style>
+                /* --- Tabel Responsif --- */
+                .table-responsive {
+                    display: block !important;
+                    width: 100% !important;
+                    overflow-x: auto !important;
+                    overflow-y: hidden !important;
+                    -webkit-overflow-scrolling: touch !important;
+                    position: relative !important;
+                    padding-bottom: 10px !important;
+                }
+
+                .data-table {
+                    width: 100% !important;
+                    min-width: 800px !important;
+                    border-collapse: collapse !important;
+                    table-layout: auto !important;
+                }
+
+                .data-table th, .data-table td {
+                    white-space: nowrap !important;
+                    padding: 1.25rem 1.5rem !important;
+                    text-align: left !important;
+                }
+
+                @media (max-width: 768px) {
+                    #panel-log-card {
+                        padding: 1.5rem 0 !important;
+                        overflow: hidden !important;
+                    }
+                    
+                    .table-header {
+                        padding: 0 1.5rem 1rem 1.5rem !important;
+                    }
+
+                    .table-responsive {
+                        padding: 0 1.5rem !important;
+                    }
+
+                    .table-responsive::-webkit-scrollbar {
+                        height: 8px !important;
+                        display: block !important;
+                    }
+                    .table-responsive::-webkit-scrollbar-thumb {
+                        background: var(--warna-utama, #10b981) !important;
+                        border-radius: 10px !important;
+                    }
+                    .table-responsive::-webkit-scrollbar-track {
+                        background: rgba(255,255,255,0.05) !important;
+                    }
+                }
+            </style>
 
         </main>
     </div>
