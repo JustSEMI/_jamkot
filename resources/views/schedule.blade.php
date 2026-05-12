@@ -124,9 +124,6 @@
         <!-- NAVBAR -->
         <header class="mobile-top-nav">
             <div class="mobile-logo">JAMKOT</div>
-            <button class="btn-toggle-sidebar" id="sidebar-toggle">
-                <i class="fa-solid fa-bars"></i>
-            </button>
             <div class="mobile-top-actions">
                 @if(auth()->user()->canAccess('admin'))
                     @if(Route::is('settings.index'))

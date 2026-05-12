@@ -28,9 +28,6 @@
         <!-- MOBILE NAV -->
         <header class="mobile-top-nav">
             <div class="mobile-logo">JAMKOT</div>
-            <button class="btn-toggle-sidebar" id="sidebar-toggle">
-                <i class="fa-solid fa-bars"></i>
-            </button>
             <div class="mobile-top-actions">
                 @if(auth()->user()->canAccess('admin'))
                     @if(Route::is('settings.index'))
@@ -182,6 +179,258 @@
                 </div>
             </div>
 
+            <!-- FILTER & HISTORI LOG -->
+            <div class="glow-card filter-card" style="margin-top: 2rem; padding: 1.75rem;">
+                <form action="{{ route('analisis') }}" method="GET" class="filter-form">
+                    <div class="filter-group">
+                        <label>Filter Tanggal</label>
+                        <input type="date" name="date" value="{{ $date }}" class="filter-input">
+                    </div>
+                    <div class="filter-group">
+                        <label>Jumlah Data</label>
+                        <select name="limit" class="filter-input">
+                            <option value="10" {{ $limit == 10 ? 'selected' : '' }}>10 Data</option>
+                            <option value="20" {{ $limit == 20 ? 'selected' : '' }}>20 Data</option>
+                            <option value="50" {{ $limit == 50 ? 'selected' : '' }}>50 Data</option>
+                            <option value="100" {{ $limit == 100 ? 'selected' : '' }}>100 Data</option>
+                        </select>
+                    </div>
+                    <div class="filter-actions">
+                        <button type="submit" class="btn-filter">Tampilkan Data</button>
+                        @if($date || $limit != 10)
+                            <a href="{{ route('analisis') }}" class="btn-reset">Reset</a>
+                        @endif
+                    </div>
+                </form>
+            </div>
+
+            <div class="glow-card table-wrapper" style="margin-top: 1.5rem; margin-bottom: 3rem;">
+                <div class="table-header">
+                    <h3 class="section-title" style="margin: 0;">Histori Log Sensor</h3>
+                    @if($date)
+                        <span class="badge info" style="background: rgba(16, 185, 129, 0.1); color: var(--warna-utama, #10b981); border: 1px solid rgba(16, 185, 129, 0.2);">
+                            Menampilkan data: {{ \Carbon\Carbon::parse($date)->format('d M Y') }}
+                        </span>
+                    @endif
+                </div>
+
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>WAKTU</th>
+                                <th>ID DEVICE</th>
+                                <th>STATUS</th>
+                                <th>POMPA</th>
+                                <th class="text-right">NILAI (H | T)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($logs as $log)
+                                <tr>
+                                    <td class="text-muted">
+                                        <span style="color: #ededed;">{{ $log->created_at->format('H:i:s') }}</span> 
+                                        <small style="font-size: 0.7rem; margin-left: 0.5rem; opacity: 0.6;">{{ $log->created_at->diffForHumans() }}</small>
+                                    </td>
+                                    <td>{{ $log->sensor_id }}</td>
+                                    <td><span class="badge success" style="background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.2);">Tercatat</span></td>
+                                    <td>
+                                        <span class="fw-bold {{ $log->pompa_status == 'ON' ? 'text-blue' : 'text-muted' }}" style="{{ $log->pompa_status == 'ON' ? 'color: #3b82f6;' : '' }}">
+                                            {{ $log->pompa_status }}
+                                        </span>
+                                    </td>
+                                    <td class="text-right fw-bold" style="letter-spacing: 0.05em;">{{ $log->kelembapan }}% | {{ $log->suhu }}°C</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="text-muted" style="text-align: center; padding: 4rem 2rem;">
+                                        <i class="fa-solid fa-folder-open" style="display: block; font-size: 2rem; margin-bottom: 1rem; opacity: 0.3;"></i>
+                                        Tidak ada data ditemukan untuk filter yang dipilih.
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <style>
+                /* --- Tabel Responsif --- */
+                .table-responsive {
+                    display: block !important;
+                    width: 100% !important;
+                    overflow-x: auto !important;
+                    overflow-y: hidden !important;
+                    -webkit-overflow-scrolling: touch !important;
+                    position: relative !important;
+                    padding-bottom: 10px !important; /* Space for scrollbar */
+                }
+
+                .data-table {
+                    width: 100% !important;
+                    min-width: 850px !important; /* Force content width */
+                    border-collapse: collapse !important;
+                    table-layout: auto !important;
+                }
+
+                .data-table th, .data-table td {
+                    white-space: nowrap !important; /* ABSOLUTELY NO WRAPPING */
+                    padding: 1.25rem 1.5rem !important;
+                    text-align: left !important;
+                }
+
+                @media (max-width: 768px) {
+                    .glow-card.table-wrapper {
+                        padding: 1.5rem 0 !important; /* Remove horizontal padding on card to allow full-width scroll */
+                        overflow: hidden !important;
+                    }
+                    
+                    .table-header {
+                        padding: 0 1.5rem 1rem 1.5rem !important;
+                    }
+
+                    .table-responsive {
+                        padding: 0 1.5rem !important;
+                    }
+
+                    /* Make scrollbar always visible on some mobile browsers */
+                    .table-responsive::-webkit-scrollbar {
+                        height: 8px !important;
+                        display: block !important;
+                    }
+                    .table-responsive::-webkit-scrollbar-thumb {
+                        background: var(--warna-utama, #10b981) !important;
+                        border-radius: 10px !important;
+                    }
+                    .table-responsive::-webkit-scrollbar-track {
+                        background: rgba(255,255,255,0.05) !important;
+                    }
+                }
+
+                /* --- Filter --- */
+                .filter-form {
+                    display: flex;
+                    align-items: flex-end;
+                    gap: 1.5rem;
+                    flex-wrap: wrap;
+                }
+
+                .filter-group {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.6rem;
+                }
+
+                .filter-group label {
+                    font-size: 0.7rem;
+                    color: #9ca3af;
+                    text-transform: uppercase;
+                    letter-spacing: 0.1em;
+                    font-weight: 600;
+                }
+
+                .filter-input {
+                    background: #111;
+                    border: 1px solid #262626;
+                    color: #ededed;
+                    padding: 0.75rem 1rem;
+                    border-radius: 0.75rem;
+                    font-family: inherit;
+                    font-size: 0.875rem;
+                    outline: none;
+                    transition: all 0.3s ease;
+                    min-width: 180px;
+                }
+
+                .filter-input:focus {
+                    border-color: var(--warna-utama, #10b981);
+                    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+                }
+
+                .filter-actions {
+                    display: flex;
+                    gap: 0.75rem;
+                    align-items: center;
+                }
+
+                .btn-filter {
+                    background: var(--warna-utama, #10b981);
+                    color: #050505;
+                    border: none;
+                    padding: 0.75rem 1.5rem;
+                    border-radius: 0.75rem;
+                    font-weight: 700;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    font-size: 0.875rem;
+                }
+
+                .btn-filter:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.25);
+                }
+
+                .btn-reset {
+                    text-decoration: none;
+                    color: #9ca3af;
+                    font-size: 0.875rem;
+                    padding: 0.75rem 1rem;
+                    transition: color 0.2s;
+                }
+
+                .btn-reset:hover {
+                    color: #ef4444;
+                }
+
+                /* --- Tema M3 --- */
+                html[data-ui-version="v1"] .filter-card {
+                    background: var(--m3-surface-container) !important;
+                    border-radius: 28px !important;
+                    border: none !important;
+                    box-shadow: none !important;
+                }
+
+                html[data-ui-version="v1"] .filter-group label {
+                    color: var(--m3-on-surface-variant) !important;
+                    font-family: var(--m3-font) !important;
+                }
+
+                html[data-ui-version="v1"] .filter-input {
+                    background: var(--m3-surface-container-high) !important;
+                    border: 1px solid var(--m3-outline-variant) !important;
+                    color: var(--m3-on-surface) !important;
+                    border-radius: 16px !important;
+                }
+
+                html[data-ui-version="v1"] .btn-filter {
+                    background: var(--m3-primary) !important;
+                    color: var(--m3-on-primary) !important;
+                    border-radius: 100px !important;
+                    font-family: var(--m3-font) !important;
+                }
+
+                html[data-ui-version="v1"] .btn-reset {
+                    font-family: var(--m3-font) !important;
+                }
+
+                html[data-ui-version="v1"] .section-title {
+                    font-family: var(--m3-font) !important;
+                    color: var(--m3-on-surface) !important;
+                }
+
+                html[data-ui-version="v1"] .data-table tr {
+                    border-bottom-color: var(--m3-outline-variant) !important;
+                }
+
+                html[data-ui-version="v1"] .login-footer p {
+                    color: var(--m3-on-surface-variant) !important;
+                }
+
+                html[data-ui-version="v1"] .data-table th {
+                    color: var(--m3-on-surface-variant) !important;
+                    font-family: var(--m3-font) !important;
+                }
+            </style>
         </main>
     </div>
 
