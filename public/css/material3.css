@@ -321,6 +321,16 @@ html[data-ui-version="v1"] .status-dot.online {
     box-shadow: 0 0 8px rgba(128, 222, 197, 0.3) !important;
 }
 
+html[data-ui-version="v1"] .status-dot.status-suhu.online {
+    background-color: var(--m3-primary) !important;
+    box-shadow: 0 0 8px rgba(128, 222, 197, 0.3) !important;
+}
+
+html[data-ui-version="v1"] .status-dot.status-kelembapan.online {
+    background-color: var(--m3-tertiary) !important;
+    box-shadow: 0 0 8px rgba(255, 182, 143, 0.3) !important;
+}
+
 html[data-ui-version="v1"] .status-dot.offline {
     background-color: var(--m3-error) !important;
     box-shadow: none !important;

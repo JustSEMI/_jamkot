@@ -51,8 +51,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
             var optionsArea = {
                 series: [
-                    { name: 'Kelembapan (%)', data: kelembapanSeries },
-                    { name: 'Suhu (°C)', data: suhuSeries }
+                    { name: 'Suhu (°C)', data: suhuSeries },
+                    { name: 'Kelembapan (%)', data: kelembapanSeries }
                 ],
                 chart: {
                     height: 300,
