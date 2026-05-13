@@ -21,6 +21,13 @@
 /storage/*.key
 /storage/pail
 /vendor
+/.vscode
+.vscode
+/.agents/skills
+/.gemini
+/.idea
+/.nova
+
 _ide_helper.php
 Homestead.json
 Homestead.yaml
