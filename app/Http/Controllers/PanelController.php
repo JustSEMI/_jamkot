@@ -93,9 +93,10 @@ class PanelController extends Controller
         return view('analisis', compact('stats', 'logs', 'date', 'limit'));
     }
 
-    public function exportCsv()
+    public function exportCsv(Request $request)
     {
-        $fileName = 'Laporan_Sensor_JAMKOT_'.date('Y-m-d_H-i-s').'.csv';
+        $date = $request->get('date');
+        $fileName = 'Laporan_Sensor_JAMKOT_'.($date ? $date : date('Y-m-d')).'.csv';
 
         $headers = [
             'Content-type' => 'text/csv',
@@ -105,7 +106,7 @@ class PanelController extends Controller
             'Expires' => '0',
         ];
 
-        $callback = function () {
+        $callback = function () use ($date) {
             $file = fopen('php://output', 'w');
 
             fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF));
@@ -113,7 +114,12 @@ class PanelController extends Controller
 
             fputcsv($file, ['ID', 'WAKTU CATAT', 'SENSOR ID', 'SUHU (°C)', 'KELEMBAPAN (%)', 'STATUS POMPA']);
 
-            SensorLog::orderBy('created_at', 'desc')->chunk(500, function ($logs) use ($file) {
+            $query = SensorLog::query();
+            if ($date) {
+                $query->whereDate('created_at', $date);
+            }
+
+            $query->orderBy('created_at', 'desc')->chunk(500, function ($logs) use ($file) {
                 foreach ($logs as $log) {
                     fputcsv($file, [
                         $log->id,
@@ -130,6 +136,20 @@ class PanelController extends Controller
         };
 
         return response()->stream($callback, 200, $headers);
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $date = $request->get('date');
+        $query = SensorLog::query();
+        
+        if ($date) {
+            $query->whereDate('created_at', $date);
+        }
+
+        $logs = $query->latest()->limit(500)->get(); // Limit for safety in print view
+
+        return view('exports.pdf', compact('logs'));
     }
 
     public function view3d()

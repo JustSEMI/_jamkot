@@ -284,3 +284,22 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* --- DEVICE SPECIFIC VISIBILITY --- */
+.mobile-only {
+    display: none !important;
+}
+
+@media (max-width: 768px) {
+    .desktop-only {
+        display: none !important;
+    }
+    .mobile-only {
+        display: block !important;
+    }
+    
+    /* Special case for instruction-list which is flex */
+    .instruction-list.mobile-only {
+        display: flex !important;
+    }
+}

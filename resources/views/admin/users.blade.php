@@ -256,6 +256,26 @@
             border: none !important;
         }
 
+        html[data-ui-version="v1"] .btn-delete-user {
+            background: var(--m3-error-container) !important;
+            color: var(--m3-on-error-container) !important;
+            border-radius: 20px !important;
+            font-family: var(--m3-font) !important;
+            font-weight: 600 !important;
+            padding: 0.5rem 0.8rem !important;
+            font-size: 0.8rem !important;
+            border: none !important;
+            transition: all 0.2s ease !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        html[data-ui-version="v1"] .btn-delete-user:hover {
+            background: #ffb4ab !important; /* M3 Error fixed variant */
+            transform: scale(1.1);
+        }
+
         html[data-ui-version="v1"] .save-perm-btn:hover {
             background: var(--m3-primary) !important;
             transform: scale(1.05) !important;
@@ -299,6 +319,128 @@
             border-color: var(--warna-utama, #10b981) !important;
         }
 
+        html[data-ui-version="v2"] .btn-delete-user {
+            background: rgba(239, 68, 68, 0.1) !important;
+            color: #ef4444 !important;
+            border: 1px solid rgba(239, 68, 68, 0.2) !important;
+            border-radius: 8px !important;
+            padding: 0.5rem 0.8rem !important;
+            transition: all 0.2s ease !important;
+        }
+
+        html[data-ui-version="v2"] .btn-delete-user:hover {
+            background: rgba(239, 68, 68, 0.2) !important;
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.3) !important;
+        }
+
+        /* CUSTOM MODAL THEME SYNC */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .custom-modal {
+            background: #1a1a1a;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 28px;
+            padding: 2rem;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            transform: scale(0.9);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .modal-overlay.active .custom-modal {
+            transform: scale(1);
+        }
+
+        .modal-icon-wrapper {
+            width: 72px;
+            height: 72px;
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+        }
+
+        .modal-icon-wrapper .material-symbols-rounded {
+            font-size: 36px;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #ededed;
+        }
+
+        .modal-text {
+            color: #9ca3af;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 2rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .btn-modal {
+            padding: 0.75rem 1.5rem;
+            border-radius: 100px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .btn-modal-cancel {
+            background: rgba(255, 255, 255, 0.05);
+            color: #ededed;
+        }
+
+        .btn-modal-confirm {
+            background: #ef4444;
+            color: white;
+        }
+
+        /* M3 Overrides */
+        html[data-ui-version="v1"] .custom-modal {
+            background: var(--m3-surface-container-high) !important;
+            font-family: var(--m3-font) !important;
+        }
+        html[data-ui-version="v1"] .modal-title { color: var(--m3-on-surface) !important; }
+        html[data-ui-version="v1"] .modal-text { color: var(--m3-on-surface-variant) !important; }
+
+        html[data-ui-version="v2"] .custom-modal {
+            border-color: rgba(239, 68, 68, 0.3) !important;
+            box-shadow: 0 0 30px rgba(239, 68, 68, 0.15) !important;
+        }
+
         html[data-ui-version="v2"] .users-table th {
             color: #6b7280 !important;
             font-weight: 500 !important;
@@ -335,6 +477,57 @@
         @media (min-width: 1024px) {
             .users-table-wrapper {
                 overflow-x: visible !important; /* Fully lock static when screen is wide enough */
+            }
+        }
+
+        /* --- Mobile Responsive Scroll Force --- */
+        @media (max-width: 768px) {
+            .panel-content {
+                overflow-x: hidden !important;
+                padding: 1rem !important;
+            }
+
+            .settings-container {
+                margin-top: 1rem !important;
+                width: 100% !important;
+                padding: 0 !important;
+            }
+
+            .settings-card {
+                padding: 1.25rem !important;
+                overflow: hidden !important; /* Contain the scroll within card if possible, or use visible */
+            }
+
+            .users-table-wrapper {
+                display: block !important;
+                width: 100% !important;
+                overflow-x: auto !important;
+                -webkit-overflow-scrolling: touch !important;
+                margin: 0 -0.5rem !important; /* Slight negative margin to show more content */
+                padding: 0 0.5rem 15px 0.5rem !important;
+            }
+            
+            .users-table {
+                min-width: 1000px !important; /* Force extra width for many columns */
+                width: 100% !important;
+            }
+
+            .users-table th, .users-table td {
+                white-space: nowrap !important;
+                padding: 1rem 0.75rem !important;
+            }
+            
+            /* Custom scrollbar for better visibility */
+            .users-table-wrapper::-webkit-scrollbar {
+                height: 8px !important;
+                display: block !important;
+            }
+            .users-table-wrapper::-webkit-scrollbar-thumb {
+                background: var(--warna-utama, #10b981) !important;
+                border-radius: 10px !important;
+            }
+            .users-table-wrapper::-webkit-scrollbar-track {
+                background: rgba(255, 255, 255, 0.05) !important;
             }
         }
     </style>
@@ -515,12 +708,24 @@
                                             </td>
                                         @endforeach
                                         <td>
-                                            <button type="submit" form="{{ $formId }}" class="save-perm-btn btn-sm">Simpan</button>
+                                            <div style="display: flex; gap: 0.5rem; align-items: center;">
+                                                <button type="submit" form="{{ $formId }}" class="save-perm-btn btn-sm">Simpan</button>
+                                                
+                                                <button type="button" class="btn-delete-user" title="Hapus User" 
+                                                        onclick="confirmDelete('{{ $user->id }}', '{{ $user->username }}')">
+                                                    <i class="fa-solid fa-trash-can"></i>
+                                                </button>
+
+                                                <form id="delete_form_{{ $user->id }}" action="{{ route('admin.users.destroy', $user) }}" method="POST" style="display: none;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                </form>
+                                            </div>
                                         </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="8">
+                                        <td colspan="9">
                                             <div class="empty-state">
                                                 <span class="material-symbols-rounded">group</span>
                                                 Belum ada user terdaftar.
@@ -541,10 +746,52 @@
                 </form>
             @endforeach
 
+            <!-- CUSTOM DELETE MODAL -->
+            <div id="deleteModal" class="modal-overlay">
+                <div class="custom-modal">
+                    <div class="modal-icon-wrapper">
+                        <span class="material-symbols-rounded">warning</span>
+                    </div>
+                    <h3 class="modal-title">Konfirmasi Hapus</h3>
+                    <p class="modal-text">Apakah Anda yakin ingin menghapus user <strong id="deleteTargetName"></strong>? <br>Tindakan ini akan menghapus akun secara permanen.</p>
+                    <div class="modal-actions">
+                        <button type="button" class="btn-modal btn-modal-cancel" onclick="closeDeleteModal()">Batal</button>
+                        <button type="button" class="btn-modal btn-modal-confirm" id="confirmDeleteBtn">Hapus Sekarang</button>
+                    </div>
+                </div>
+            </div>
+
         </main>
     </div>
 
     <script src="{{ asset('js/sidebar.js') }}"></script>
+    <script>
+        let currentDeleteId = null;
+
+        function confirmDelete(userId, username) {
+            currentDeleteId = userId;
+            document.getElementById('deleteTargetName').innerText = username;
+            document.getElementById('deleteModal').classList.add('active');
+            
+            document.getElementById('confirmDeleteBtn').onclick = function() {
+                document.getElementById('delete_form_' + currentDeleteId).submit();
+            };
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.remove('active');
+        }
+
+        // Close on escape
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeDeleteModal();
+        });
+        
+        // Close on click outside
+        document.getElementById('deleteModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('deleteModal')) closeDeleteModal();
+        });
+    </script>
 
     <!-- BOTTOM NAV FOR MOBILE (M3 Only) -->
     <nav class="bottom-nav">

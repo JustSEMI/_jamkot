@@ -174,8 +174,9 @@
 
                     <!-- INTERACTION HELP -->
                     <div class="panel-card">
-                        <h3 class="panel-card-title">Navigasi Mouse</h3>
-                        <div class="instruction-list">
+                        <!-- Desktop Header -->
+                        <h3 class="panel-card-title desktop-only">Navigasi Mouse</h3>
+                        <div class="instruction-list desktop-only">
                             <div class="instruction-item">
                                 <i class="fa-solid fa-mouse-pointer"></i>
                                 <span><strong>Klik & Seret (Kiri):</strong> Putar/Rotasi objek 3D secara bebas.</span>
@@ -187,6 +188,23 @@
                             <div class="instruction-item">
                                 <i class="fa-solid fa-hand"></i>
                                 <span><strong>Klik & Seret (Kanan):</strong> Geser kamera (Panning) ke segala arah.</span>
+                            </div>
+                        </div>
+
+                        <!-- Mobile Header -->
+                        <h3 class="panel-card-title mobile-only">Navigasi Sentuh</h3>
+                        <div class="instruction-list mobile-only">
+                            <div class="instruction-item">
+                                <i class="fa-solid fa-fingerprint"></i>
+                                <span><strong>Satu Jari:</strong> Putar/Rotasi objek 3D secara bebas.</span>
+                            </div>
+                            <div class="instruction-item">
+                                <i class="fa-solid fa-up-down-left-right"></i>
+                                <span><strong>Cubit (Pinch):</strong> Perbesar (Zoom In) atau perkecil (Zoom Out).</span>
+                            </div>
+                            <div class="instruction-item">
+                                <i class="fa-solid fa-up-right-from-square"></i>
+                                <span><strong>Dua Jari:</strong> Geser kamera (Panning) ke segala arah.</span>
                             </div>
                         </div>
                     </div>

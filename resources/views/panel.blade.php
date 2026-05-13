@@ -160,8 +160,6 @@
             <div class="glow-card table-wrapper" id="panel-log-card">
                 <div class="table-header">
                     <h3 class="section-title" style="margin: 0;">Log Sensor Terakhir</h3>
-                    <a href="{{ route('panel.export') }}" class="btn-sm"
-                        style="text-decoration: none; display: inline-block;">Unduh Laporan</a>
                 </div>
 
                 <div class="table-responsive">
