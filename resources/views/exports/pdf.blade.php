@@ -61,11 +61,17 @@
         }
     </style>
 </head>
-<body onload="window.print()">
-    <div class="no-print" style="background: #fff3cd; padding: 15px; margin-bottom: 20px; border: 1px solid #ffeeba; border-radius: 4px; text-align: center;">
-        Kotak dialog cetak akan muncul otomatis. Pilih <strong>"Simpan sebagai PDF"</strong> pada tujuan pencetakan.
-        <br>
-        <button onclick="window.close()" style="margin-top: 10px; padding: 5px 15px; cursor: pointer;">Tutup Halaman</button>
+<body>
+    <div class="no-print" style="background: rgba(16, 185, 129, 0.1); padding: 1.5rem; margin-bottom: 2rem; border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 12px; text-align: center; font-family: 'Inter', sans-serif;">
+        <p style="margin: 0 0 1rem 0; color: #10b981; font-weight: 500;">Pratinjau Laporan Berhasil Dibuat</p>
+        <div style="display: flex; gap: 10px; justify-content: center;">
+            <button onclick="window.print()" style="background: #10b981; color: #fff; border: none; padding: 8px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; transition: opacity 0.2s;">
+                <i class="fa-solid fa-print"></i> Cetak Laporan / Simpan PDF
+            </button>
+            <button onclick="window.close()" style="background: rgba(255,255,255,0.1); color: #666; border: 1px solid #ddd; padding: 8px 20px; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                Tutup
+            </button>
+        </div>
     </div>
 
     <div class="header">

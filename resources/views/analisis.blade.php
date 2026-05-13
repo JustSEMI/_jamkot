@@ -397,6 +397,31 @@
                     color: #ef4444;
                 }
 
+                @media (max-width: 600px) {
+                    .filter-form {
+                        flex-direction: column;
+                        align-items: stretch !important; /* Stretch to fill width for a straighter look */
+                        gap: 1rem !important;
+                    }
+                    .filter-group {
+                        width: 100% !important;
+                        align-items: flex-start !important;
+                    }
+                    .filter-input {
+                        width: 100% !important;
+                        text-align: left !important; /* Keep text left for better readability */
+                    }
+                    .filter-actions {
+                        width: 100% !important;
+                        flex-direction: column !important;
+                        align-items: stretch !important;
+                        margin-top: 0.5rem !important;
+                    }
+                    .btn-filter {
+                        width: 100% !important;
+                    }
+                }
+
                 /* --- Tema M3 --- */
                 html[data-ui-version="v1"] .filter-card {
                     background: var(--m3-surface-container) !important;
