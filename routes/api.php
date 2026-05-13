@@ -11,3 +11,4 @@ Route::get('/user', function (Request $request) {
 
 Route::any('/sensor/data', [SensorController::class, 'data']);
 Route::any('/schedule', [ScheduleController::class, 'getSchedule']);
+Route::get('/pump/status', [ScheduleController::class, 'getPumpStatus']);

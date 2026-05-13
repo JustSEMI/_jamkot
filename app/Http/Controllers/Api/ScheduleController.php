@@ -34,4 +34,17 @@ class ScheduleController extends Controller
             ]
         ]);
     }
+
+    public function getPumpStatus(Request $request)
+    {
+        $jadwal = Schedule::first();
+        
+        if (!$jadwal) {
+            return response()->json(['status' => 'AUTO']); // Default fallback
+        }
+
+        return response()->json([
+            'status' => $jadwal->manual_pump_status ?? 'AUTO'
+        ]);
+    }
 }
