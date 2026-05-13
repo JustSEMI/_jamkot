@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SensorLog;
+use App\Models\Schedule;
 use Illuminate\Http\Request;
 
 
@@ -50,6 +51,10 @@ class PanelController extends Controller
             ];
         });
 
+        // Ambil status pompa manual
+        $jadwal = Schedule::first();
+        $manualPumpStatus = $jadwal ? $jadwal->manual_pump_status : 'AUTO';
+
         return response()->json([
             'latest' => [
                 'cahaya' => $latest->cahaya ?? '--',
@@ -62,9 +67,27 @@ class PanelController extends Controller
             'riwayatTabel' => $riwayatTabel,
             'riwayatGrafik' => $riwayatGrafik,
             'targetKelembapan' => 85,
+            'manual_pump_status' => $manualPumpStatus,
         ])->header('Cache-Control', 'no-cache, no-store, must-revalidate')
             ->header('Pragma', 'no-cache')
             ->header('Expires', '0');
+    }
+
+    public function togglePump(Request $request)
+    {
+        $jadwal = Schedule::first();
+        if (!$jadwal) {
+            return response()->json(['status' => 'error', 'message' => 'Konfigurasi jadwal belum ada.']);
+        }
+
+        $request->validate([
+            'status' => 'required|in:AUTO,ON,OFF'
+        ]);
+
+        $jadwal->manual_pump_status = $request->status;
+        $jadwal->save();
+
+        return response()->json(['status' => 'success', 'pump_status' => $jadwal->manual_pump_status]);
     }
 
     public function analisis(Request $request)

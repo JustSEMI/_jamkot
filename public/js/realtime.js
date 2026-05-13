@@ -12,23 +12,49 @@ document.addEventListener('DOMContentLoaded', function () {
         fetch('/panel/data/realtime?t=' + new Date().getTime())
             .then(response => response.json())
             .then(data => {
-                updateCards(data.latest, data.targetKelembapan);
+                updateCards(data.latest, data.targetKelembapan, data.manual_pump_status);
                 updateTable(data.riwayatTabel);
                 updateChart(data.riwayatGrafik);
             })
             .catch(error => console.error('Error fetching realtime data:', error));
     }
 
-    function updateCards(latest, targetKelembapan) {
+    let lastManualPumpStatus = null;
+
+    function updateCards(latest, targetKelembapan, manualPumpStatus) {
         if (!latest) return;
 
         // Check if data actually changed to avoid redundant layout shifts / animations
         const currentJson = JSON.stringify(latest);
-        if (currentJson === lastLatestJson && targetKelembapan === lastTargetKelembapan) {
+        if (currentJson === lastLatestJson && targetKelembapan === lastTargetKelembapan && manualPumpStatus === lastManualPumpStatus) {
             return;
         }
         lastLatestJson = currentJson;
         lastTargetKelembapan = targetKelembapan;
+        lastManualPumpStatus = manualPumpStatus;
+
+        // Sync Pump UI based on server manual_pump_status
+        const btnText = document.getElementById('pump-btn-text');
+        const stateLabel = document.getElementById('pump-state-label');
+        const indicatorDot = document.getElementById('pump-indicator-dot');
+        
+        if (btnText && stateLabel && indicatorDot) {
+            isPumpOn = (manualPumpStatus === 'ON'); // Update global variable
+
+            if (isPumpOn) {
+                btnText.innerText = "MATIKAN";
+                stateLabel.innerText = "ON";
+                stateLabel.style.color = "#10b981";
+                indicatorDot.classList.remove('offline');
+                indicatorDot.classList.add('online');
+            } else {
+                btnText.innerText = "NYALAKAN";
+                stateLabel.innerText = "OFF";
+                stateLabel.style.color = "#ededed";
+                indicatorDot.classList.remove('online');
+                indicatorDot.classList.add('offline');
+            }
+        }
 
         // Update Values
         if (document.getElementById('val-cahaya')) {
@@ -140,3 +166,49 @@ document.addEventListener('DOMContentLoaded', function () {
         }, false, true); // redrawPaths = false, animate = true for smooth transitions
     }
 });
+
+// Doherty Threshold: Optimistic UI for Pump Toggle
+let isPumpOn = false;
+
+function togglePumpOptimistic() {
+    const btnText = document.getElementById('pump-btn-text');
+    const stateLabel = document.getElementById('pump-state-label');
+    const indicatorDot = document.getElementById('pump-indicator-dot');
+    
+    // 1. OPTIMISTIC UPDATE (Instant Feedback < 50ms)
+    isPumpOn = !isPumpOn;
+    
+    if (isPumpOn) {
+        btnText.innerText = "MATIKAN";
+        stateLabel.innerText = "ON";
+        stateLabel.style.color = "#10b981";
+        indicatorDot.classList.remove('offline');
+        indicatorDot.classList.add('online');
+    } else {
+        btnText.innerText = "NYALAKAN";
+        stateLabel.innerText = "OFF";
+        stateLabel.style.color = "#ededed";
+        indicatorDot.classList.remove('online');
+        indicatorDot.classList.add('offline');
+    }
+
+    // 2. BACKGROUND REQUEST
+    fetch('/panel/pump/toggle', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify({ status: isPumpOn ? 'ON' : 'AUTO' })
+    }).then(response => {
+        if (!response.ok) throw new Error('Network response was not ok');
+        return response.json();
+    }).then(data => {
+        if (data.status !== 'success') throw new Error(data.message || 'Error from server');
+    }).catch(error => {
+        // 3. REVERT ON FAILURE
+        console.error("Failed to toggle pump:", error);
+        alert("Gagal menyimpan status kontrol manual pompa.");
+        window.location.reload(); // Revert ke state sebenarnya dari server
+    });
+}

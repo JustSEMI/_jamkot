@@ -110,7 +110,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (document.querySelector("#chart-jamkot")) {
                 window.chartArea = new ApexCharts(document.querySelector("#chart-jamkot"), optionsArea);
-                window.chartArea.render();
+                window.chartArea.render().then(() => {
+                    // Hapus skeleton loader dan tampilkan grafik (Doherty Threshold)
+                    const skeleton = document.getElementById('chart-skeleton');
+                    const chartDiv = document.getElementById('chart-jamkot');
+                    if (skeleton) skeleton.style.display = 'none';
+                    if (chartDiv) chartDiv.style.opacity = '1';
+                });
             }
         }
 

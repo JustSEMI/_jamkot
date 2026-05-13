@@ -43,6 +43,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/panel', [PanelController::class, 'index'])->middleware('permission:panel')->name('panel');
     Route::get('/panel/data/realtime', [PanelController::class, 'realtimeData'])->middleware('permission:panel')->name('panel.data.realtime');
+    Route::post('/panel/pump/toggle', [PanelController::class, 'togglePump'])->middleware('permission:panel')->name('panel.pump.toggle');
     
     // EXPORT ROUTES
     Route::get('/analisis/export/csv', [PanelController::class, 'exportCsv'])->middleware('permission:analisis')->name('analisis.export.csv');

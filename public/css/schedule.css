@@ -202,7 +202,8 @@ body {
 }
 
 .btn-save {
-    padding: 0.75rem 2rem;
+    padding: 1rem 2rem;
+    min-height: 48px;
     background: var(--warna-utama, #10b981);
     color: #111;
     font-family: inherit;
@@ -226,10 +227,10 @@ body {
     }
     
     .btn-save {
-        width: auto;
-        padding: 0.75rem 2.5rem;
+        width: 100%;
+        padding: 1rem;
         border-radius: 100px;
-        font-size: 0.9rem;
+        font-size: 1rem;
     }
 }
 

@@ -27,6 +27,9 @@
         <!-- Navigasi -->
         <header class="mobile-top-nav">
             <div class="mobile-logo">JAMKOT</div>
+            <button class="btn-toggle-sidebar" id="sidebar-toggle">
+                <i class="fa-solid fa-bars"></i>
+            </button>
             <div class="mobile-top-actions">
                 @if(auth()->user()->canAccess('admin'))
                     @if(Route::is('settings.index'))
@@ -123,8 +126,9 @@
                 </div>
             </header>
 
-            <!-- Data Realtime -->
-            <div class="summary-grid">
+            <!-- SECTION 1: KONDISI LINGKUNGAN (Law of Proximity) -->
+            <h3 class="section-title" style="margin-top: 1rem; margin-bottom: 1rem; font-size: 1.1rem; color: #9ca3af;">Indikator Lingkungan</h3>
+            <div class="summary-grid" style="margin-bottom: 2rem;">
                 <div class="glow-card" id="card-cahaya">
                     <div class="card-title-wrapper">
                         <div class="card-title">INTENSITAS CAHAYA</div>
@@ -150,10 +154,40 @@
                 </div>
             </div>
 
+            <!-- SECTION 2: KONTROL AKTUATOR (Law of Proximity & Doherty Threshold) -->
+            <h3 class="section-title" style="margin-bottom: 1rem; font-size: 1.1rem; color: #9ca3af;">Kontrol Aktuator</h3>
+            <div class="summary-grid" style="margin-bottom: 2.5rem; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+                <div class="glow-card actuator-card" style="display: flex; justify-content: space-between; align-items: center; background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.2); padding: 1.5rem;">
+                    <div>
+                        <div class="card-title" style="color: var(--warna-utama, #10b981); margin-bottom: 0.25rem;">POMPA AIR (MISTING)</div>
+                        <div class="card-desc" style="margin: 0;">Kontrol manual kelembapan ruang.</div>
+                        <div id="pump-status-text" style="font-weight: 600; margin-top: 0.75rem; color: #ededed; display: flex; align-items: center; gap: 0.5rem;">
+                            <span class="status-dot offline" id="pump-indicator-dot"></span> <span id="pump-state-label">OFF</span>
+                        </div>
+                    </div>
+                    <div>
+                        <button id="btn-toggle-pump" style="padding: 1rem 1.5rem; border-radius: 100px; background: var(--warna-utama, #10b981); color: #111; font-weight: bold; border: none; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: all 0.2s; min-height: 48px;" onclick="togglePumpOptimistic()">
+                            <i class="fa-solid fa-power-off"></i> <span id="pump-btn-text">NYALAKAN</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <!-- Grafik -->
-            <div class="glow-card chart-wrapper">
+            <div class="glow-card chart-wrapper" style="position: relative; min-height: 350px;">
                 <h3 class="section-title">Tren Suhu & Kelembapan</h3>
-                <div id="chart-jamkot"></div>
+                
+                <!-- Skeleton Loader UI -->
+                <div id="chart-skeleton" style="position: absolute; top: 60px; left: 1.5rem; right: 1.5rem; bottom: 1.5rem; background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.03) 75%); background-size: 200% 100%; animation: skeletonLoading 1.5s infinite; border-radius: 8px; z-index: 10;">
+                    <style>
+                        @keyframes skeletonLoading {
+                            0% { background-position: 200% 0; }
+                            100% { background-position: -200% 0; }
+                        }
+                    </style>
+                </div>
+
+                <div id="chart-jamkot" style="opacity: 0; transition: opacity 0.5s ease;"></div>
             </div>
 
             <!-- Log Sensor -->
