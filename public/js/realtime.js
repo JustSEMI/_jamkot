@@ -140,3 +140,50 @@ document.addEventListener('DOMContentLoaded', function () {
         }, false, true); // redrawPaths = false, animate = true for smooth transitions
     }
 });
+
+// Doherty Threshold: Optimistic UI for Pump Toggle
+let isPumpOn = false;
+
+function togglePumpOptimistic() {
+    const btnText = document.getElementById('pump-btn-text');
+    const stateLabel = document.getElementById('pump-state-label');
+    const indicatorDot = document.getElementById('pump-indicator-dot');
+    
+    // 1. OPTIMISTIC UPDATE (Instant Feedback < 50ms)
+    isPumpOn = !isPumpOn;
+    
+    if (isPumpOn) {
+        btnText.innerText = "MATIKAN";
+        stateLabel.innerText = "ON";
+        stateLabel.style.color = "#10b981";
+        indicatorDot.classList.remove('offline');
+        indicatorDot.classList.add('online');
+    } else {
+        btnText.innerText = "NYALAKAN";
+        stateLabel.innerText = "OFF";
+        stateLabel.style.color = "#ededed";
+        indicatorDot.classList.remove('online');
+        indicatorDot.classList.add('offline');
+    }
+
+    // 2. BACKGROUND REQUEST
+    // In real implementation, we send a fetch request to the server here:
+    /*
+    fetch('/api/pump/toggle', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify({ status: isPumpOn ? 'ON' : 'OFF' })
+    }).then(response => {
+        if (!response.ok) throw new Error('Network response was not ok');
+    }).catch(error => {
+        // 3. REVERT ON FAILURE
+        console.error("Failed to toggle pump:", error);
+        isPumpOn = !isPumpOn; // revert state
+        // (Update UI back to previous state)
+        alert("Gagal menghubungi perangkat. Mengembalikan status.");
+    });
+    */
+}

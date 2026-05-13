@@ -670,84 +670,84 @@
                         Centang atau hapus centang pada setiap kolom untuk mengatur akses halaman. Klik <strong>Simpan</strong> pada baris yang ingin Anda perbarui.
                     </p>
 
-                    <div class="users-table-wrapper">
-                        <table class="users-table">
-                            <thead>
-                                <tr>
-                                    <th>PENGGUNA</th>
-                                    <th class="perm-col">Panel</th>
-                                    <th class="perm-col">Analisis</th>
-                                    <th class="perm-col">Schedules</th>
-                                    <th class="perm-col">3D View</th>
-                                    <th class="perm-col">Settings</th>
-                                    <th class="perm-col">Kelola User</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse($users as $user)
-                                    <tr>
-                                        <td>
-                                            <div class="user-name-cell">
-                                                <div class="user-info">
-                                                    <strong>{{ $user->username }}</strong>
-                                                    <small>{{ $user->email }}</small>
+                    <div class="user-cards-container">
+                        @forelse($users as $user)
+                            <div class="user-accordion-card glow-card" style="margin-bottom: 1rem; padding: 1rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px;">
+                                <!-- Header Card -->
+                                <div class="user-card-header" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="togglePerms('{{ $user->id }}')">
+                                    <div class="user-info" style="display: flex; flex-direction: column;">
+                                        <strong style="font-size: 1.1rem; color: #ededed;">{{ $user->username }}</strong>
+                                        <small style="color: #9ca3af;">{{ $user->email }}</small>
+                                    </div>
+                                    <div class="user-card-actions">
+                                        <button type="button" class="btn-toggle-perms" style="background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #ededed; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; transition: all 0.3s;">
+                                            <i class="fa-solid fa-sliders" style="margin-right: 0.5rem;"></i> Kelola Akses
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Body Card (Hidden by default) -->
+                                <div class="user-card-body" id="perms_{{ $user->id }}" style="display: none; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.1);">
+                                    <form action="{{ route('admin.users.permissions', $user) }}" method="POST">
+                                        @csrf
+                                        <div class="perms-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                                            @php 
+                                                $perms = [
+                                                    'panel' => 'Panel Utama',
+                                                    'analisis' => 'Analisis',
+                                                    'schedule' => 'Schedules',
+                                                    'view3d' => '3D View',
+                                                    'settings' => 'Settings',
+                                                    'admin' => 'Kelola User'
+                                                ]; 
+                                            @endphp
+
+                                            @foreach($perms as $key => $label)
+                                                <div class="perm-item" style="display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.2); padding: 0.75rem; border-radius: 8px;">
+                                                    <span style="font-size: 0.9rem;">{{ $label }}</span>
+                                                    <label class="custom-checkbox">
+                                                        <input type="checkbox" name="can_{{ $key }}" value="1" {{ $user->{"can_{$key}"} ? 'checked' : '' }}>
+                                                        <span class="checkmark"></span>
+                                                    </label>
                                                 </div>
-                                            </div>
-                                        </td>
+                                            @endforeach
+                                        </div>
 
-                                        @php 
-                                            $perms = ['panel', 'analisis', 'schedule', 'view3d', 'settings', 'admin']; 
-                                            $formId = 'form_user_' . $user->id;
-                                        @endphp
-
-                                        @foreach($perms as $perm)
-                                            <td class="perm-col">
-                                                <label class="custom-checkbox">
-                                                    <input type="checkbox" name="can_{{ $perm }}" value="1" form="{{ $formId }}"
-                                                        {{ $user->{"can_{$perm}"} ? 'checked' : '' }}>
-                                                    <span class="checkmark"></span>
-                                                </label>
-                                            </td>
-                                        @endforeach
-                                        <td>
-                                            <div style="display: flex; gap: 0.5rem; align-items: center;">
-                                                <button type="submit" form="{{ $formId }}" class="save-perm-btn btn-sm">Simpan</button>
-                                                
-                                                <button type="button" class="btn-delete-user" title="Hapus User" 
-                                                        onclick="confirmDelete('{{ $user->id }}', '{{ $user->username }}')">
-                                                    <i class="fa-solid fa-trash-can"></i>
-                                                </button>
-
-                                                <form id="delete_form_{{ $user->id }}" action="{{ route('admin.users.destroy', $user) }}" method="POST" style="display: none;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                </form>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="9">
-                                            <div class="empty-state">
-                                                <span class="material-symbols-rounded">group</span>
-                                                Belum ada user terdaftar.
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
+                                        <div class="perms-footer" style="display: flex; justify-content: space-between; align-items: center;">
+                                            <button type="submit" class="save-perm-btn" style="padding: 0.6rem 1.5rem; border-radius: 8px; font-weight: 500;">
+                                                <i class="fa-solid fa-floppy-disk" style="margin-right: 0.5rem;"></i> Simpan Perubahan
+                                            </button>
+                                            
+                                            <button type="button" class="btn-delete-user" title="Hapus User" onclick="confirmDelete('{{ $user->id }}', '{{ $user->username }}')" style="padding: 0.6rem 1rem; border-radius: 8px;">
+                                                <i class="fa-solid fa-trash-can"></i> Hapus
+                                            </button>
+                                        </div>
+                                    </form>
+                                    
+                                    <form id="delete_form_{{ $user->id }}" action="{{ route('admin.users.destroy', $user) }}" method="POST" style="display: none;">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="empty-state" style="text-align: center; padding: 3rem; color: #9ca3af;">
+                                <span class="material-symbols-rounded" style="font-size: 3rem; opacity: 0.5; margin-bottom: 1rem;">group</span>
+                                <p>Belum ada user terdaftar.</p>
+                            </div>
+                        @endforelse
                     </div>
-                </div>
-            </div>
 
-            <!-- Formulir tersembunyi di luar tabel -->
-            @foreach($users as $user)
-                <form id="form_user_{{ $user->id }}" action="{{ route('admin.users.permissions', $user) }}" method="POST" style="display: none;">
-                    @csrf
-                </form>
-            @endforeach
+                    <script>
+                        function togglePerms(userId) {
+                            const body = document.getElementById('perms_' + userId);
+                            if (body.style.display === 'none' || body.style.display === '') {
+                                body.style.display = 'block';
+                            } else {
+                                body.style.display = 'none';
+                            }
+                        }
+                    </script>
 
             <!-- CUSTOM DELETE MODAL -->
             <div id="deleteModal" class="modal-overlay">
