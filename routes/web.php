@@ -42,7 +42,11 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/panel', [PanelController::class, 'index'])->middleware('permission:panel')->name('panel');
     Route::get('/panel/data/realtime', [PanelController::class, 'realtimeData'])->middleware('permission:panel')->name('panel.data.realtime');
-    Route::get('/panel/export', [PanelController::class, 'exportCsv'])->middleware('permission:panel')->name('panel.export');
+    
+    // EXPORT ROUTES
+    Route::get('/analisis/export/csv', [PanelController::class, 'exportCsv'])->middleware('permission:analisis')->name('analisis.export.csv');
+    Route::get('/analisis/export/pdf', [PanelController::class, 'exportPdf'])->middleware('permission:analisis')->name('analisis.export.pdf');
+
     Route::get('/analisis', [PanelController::class, 'analisis'])->middleware('permission:analisis')->name('analisis');
     Route::get('/schedule', [ScheduleController::class, 'index'])->middleware('permission:schedule')->name('schedule');
     Route::post('/schedule', [ScheduleController::class, 'store'])->middleware('permission:schedule')->name('schedule.store');
