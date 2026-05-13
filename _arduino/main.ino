@@ -37,8 +37,8 @@ unsigned long lastSensorRead = 0;
 const unsigned long sensorReadInterval = 60000; // Baca sensor & kirim web tiap 60 detik
 
 // VARIABLES
-float batasSuhuPanas = 28.0;
-float batasKelembapanKering = 80.0;
+float batasSuhuPanas = 30.0;
+float batasKelembapanKering = 78.0;
 int pagi_mulai = 0, pagi_selesai = 0;
 int siang_mulai = 0, siang_selesai = 0;
 int sore_mulai = 0, sore_selesai = 0;
