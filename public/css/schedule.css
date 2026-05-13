@@ -219,6 +219,20 @@ body {
     transform: translateY(-2px);
 }
 
+@media (max-width: 600px) {
+    .action-row {
+        justify-content: center;
+        margin-top: 1.5rem;
+    }
+    
+    .btn-save {
+        width: auto;
+        padding: 0.75rem 2.5rem;
+        border-radius: 100px;
+        font-size: 0.9rem;
+    }
+}
+
 /* --- TOAST NOTIFICATION --- */
 .toast-wrapper {
     position: fixed;
