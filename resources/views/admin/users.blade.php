@@ -479,6 +479,57 @@
                 overflow-x: visible !important; /* Fully lock static when screen is wide enough */
             }
         }
+
+        /* --- Mobile Responsive Scroll Force --- */
+        @media (max-width: 768px) {
+            .panel-content {
+                overflow-x: hidden !important;
+                padding: 1rem !important;
+            }
+
+            .settings-container {
+                margin-top: 1rem !important;
+                width: 100% !important;
+                padding: 0 !important;
+            }
+
+            .settings-card {
+                padding: 1.25rem !important;
+                overflow: hidden !important; /* Contain the scroll within card if possible, or use visible */
+            }
+
+            .users-table-wrapper {
+                display: block !important;
+                width: 100% !important;
+                overflow-x: auto !important;
+                -webkit-overflow-scrolling: touch !important;
+                margin: 0 -0.5rem !important; /* Slight negative margin to show more content */
+                padding: 0 0.5rem 15px 0.5rem !important;
+            }
+            
+            .users-table {
+                min-width: 1000px !important; /* Force extra width for many columns */
+                width: 100% !important;
+            }
+
+            .users-table th, .users-table td {
+                white-space: nowrap !important;
+                padding: 1rem 0.75rem !important;
+            }
+            
+            /* Custom scrollbar for better visibility */
+            .users-table-wrapper::-webkit-scrollbar {
+                height: 8px !important;
+                display: block !important;
+            }
+            .users-table-wrapper::-webkit-scrollbar-thumb {
+                background: var(--warna-utama, #10b981) !important;
+                border-radius: 10px !important;
+            }
+            .users-table-wrapper::-webkit-scrollbar-track {
+                background: rgba(255, 255, 255, 0.05) !important;
+            }
+        }
     </style>
     @vite('resources/js/app.js')
 </head>
