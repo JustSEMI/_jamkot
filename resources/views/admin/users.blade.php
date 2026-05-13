@@ -256,6 +256,26 @@
             border: none !important;
         }
 
+        html[data-ui-version="v1"] .btn-delete-user {
+            background: var(--m3-error-container) !important;
+            color: var(--m3-on-error-container) !important;
+            border-radius: 20px !important;
+            font-family: var(--m3-font) !important;
+            font-weight: 600 !important;
+            padding: 0.5rem 0.8rem !important;
+            font-size: 0.8rem !important;
+            border: none !important;
+            transition: all 0.2s ease !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        html[data-ui-version="v1"] .btn-delete-user:hover {
+            background: #ffb4ab !important; /* M3 Error fixed variant */
+            transform: scale(1.1);
+        }
+
         html[data-ui-version="v1"] .save-perm-btn:hover {
             background: var(--m3-primary) !important;
             transform: scale(1.05) !important;
@@ -297,6 +317,20 @@
 
         html[data-ui-version="v2"] .checkmark::after {
             border-color: var(--warna-utama, #10b981) !important;
+        }
+
+        html[data-ui-version="v2"] .btn-delete-user {
+            background: rgba(239, 68, 68, 0.1) !important;
+            color: #ef4444 !important;
+            border: 1px solid rgba(239, 68, 68, 0.2) !important;
+            border-radius: 8px !important;
+            padding: 0.5rem 0.8rem !important;
+            transition: all 0.2s ease !important;
+        }
+
+        html[data-ui-version="v2"] .btn-delete-user:hover {
+            background: rgba(239, 68, 68, 0.2) !important;
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.3) !important;
         }
 
         html[data-ui-version="v2"] .users-table th {
@@ -515,12 +549,23 @@
                                             </td>
                                         @endforeach
                                         <td>
-                                            <button type="submit" form="{{ $formId }}" class="save-perm-btn btn-sm">Simpan</button>
+                                            <div style="display: flex; gap: 0.5rem; align-items: center;">
+                                                <button type="submit" form="{{ $formId }}" class="save-perm-btn btn-sm">Simpan</button>
+                                                
+                                                <form action="{{ route('admin.users.destroy', $user) }}" method="POST" 
+                                                      onsubmit="return confirm('Apakah Anda yakin ingin menghapus user {{ $user->username }}? Tindakan ini tidak dapat dibatalkan.')">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn-delete-user" title="Hapus User">
+                                                        <i class="fa-solid fa-trash-can"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
                                         </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="8">
+                                        <td colspan="9">
                                             <div class="empty-state">
                                                 <span class="material-symbols-rounded">group</span>
                                                 Belum ada user terdaftar.

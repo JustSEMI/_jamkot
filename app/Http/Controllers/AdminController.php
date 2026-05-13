@@ -44,4 +44,17 @@ class AdminController extends Controller
 
         return back()->with('sukses', "Permission untuk {$user->username} berhasil diperbarui.");
     }
+
+    /** Hapus user dari sistem. */
+    public function destroy(User $user): RedirectResponse
+    {
+        if ($user->isAdmin() || $user->id === auth()->id()) {
+            return back()->with('error', 'Tidak bisa menghapus akun admin atau akun sendiri.');
+        }
+
+        $username = $user->username;
+        $user->delete();
+
+        return back()->with('sukses', "User {$username} berhasil dihapus.");
+    }
 }

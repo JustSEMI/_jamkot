@@ -27,6 +27,7 @@ Route::middleware('guest')->group(function () {
 Route::middleware(['auth', 'permission:admin'])->group(function () {
     Route::get('/admin/users', [AdminController::class, 'index'])->name('admin.users');
     Route::post('/admin/users/{user}/permissions', [AdminController::class, 'updatePermissions'])->name('admin.users.permissions');
+    Route::delete('/admin/users/{user}', [AdminController::class, 'destroy'])->name('admin.users.destroy');
 });
 
 // PROTEKSI HALAMAN DASHBOARD & PANEL
