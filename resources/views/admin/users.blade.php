@@ -333,6 +333,114 @@
             box-shadow: 0 0 10px rgba(239, 68, 68, 0.3) !important;
         }
 
+        /* CUSTOM MODAL THEME SYNC */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .custom-modal {
+            background: #1a1a1a;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 28px;
+            padding: 2rem;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            transform: scale(0.9);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .modal-overlay.active .custom-modal {
+            transform: scale(1);
+        }
+
+        .modal-icon-wrapper {
+            width: 72px;
+            height: 72px;
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+        }
+
+        .modal-icon-wrapper .material-symbols-rounded {
+            font-size: 36px;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #ededed;
+        }
+
+        .modal-text {
+            color: #9ca3af;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 2rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .btn-modal {
+            padding: 0.75rem 1.5rem;
+            border-radius: 100px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .btn-modal-cancel {
+            background: rgba(255, 255, 255, 0.05);
+            color: #ededed;
+        }
+
+        .btn-modal-confirm {
+            background: #ef4444;
+            color: white;
+        }
+
+        /* M3 Overrides */
+        html[data-ui-version="v1"] .custom-modal {
+            background: var(--m3-surface-container-high) !important;
+            font-family: var(--m3-font) !important;
+        }
+        html[data-ui-version="v1"] .modal-title { color: var(--m3-on-surface) !important; }
+        html[data-ui-version="v1"] .modal-text { color: var(--m3-on-surface-variant) !important; }
+
+        html[data-ui-version="v2"] .custom-modal {
+            border-color: rgba(239, 68, 68, 0.3) !important;
+            box-shadow: 0 0 30px rgba(239, 68, 68, 0.15) !important;
+        }
+
         html[data-ui-version="v2"] .users-table th {
             color: #6b7280 !important;
             font-weight: 500 !important;
@@ -552,13 +660,14 @@
                                             <div style="display: flex; gap: 0.5rem; align-items: center;">
                                                 <button type="submit" form="{{ $formId }}" class="save-perm-btn btn-sm">Simpan</button>
                                                 
-                                                <form action="{{ route('admin.users.destroy', $user) }}" method="POST" 
-                                                      onsubmit="return confirm('Apakah Anda yakin ingin menghapus user {{ $user->username }}? Tindakan ini tidak dapat dibatalkan.')">
+                                                <button type="button" class="btn-delete-user" title="Hapus User" 
+                                                        onclick="confirmDelete('{{ $user->id }}', '{{ $user->username }}')">
+                                                    <i class="fa-solid fa-trash-can"></i>
+                                                </button>
+
+                                                <form id="delete_form_{{ $user->id }}" action="{{ route('admin.users.destroy', $user) }}" method="POST" style="display: none;">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn-delete-user" title="Hapus User">
-                                                        <i class="fa-solid fa-trash-can"></i>
-                                                    </button>
                                                 </form>
                                             </div>
                                         </td>
@@ -586,10 +695,52 @@
                 </form>
             @endforeach
 
+            <!-- CUSTOM DELETE MODAL -->
+            <div id="deleteModal" class="modal-overlay">
+                <div class="custom-modal">
+                    <div class="modal-icon-wrapper">
+                        <span class="material-symbols-rounded">warning</span>
+                    </div>
+                    <h3 class="modal-title">Konfirmasi Hapus</h3>
+                    <p class="modal-text">Apakah Anda yakin ingin menghapus user <strong id="deleteTargetName"></strong>? <br>Tindakan ini akan menghapus akun secara permanen.</p>
+                    <div class="modal-actions">
+                        <button type="button" class="btn-modal btn-modal-cancel" onclick="closeDeleteModal()">Batal</button>
+                        <button type="button" class="btn-modal btn-modal-confirm" id="confirmDeleteBtn">Hapus Sekarang</button>
+                    </div>
+                </div>
+            </div>
+
         </main>
     </div>
 
     <script src="{{ asset('js/sidebar.js') }}"></script>
+    <script>
+        let currentDeleteId = null;
+
+        function confirmDelete(userId, username) {
+            currentDeleteId = userId;
+            document.getElementById('deleteTargetName').innerText = username;
+            document.getElementById('deleteModal').classList.add('active');
+            
+            document.getElementById('confirmDeleteBtn').onclick = function() {
+                document.getElementById('delete_form_' + currentDeleteId).submit();
+            };
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.remove('active');
+        }
+
+        // Close on escape
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeDeleteModal();
+        });
+        
+        // Close on click outside
+        document.getElementById('deleteModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('deleteModal')) closeDeleteModal();
+        });
+    </script>
 
     <!-- BOTTOM NAV FOR MOBILE (M3 Only) -->
     <nav class="bottom-nav">
