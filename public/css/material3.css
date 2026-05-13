@@ -1225,3 +1225,9 @@ html[data-ui-version="v1"] .sidebar-overlay {
     background: rgba(0, 0, 0, 0.4) !important;
     backdrop-filter: blur(8px) !important;
 }
+
+@media (max-width: 768px) {
+    html[data-ui-version="v1"] .btn-toggle-sidebar {
+        display: none !important;
+    }
+}
