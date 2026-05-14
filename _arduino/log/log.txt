@@ -1,0 +1,58 @@
+// di vercel 
+
+19:37:42.984 Running build in Washington, D.C., USA (East) – iad1
+19:37:42.985 Build machine configuration: 2 cores, 8 GB
+19:37:43.199 Cloning github.com/JustSEMI/_jamkot (Branch: main, Commit: 2dbc347)
+19:37:43.673 Cloning completed: 474.000ms
+19:37:44.266 Restored build cache from previous deployment (9fjwJj6YbVTdqdvWYsjfFGbCZeT6)
+19:37:44.465 Running "vercel build"
+19:37:44.488 Vercel CLI 53.3.2
+19:37:46.366 Installing dependencies...
+19:37:47.442 
+19:37:47.442 added 3 packages in 736ms
+19:37:47.443 
+19:37:47.443 17 packages are looking for funding
+19:37:47.444   run `npm fund` for details
+19:37:47.909 vite v8.0.10 building client environment for production...
+19:37:48.087 
+transforming...✓ 8 modules transformed.
+19:37:48.091 ✗ Build failed in 177ms
+19:37:48.091 error during build:
+19:37:48.092 Build failed with 1 error:
+19:37:48.092 
+19:37:48.092 [plugin @tailwindcss/vite:generate:build] /vercel/path0/resources/css/app.css
+19:37:48.093 Error: Can't resolve '../../vendor/getartisanflow/wireflow/dist/alpineflow.css' in '/vercel/path0/resources/css'
+19:37:48.093     at finishWithoutResolve (/vercel/path0/node_modules/enhanced-resolve/lib/Resolver.js:909:18)
+19:37:48.093     at /vercel/path0/node_modules/enhanced-resolve/lib/Resolver.js:1001:14
+19:37:48.094     at /vercel/path0/node_modules/enhanced-resolve/lib/Resolver.js:1080:5
+19:37:48.094     at eval (eval at create (/vercel/path0/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:15:1)
+19:37:48.094     at /vercel/path0/node_modules/enhanced-resolve/lib/Resolver.js:1080:5
+19:37:48.094     at eval (eval at create (/vercel/path0/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:27:1)
+19:37:48.094     at /vercel/path0/node_modules/enhanced-resolve/lib/DescriptionFilePlugin.js:97:43
+19:37:48.095     at /vercel/path0/node_modules/enhanced-resolve/lib/Resolver.js:1080:5
+19:37:48.095     at eval (eval at create (/vercel/path0/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:15:1)
+19:37:48.095     at /vercel/path0/node_modules/enhanced-resolve/lib/Resolver.js:1080:5
+19:37:48.096     at aggregateBindingErrorsIntoJsError (file:///vercel/path0/node_modules/rolldown/dist/shared/error-DL-e8-oE.mjs:48:18)
+19:37:48.096     at unwrapBindingResult (file:///vercel/path0/node_modules/rolldown/dist/shared/error-DL-e8-oE.mjs:18:128)
+19:37:48.096     at #build (file:///vercel/path0/node_modules/rolldown/dist/shared/rolldown-build-DSxL8qiP.mjs:3317:34)
+19:37:48.096     at async buildEnvironment (file:///vercel/path0/node_modules/vite/dist/node/chunks/node.js:33018:64)
+19:37:48.096     at async Object.build (file:///vercel/path0/node_modules/vite/dist/node/chunks/node.js:33440:19)
+19:37:48.096     at async Object.buildApp (file:///vercel/path0/node_modules/vite/dist/node/chunks/node.js:33437:153)
+19:37:48.097     at async CAC.<anonymous> (file:///vercel/path0/node_modules/vite/dist/node/cli.js:778:3) {
+19:37:48.097   errors: [Getter/Setter]
+19:37:48.097 }
+19:37:48.113 Error: Command "vite build" exited with 1
+
+
+// di local 
+
+7:34:56 PM [vite] (client) Failed to load source map for /mnt/SSD2/Project/_jamkot/resources/js/wireflow/alpineflow.bundle.esm.js.
+Error: An error occurred while trying to read the map file at alpineflow.bundle.esm.js.map
+Error: ENOENT: no such file or directory, open '/mnt/SSD2/Project/_jamkot/resources/js/wireflow/alpineflow.bundle.esm.js.map'
+    at Object.readFileSync (node:fs:436:20)
+    at file:///mnt/SSD2/Project/_jamkot/node_modules/vite/dist/node/chunks/node.js:20079:13
+    at readFromFileMap (file:///mnt/SSD2/Project/_jamkot/node_modules/vite/dist/node/chunks/node.js:19858:13)
+    at exports.fromMapFileComment (file:///mnt/SSD2/Project/_jamkot/node_modules/vite/dist/node/chunks/node.js:19952:12)
+    at exports.fromMapFileSource (file:///mnt/SSD2/Project/_jamkot/node_modules/vite/dist/node/chunks/node.js:19963:22)
+    at extractSourcemapFromFile (file:///mnt/SSD2/Project/_jamkot/node_modules/vite/dist/node/chunks/node.js:20065:87)
+    at loadAndTransform (file:///mnt/SSD2/Project/_jamkot/node_modules/vite/dist/node/chunks/node.js:24478:22)
