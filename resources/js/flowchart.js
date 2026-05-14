@@ -1,7 +1,7 @@
-import '../../vendor/getartisanflow/wireflow/dist/alpineflow.css';
-import '../../vendor/getartisanflow/wireflow/dist/alpineflow-theme.css';
+import './wireflow/alpineflow.css';
+import './wireflow/alpineflow-theme.css';
 import Alpine from 'alpinejs';
-import AlpineFlow from '../../vendor/getartisanflow/wireflow/dist/alpineflow.bundle.esm.js';
+import AlpineFlow from './wireflow/alpineflow.bundle.esm.js';
 
 window.Alpine = Alpine;
 Alpine.plugin(AlpineFlow);
