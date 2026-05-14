@@ -27,7 +27,7 @@
 /.idea
 /.nova
 /._arduino/log
-
+_arduino/log
 _ide_helper.php
 Homestead.json
 Homestead.yaml
