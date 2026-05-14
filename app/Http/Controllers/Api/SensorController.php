@@ -43,8 +43,7 @@ class SensorController extends Controller
         // RESPONSE SUKSES
         return response()->json([
             'status'  => 'SUCCESS',
-            'message' => 'DATA SENSOR BERHASIL DISIMPAN',
-            'data'    => $log
+            'message' => 'OK'
         ], 201);
     }
 }
