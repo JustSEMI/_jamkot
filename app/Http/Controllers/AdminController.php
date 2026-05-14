@@ -29,6 +29,7 @@ class AdminController extends Controller
             'can_analisis' => ['nullable', 'boolean'],
             'can_schedule' => ['nullable', 'boolean'],
             'can_view3d' => ['nullable', 'boolean'],
+            'can_flowchart' => ['nullable', 'boolean'],
             'can_settings' => ['nullable', 'boolean'],
             'can_admin' => ['nullable', 'boolean'],
         ]);
@@ -38,6 +39,7 @@ class AdminController extends Controller
             'can_analisis' => $request->boolean('can_analisis'),
             'can_schedule' => $request->boolean('can_schedule'),
             'can_view3d' => $request->boolean('can_view3d'),
+            'can_flowchart' => $request->boolean('can_flowchart'),
             'can_settings' => $request->boolean('can_settings'),
             'can_admin' => $request->boolean('can_admin'),
         ]);

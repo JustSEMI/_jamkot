@@ -39,6 +39,7 @@ class AuthController extends Controller
             'can_analisis' => true,
             'can_settings' => true,
             'can_view3d' => true,
+            'can_flowchart' => true,
             'can_schedule' => false,
             'can_admin' => false,
         ]);

@@ -8,13 +8,16 @@
 const char *ssid = "Maison";
 const char *password = "SANGATLUXU";
 
-// REST API (GANTI DENGAN IP KOMPUTER ATAU DOMAIN HOSTING ANDA)
-const char *laravelEndpointData =
-    "https://jamkot.vercel.app/api/api/sensor/data";
-const char *laravelEndpointSchedule =
-    "https://jamkot.vercel.app/api/api/schedule";
-const char *laravelEndpointPumpStatus =
-    "https://jamkot.vercel.app/api/api/pump/status";
+// REST API - VERSI LOCAL (GANTI IP SESUAI IP WIFI PC KAMU, MISAL: 192.168.1.4)
+const char *laravelEndpointData = "http://localhost:8000/api/sensor/data";
+const char *laravelEndpointSchedule = "http://localhost:8000/api/schedule";
+const char *laravelEndpointPumpStatus = "http://localhost:8000/api/pump/status";
+
+// REST API - VERSI PRODUCTION (VERCEL)
+// Uncomment baris di bawah ini dan comment versi local jika ingin ke Vercel:
+// const char *laravelEndpointData = "https://jamkot.vercel.app/api/sensor/data";
+// const char *laravelEndpointSchedule = "https://jamkot.vercel.app/api/schedule";
+// const char *laravelEndpointPumpStatus = "https://jamkot.vercel.app/api/pump/status";
 
 // NTP TIME SERVER (WIB = UTC+7)
 const long gmtOffset_sec = 7 * 3600;
