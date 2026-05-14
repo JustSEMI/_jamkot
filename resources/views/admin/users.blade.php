@@ -530,6 +530,63 @@
                 background: rgba(255, 255, 255, 0.05) !important;
             }
         }
+
+        /* --- USER CARDS GRID --- */
+        .user-cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 1.25rem;
+            margin-top: 1.5rem;
+        }
+
+        .user-accordion-card {
+            padding: 1.25rem !important;
+            background: #181818 !important; /* Solid dark background for consistency */
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            border-radius: 16px !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            height: fit-content !important;
+        }
+
+        .user-accordion-card:hover {
+            transform: translateY(-4px);
+            background: rgba(255, 255, 255, 0.04) !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        @media (max-width: 900px) {
+            .user-cards-container {
+                grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            }
+        }
+
+        @media (max-width: 600px) {
+            .user-cards-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* --- PERMS FOOTER RESPONSIVE --- */
+        .perms-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        @media (max-width: 600px) {
+            .perms-footer {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            .perms-footer button {
+                width: 100% !important;
+                display: flex !important;
+                justify-content: center !important;
+                align-items: center !important;
+                padding: 0.8rem !important; /* Larger touch target */
+            }
+        }
     </style>
     @vite('resources/js/app.js')
 </head>
@@ -672,7 +729,7 @@
 
                     <div class="user-cards-container">
                         @forelse($users as $user)
-                            <div class="user-accordion-card glow-card" style="margin-bottom: 1rem; padding: 1rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px;">
+                            <div class="user-accordion-card">
                                 <!-- Header Card -->
                                 <div class="user-card-header" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="togglePerms('{{ $user->id }}')">
                                     <div class="user-info" style="display: flex; flex-direction: column;">
@@ -713,7 +770,7 @@
                                             @endforeach
                                         </div>
 
-                                        <div class="perms-footer" style="display: flex; justify-content: space-between; align-items: center;">
+                                        <div class="perms-footer">
                                             <button type="submit" class="save-perm-btn" style="padding: 0.6rem 1.5rem; border-radius: 8px; font-weight: 500;">
                                                 <i class="fa-solid fa-floppy-disk" style="margin-right: 0.5rem;"></i> Simpan Perubahan
                                             </button>
