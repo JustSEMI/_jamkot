@@ -179,4 +179,9 @@ class PanelController extends Controller
     {
         return view('view3d');
     }
+
+    public function flowchart()
+    {
+        return view('flowchart');
+    }
 }

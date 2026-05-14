@@ -55,6 +55,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/settings', [SettingsController::class, 'index'])->middleware('permission:settings')->name('settings.index');
     Route::post('/settings/reset', [SettingsController::class, 'resetData'])->middleware('permission:settings')->name('settings.reset');
     Route::get('/view3d', [PanelController::class, 'view3d'])->middleware('permission:view3d')->name('view3d');
+    Route::get('/flowchart', [PanelController::class, 'flowchart'])->middleware('permission:flowchart')->name('flowchart');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 

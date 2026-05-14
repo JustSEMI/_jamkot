@@ -667,6 +667,12 @@
                     <span>3D View</span>
                 </a>
                 @endif
+                @if(auth()->user()->canAccess('flowchart'))
+                <a href="{{ route('flowchart') }}" class="nav-link {{ Route::is('flowchart') ? 'active' : '' }}">
+                    <i class="fa-solid fa-project-diagram"></i>
+                    <span>Flowchart</span>
+                </a>
+                @endif
             </nav>
 
             <div class="sidebar-footer">
@@ -754,6 +760,7 @@
                                                     'analisis' => 'Analisis',
                                                     'schedule' => 'Schedules',
                                                     'view3d' => '3D View',
+                                                    'flowchart' => 'Flowchart',
                                                     'settings' => 'Settings',
                                                     'admin' => 'Kelola User'
                                                 ]; 
@@ -900,6 +907,12 @@
                 <i class="fa-solid fa-cube"></i>
             </div>
             <span>3D View</span>
+        </a>
+        @endif
+        @if(auth()->user()->canAccess('flowchart'))
+        <a href="{{ route('flowchart') }}" class="bottom-nav-link {{ Route::is('flowchart') ? 'active' : '' }}">
+            <div class="bottom-nav-icon-wrapper"><i class="fa-solid fa-project-diagram"></i></div>
+            <span>Flowchart</span>
         </a>
         @endif
     </nav>
