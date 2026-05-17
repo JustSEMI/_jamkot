@@ -57,6 +57,36 @@
             --af-node-color: #f3f4f6;
             --af-node-border: #374151;
             --af-edge-stroke: #9ca3af;
+            --af-node-primary: #38bdf8;
+            --af-node-desc: #94a3b8;
+        }
+
+        /* Tema Material 3 (UI V1) */
+        html[data-ui-version="v1"] .flowchart-container {
+            --af-bg: #111413;
+            --af-node-bg: #1b221f;
+            --af-node-color: #e1e3e1;
+            --af-node-border: #2d3532;
+            --af-edge-stroke: #80dec5;
+            --af-node-primary: #80dec5;
+            --af-node-desc: #a2aba7;
+        }
+        
+
+
+        html[data-ui-version="v1"] .flowchart-wrapper {
+            background: radial-gradient(circle at center, #1a221f 0%, #111413 100%) !important;
+            border-color: #2d3532 !important;
+        }
+
+        html[data-ui-version="v1"] .flowchart-description {
+            background: #1a221f !important;
+            border-color: #2d3532 !important;
+            color: #e1e3e1 !important;
+        }
+        
+        html[data-ui-version="v1"] .flowchart-description h3 {
+            color: #80dec5 !important;
         }
 
         .flowchart-description {
@@ -243,18 +273,18 @@
                         style="height: 100%; width: 100%;"
                     >
                         <x-slot:node>
-                            <div class="wireflow-node-card" style="padding: 16px; width: 220px; background: #1e293b; border: 1px solid #334155; border-radius: 12px; color: #f8fafc; text-align: left; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3); position: relative;">
+                            <div class="wireflow-node-card" style="padding: 16px; width: 220px; background: var(--af-node-bg, #1e293b); border: 1px solid var(--af-node-border, #334155); border-radius: 12px; color: var(--af-node-color, #f8fafc); text-align: left; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3); position: relative;">
                                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-                                    <div style="display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 0.9rem; color: #38bdf8;">
+                                    <div style="display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 0.9rem; color: var(--af-node-primary, #38bdf8);">
                                         <i :class="'fa-solid ' + (node.data.icon || 'fa-cube')"></i>
                                         <span x-text="node.data.label"></span>
                                     </div>
                                     <div style="width: 8px; height: 8px; border-radius: 50%;" :style="node.data.status === 'online' ? 'background: #10b981;' : 'background: #64748b;'"></div>
                                 </div>
-                                <div style="font-size: 0.75rem; color: #94a3b8; line-height: 1.4;" x-text="node.data.desc"></div>
+                                <div style="font-size: 0.75rem; color: var(--af-node-desc, #94a3b8); line-height: 1.4;" x-text="node.data.desc"></div>
                                 
-                                <x-flow-handle type="target" position="top" style="background: #38bdf8; border: 2px solid #0f172a; width: 12px; height: 12px;" />
-                                <x-flow-handle type="source" position="bottom" style="background: #38bdf8; border: 2px solid #0f172a; width: 12px; height: 12px;" />
+                                <x-flow-handle type="target" position="top" style="background: var(--af-node-primary, #38bdf8); border: 2px solid var(--af-node-bg, #0f172a); width: 12px; height: 12px;" />
+                                <x-flow-handle type="source" position="bottom" style="background: var(--af-node-primary, #38bdf8); border: 2px solid var(--af-node-bg, #0f172a); width: 12px; height: 12px;" />
                             </div>
                         </x-slot:node>
                     </x-flow>
