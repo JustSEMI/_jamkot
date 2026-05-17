@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 
 // LOGIN PAGE
 Route::get('/', function () {
-    return redirect()->route('login');
+    return view('panel');
 });
 
 // ANTI BRUTE FORCE LOGIN
