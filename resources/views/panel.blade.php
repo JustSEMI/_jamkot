@@ -97,11 +97,7 @@
                     <span>3D View</span>
                 </a>
                 @endif
-                <!-- NEW FLOWCHART MENU -->
-                <a href="{{ route('flowchart') }}" class="nav-link {{ Route::is('flowchart') ? 'active' : '' }}">
-                    <i class="fa-solid fa-project-diagram"></i>
-                    <span>Flowchart</span>
-                </a>
+
 
             </nav>
 
@@ -353,11 +349,7 @@
             <span>3D View</span>
         </a>
         @endif
-        <!-- NEW FLOWCHART MENU -->
-        <a href="{{ route('flowchart') }}" class="bottom-nav-link {{ Route::is('flowchart') ? 'active' : '' }}">
-            <div class="bottom-nav-icon-wrapper"><i class="fa-solid fa-project-diagram"></i></div>
-            <span>Flowchart</span>
-        </a>
+
 
     </nav>
 
