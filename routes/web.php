@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PanelController;
 use App\Http\Controllers\ResetPasswordController;
+use App\Http\Controllers\PredictionController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\SettingsController;
 use Illuminate\Support\Facades\Route;
@@ -56,6 +57,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/settings/reset', [SettingsController::class, 'resetData'])->middleware('permission:settings')->name('settings.reset');
     Route::get('/view3d', [PanelController::class, 'view3d'])->middleware('permission:view3d')->name('view3d');
     Route::get('/flowchart', [PanelController::class, 'flowchart'])->middleware('permission:flowchart')->name('flowchart');
+    Route::get('/prediction', [PredictionController::class, 'index'])->middleware('permission:prediction')->name('prediction');
+    Route::post('/prediction/ask', [PredictionController::class, 'ask'])->middleware(['permission:prediction', 'throttle:3,1'])->name('prediction.ask');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 

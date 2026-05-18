@@ -32,6 +32,7 @@ class AdminController extends Controller
             'can_flowchart' => ['nullable', 'boolean'],
             'can_settings' => ['nullable', 'boolean'],
             'can_admin' => ['nullable', 'boolean'],
+            'can_prediction' => ['nullable', 'boolean'],
         ]);
 
         $user->update([
@@ -42,6 +43,7 @@ class AdminController extends Controller
             'can_flowchart' => $request->boolean('can_flowchart'),
             'can_settings' => $request->boolean('can_settings'),
             'can_admin' => $request->boolean('can_admin'),
+            'can_prediction' => $request->boolean('can_prediction'),
         ]);
 
         return back()->with('sukses', "Permission untuk {$user->username} berhasil diperbarui.");

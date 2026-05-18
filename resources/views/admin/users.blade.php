@@ -673,6 +673,12 @@
                     <span>Flowchart</span>
                 </a>
                 @endif
+                @if(auth()->user()->canAccess('prediction'))
+                <a href="{{ route('prediction') }}" class="nav-link {{ Route::is('prediction') ? 'active' : '' }}">
+                    <i class="fa-solid fa-robot"></i>
+                    <span>Prediksi</span>
+                </a>
+                @endif
             </nav>
 
             <div class="sidebar-footer">
@@ -762,7 +768,8 @@
                                                     'view3d' => '3D View',
                                                     'flowchart' => 'Flowchart',
                                                     'settings' => 'Settings',
-                                                    'admin' => 'Kelola User'
+                                                    'admin' => 'Kelola User',
+                                                    'prediction' => 'Prediksi'
                                                 ]; 
                                             @endphp
 
