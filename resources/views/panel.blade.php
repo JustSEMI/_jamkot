@@ -102,10 +102,7 @@
                     <i class="fa-solid fa-project-diagram"></i>
                     <span>Flowchart</span>
                 </a>
-                <a href="{{ route('prediction') }}" class="nav-link {{ Route::is('prediction') ? 'active' : '' }}">
-                    <i class="fa-solid fa-robot"></i>
-                    <span>Prediksi</span>
-                </a>
+
             </nav>
 
             <div class="sidebar-footer">
@@ -361,10 +358,7 @@
             <div class="bottom-nav-icon-wrapper"><i class="fa-solid fa-project-diagram"></i></div>
             <span>Flowchart</span>
         </a>
-        <a href="{{ route('prediction') }}" class="bottom-nav-link {{ Route::is('prediction') ? 'active' : '' }}">
-            <div class="bottom-nav-icon-wrapper"><i class="fa-solid fa-robot"></i></div>
-            <span>Prediksi</span>
-        </a>
+
     </nav>
 
 </body>

@@ -191,10 +191,7 @@
                     <i class="fa-solid fa-project-diagram"></i>
                     <span>Flowchart</span>
                 </a>
-                <a href="{{ route('prediction') }}" class="nav-link {{ Route::is('prediction') ? 'active' : '' }}">
-                    <i class="fa-solid fa-robot"></i>
-                    <span>Prediksi</span>
-                </a>
+
             </nav>
 
             <div class="sidebar-footer">
