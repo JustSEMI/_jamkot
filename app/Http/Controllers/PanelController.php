@@ -32,6 +32,35 @@ class PanelController extends Controller
         ]);
     }
 
+    public function ldr()
+    {
+        $latest = SensorLog::latest()->first();
+        $riwayatTabel = SensorLog::latest()->take(5)->get();
+        $riwayatGrafik = SensorLog::latest()->take(20)->get()->reverse()->values();
+
+        return view('sensor.ldr', [
+            'latest' => $latest,
+            'riwayatTabel' => $riwayatTabel,
+            'riwayatGrafik' => $riwayatGrafik,
+        ]);
+    }
+
+    public function dht22()
+    {
+        $latest = SensorLog::latest()->first();
+        $riwayatTabel = SensorLog::latest()->take(5)->get();
+        $riwayatGrafik = SensorLog::latest()->take(20)->get()->reverse()->values();
+
+        $targetKelembapan = 85;
+
+        return view('sensor.dht22', [
+            'latest' => $latest,
+            'riwayatTabel' => $riwayatTabel,
+            'riwayatGrafik' => $riwayatGrafik,
+            'targetKelembapan' => $targetKelembapan,
+        ]);
+    }
+
     public function realtimeData()
     {
         // Data Realtime
@@ -48,6 +77,7 @@ class PanelController extends Controller
                 'pompa_status' => $log->pompa_status,
                 'kelembapan' => $log->kelembapan,
                 'suhu' => $log->suhu,
+                'cahaya' => $log->cahaya,
             ];
         });
 

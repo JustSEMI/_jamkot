@@ -46,6 +46,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/panel/data/realtime', [PanelController::class, 'realtimeData'])->middleware('permission:panel')->name('panel.data.realtime');
     Route::post('/panel/pump/toggle', [PanelController::class, 'togglePump'])->middleware('permission:panel')->name('panel.pump.toggle');
     
+    // SENSOR ROUTES
+    Route::get('/sensor/ldr', [PanelController::class, 'ldr'])->middleware('permission:panel')->name('sensor.ldr');
+    Route::get('/sensor/dht22', [PanelController::class, 'dht22'])->middleware('permission:panel')->name('sensor.dht22');
+
     // EXPORT ROUTES
     Route::get('/analisis/export/csv', [PanelController::class, 'exportCsv'])->middleware('permission:analisis')->name('analisis.export.csv');
     Route::get('/analisis/export/pdf', [PanelController::class, 'exportPdf'])->middleware('permission:analisis')->name('analisis.export.pdf');
