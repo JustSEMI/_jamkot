@@ -36,30 +36,97 @@ body {
     display: flex;
     flex-direction: column;
     padding: 2rem 1.5rem;
+    position: relative;
+    z-index: 10000;
 }
 
 .sidebar-header h2 {
     font-size: 1.25rem;
     font-weight: 300;
     letter-spacing: 0.2em;
-    margin-bottom: 3rem;
+    color: #ededed;
+    margin-bottom: 2rem;
+}
+
+.user-profile-card {
+    background: #141414;
+    border: 1px solid #262626;
+    border-radius: 1rem;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.user-profile-card .avatar {
+    width: 3rem;
+    height: 3rem;
+    background: #10b981;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: #0a0a0a;
+    font-size: 1.2rem;
+}
+
+.user-profile-card .user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.user-profile-card .username {
+    font-weight: 600;
+    color: #ededed;
+}
+
+.user-profile-card .role-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.user-profile-card .role-badge .status-dot {
+    width: 8px;
+    height: 8px;
+    background: #10b981;
+    border-radius: 50%;
+}
+
+.user-profile-card .role-badge span:last-child {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #10b981;
+    background: rgba(16, 185, 129, 0.1);
+    padding: 0.2rem 0.5rem;
+    border-radius: 100px;
 }
 
 .sidebar-nav {
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: 0.75rem;
     flex: 1;
 }
 
 .nav-link {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
     text-decoration: none;
-    color: #6b7280;
     padding: 0.75rem 1rem;
     border-radius: 0.5rem;
     font-size: 0.875rem;
-    transition: all 0.3s ease;
+    transition: all 0.3s;
+    color: #6b7280;
+}
+
+.nav-link i, .nav-dropdown .dropdown-header i, .nav-dropdown .sub-link i {
+    width: 20px;
+    text-align: center;
 }
 
 .nav-link:hover {
@@ -68,25 +135,92 @@ body {
 }
 
 .nav-link.active {
-    color: #0a0a0a;
-    background-color: #ededed;
-    font-weight: 500;
+    color: #10b981 !important;
+    background-color: rgba(16, 185, 129, 0.05) !important;
+    border: 1px solid rgba(16, 185, 129, 0.2);
 }
 
+.nav-dropdown {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.nav-dropdown .dropdown-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    color: #6b7280;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.nav-dropdown .dropdown-header:hover {
+    color: #ededed;
+    background-color: #111111;
+}
+
+.nav-dropdown .dropdown-header .arrow-icon {
+    font-size: 0.75rem;
+    margin-left: auto;
+    transition: transform 0.3s ease;
+}
+
+.nav-dropdown .dropdown-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding-left: 1rem;
+    overflow: hidden;
+    max-height: 0;
+    transition: all 0.3s ease;
+}
+
+.nav-dropdown .sub-link {
+    text-decoration: none;
+    color: #6b7280;
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.nav-dropdown .sub-link:hover {
+    color: #ededed !important;
+}
+
+.nav-dropdown .sub-link.active {
+    color: #10b981 !important;
+    font-weight: 600;
+}
+
+/* Sembunyikan ikon di sidebar untuk tema Neon Glow (kecuali panah) */
+.nav-dropdown .dropdown-header i:not(.arrow-icon),
+.nav-dropdown .sub-link i {
+    display: none !important;
+}
+
+.sidebar .section-title {
+    font-size: 0.75rem;
+    color: #4b5563;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    padding-left: 1rem;
+}
 
 .sidebar-footer {
     padding-top: 1.5rem;
-}
-
-.user-greeting {
-    display: block;
-    font-size: 0.75rem;
-    color: #9ca3af;
-    margin-bottom: 1rem;
+    border-top: 1px solid #24242b;
 }
 
 .btn-logout-sidebar {
-
     width: 100%;
     background: transparent;
     border: 1px solid #333;
@@ -95,11 +229,15 @@ body {
     border-radius: 0.5rem;
     cursor: pointer;
     transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
 }
 
 .btn-logout-sidebar:hover {
-    border-color: #ef4444;
-    color: #ef4444;
+    background: rgba(255,255,255,0.05);
+    border-color: #444;
 }
 
 /* --- PANEL CONTENT --- */

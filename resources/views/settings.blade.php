@@ -54,63 +54,7 @@
 
         <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
-        <!-- SIDEBAR -->
-        <aside class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <h2>JAMKOT</h2>
-            </div>
-
-            <nav class="sidebar-nav">
-                @if(auth()->user()->canAccess('admin'))
-                <a href="{{ route('admin.users') }}" class="nav-link nav-link-admin {{ Route::is('admin.*') ? 'active' : '' }}">
-                    <i class="fa-solid fa-users-gear"></i>
-                    <span>Admin</span>
-                </a>
-                @endif
-                @if(auth()->user()->canAccess('panel'))
-                <a href="{{ route('panel') }}" class="nav-link {{ Route::is('panel') ? 'active' : '' }}">
-                    <i class="fa-solid fa-gauge"></i>
-                    <span>Panel Utama</span>
-                </a>
-                @endif
-                @if(auth()->user()->canAccess('analisis'))
-                <a href="{{ route('analisis') }}" class="nav-link {{ Route::is('analisis') ? 'active' : '' }}">
-                    <i class="fa-solid fa-chart-simple"></i>
-                    <span>Analisis</span>
-                </a>
-                @endif
-                @if(auth()->user()->canAccess('schedule'))
-                <a href="{{ route('schedule') }}" class="nav-link {{ Route::is('schedule') ? 'active' : '' }}">
-                    <i class="fa-solid fa-clock"></i>
-                    <span>Schedules</span>
-                </a>
-                @endif
-                @if(auth()->user()->canAccess('settings'))
-                <a href="{{ route('settings.index') }}" class="nav-link {{ Route::is('settings.*') ? 'active' : '' }}">
-                    <i class="fa-solid fa-gear"></i>
-                    <span>Settings</span>
-                </a>
-                @endif
-                @if(auth()->user()->canAccess('view3d'))
-                <a href="{{ route('view3d') }}" class="nav-link {{ Route::is('view3d') ? 'active' : '' }}">
-                    <i class="fa-solid fa-cube"></i>
-                    <span>3D View</span>
-                </a>
-                @endif
-
-            </nav>
-
-            <div class="sidebar-footer">
-                <span class="user-greeting">Halo, {{ auth()->user()->username ?? 'admin' }}</span>
-                <form action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button type="submit" class="btn-logout-sidebar" title="Logout">
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                        <span>Logout</span>
-                    </button>
-                </form>
-            </div>
-        </aside>
+        @include('partials.sidebar')
 
         <!-- KONTEN UTAMA -->
         <main class="panel-content">
@@ -141,20 +85,7 @@
                                 Sensor</button>
                         </form>
 
-                        <!-- MODAL -->
-                        <div id="modalReset" class="modal-overlay">
-                            <div class="modal-box">
-                                <div class="modal-icon material-symbols-rounded">warning</div>
-                                <h3 class="modal-title">Peringatan Keras!</h3>
-                                <p class="modal-text">Apakah Anda yakin ingin menghapus SEMUA data riwayat suhu dan
-                                    kelembapan? Tindakan ini tidak bisa dibatalkan!</p>
-                                <div class="modal-actions">
-                                    <button type="button" class="btn-cancel" onclick="tutupModal()">Batal</button>
-                                    <button type="button" class="btn-danger" onclick="gasReset()">Ya, Hapus
-                                        Semua!</button>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- MODAL DIHAPUS DARI SINI DAN DIPINDAHKAN KE BAWAH AGAR TIDAK TERKENA BLUR -->
                     </div>
                 </div>
 
@@ -198,6 +129,33 @@
         </main>
     </div>
 
+    <!-- MODAL -->
+    <div id="modalReset" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-icon-wrapper">
+                <i class="fa-solid fa-trash-can"></i>
+            </div>
+            <h3 class="modal-title">Reset Semua Data Sensor?</h3>
+            <p class="modal-subtitle">Tindakan ini akan menghapus permanen seluruh record sensor — suhu, kelembapan, intensitas cahaya, dan status pompa.</p>
+            
+            <div class="modal-badges">
+                <span class="modal-badge"><i class="fa-solid fa-chart-line"></i> Grafik akan kosong</span>
+                <span class="modal-badge"><i class="fa-solid fa-table"></i> Tabel akan kosong</span>
+                <span class="modal-badge"><i class="fa-solid fa-circle-xmark"></i> Tidak dapat dikembalikan</span>
+            </div>
+
+            <div class="modal-input-group">
+                <label for="confirm-reset">Ketik <strong>RESET</strong> untuk konfirmasi:</label>
+                <input type="text" id="confirm-reset" placeholder="Ketik RESET di sini..." oninput="checkResetInput(this.value)">
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="btn-cancel" onclick="tutupModal()">Batalkan</button>
+                <button type="button" class="btn-danger" id="btn-confirm-reset" onclick="gasReset()" disabled>Hapus Permanen</button>
+            </div>
+        </div>
+    </div>
+
     <!-- TOAST NOTIFICATION -->
     @if(session('sukses'))
         <div id="toast-modern" class="toast-wrapper">
@@ -226,6 +184,19 @@
         }
         function tutupModal() {
             document.getElementById('modalReset').classList.remove('active');
+            document.getElementById('confirm-reset').value = '';
+            document.getElementById('btn-confirm-reset').setAttribute('disabled', 'true');
+            document.getElementById('btn-confirm-reset').classList.remove('danger-active');
+        }
+        function checkResetInput(val) {
+            const btn = document.getElementById('btn-confirm-reset');
+            if (val === 'RESET') {
+                btn.removeAttribute('disabled');
+                btn.classList.add('danger-active');
+            } else {
+                btn.setAttribute('disabled', 'true');
+                btn.classList.remove('danger-active');
+            }
         }
         function gasReset() {
             document.getElementById('resetForm').submit();

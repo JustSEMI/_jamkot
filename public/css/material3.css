@@ -102,6 +102,53 @@ html[data-ui-version="v1"] .sidebar-header h2 {
     padding-left: 0.75rem;
 }
 
+html[data-ui-version="v1"] .user-profile-card {
+    background: var(--m3-surface-container) !important;
+    border: 1px solid var(--m3-outline-variant) !important;
+}
+
+html[data-ui-version="v1"] .user-profile-card .avatar {
+    background: var(--m3-primary) !important;
+    color: var(--m3-on-primary) !important;
+}
+
+html[data-ui-version="v1"] .user-profile-card .username {
+    color: var(--m3-on-surface) !important;
+}
+
+html[data-ui-version="v1"] .user-profile-card .role-badge span:last-child {
+    color: var(--m3-primary) !important;
+    background: var(--m3-primary-container) !important;
+}
+
+html[data-ui-version="v1"] .nav-dropdown .dropdown-header {
+    color: var(--m3-on-surface-variant) !important;
+    font-family: var(--m3-font) !important;
+}
+
+html[data-ui-version="v1"] .nav-dropdown .dropdown-header:hover {
+    background-color: var(--m3-surface-container-high) !important;
+    color: var(--m3-on-surface) !important;
+}
+
+html[data-ui-version="v1"] .nav-dropdown .sub-link {
+    color: var(--m3-on-surface-variant) !important;
+    font-family: var(--m3-font) !important;
+}
+
+html[data-ui-version="v1"] .nav-dropdown .sub-link:hover {
+    color: var(--m3-on-surface) !important;
+}
+
+html[data-ui-version="v1"] .nav-dropdown .sub-link.active {
+    color: var(--m3-primary) !important;
+}
+
+html[data-ui-version="v1"] .sidebar .section-title {
+    color: var(--m3-on-surface-variant) !important;
+    font-family: var(--m3-font) !important;
+}
+
 html[data-ui-version="v1"] .sidebar-nav {
     gap: 0.45rem !important;
 }
@@ -145,6 +192,52 @@ html[data-ui-version="v1"] .nav-link.active {
     background-color: var(--m3-primary-container) !important;
     color: var(--m3-on-primary-container) !important;
     font-weight: 600 !important;
+}
+
+/* Dropdown styles for Material3 */
+html[data-ui-version="v1"] .dropdown-header {
+    font-family: var(--m3-font) !important;
+    font-weight: 500 !important;
+    font-size: 0.875rem !important;
+    color: var(--m3-on-surface-variant) !important;
+    padding: 0.75rem 1.25rem !important;
+    border-radius: 100px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+    border: none !important;
+    background: transparent !important;
+    margin: 0.15rem 0.25rem !important;
+}
+
+html[data-ui-version="v1"] .dropdown-header i {
+    font-size: 1.1rem !important;
+    width: 24px !important;
+    text-align: center !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+html[data-ui-version="v1"] .dropdown-content {
+    padding-left: 2.5rem !important;
+}
+
+html[data-ui-version="v1"] .sub-link {
+    font-family: var(--m3-font) !important;
+    font-weight: 500 !important;
+    font-size: 0.85rem !important;
+    color: var(--m3-on-surface-variant) !important;
+    padding: 0.5rem 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+}
+
+html[data-ui-version="v1"] .nav-dropdown .dropdown-header i:not(.arrow-icon),
+html[data-ui-version="v1"] .nav-dropdown .sub-link i {
+    display: inline-flex !important;
 }
 
 html[data-ui-version="v1"] .sidebar-footer {
@@ -1126,75 +1219,105 @@ html[data-ui-version="v1"] .dashboard-navbar .btn-logout:hover {
 html[data-ui-version="v1"] .login-container {
     background: var(--m3-surface-container) !important;
     border-radius: 28px !important;
-    padding: 3rem 2.5rem !important;
+    border: 1px solid var(--m3-outline-variant) !important;
     box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45) !important;
-    border: 1px solid rgba(128, 222, 197, 0.05) !important;
 }
 
-html[data-ui-version="v1"] .login-header h1 {
-    color: var(--m3-primary) !important;
-    font-weight: 800 !important;
-    letter-spacing: 0.15em !important;
+html[data-ui-version="v1"] .logo-icon {
+    background-color: var(--m3-primary) !important;
+    color: var(--m3-on-primary) !important;
+}
+
+html[data-ui-version="v1"] .brand-logo span {
+    color: var(--m3-on-surface) !important;
     font-family: var(--m3-font) !important;
 }
 
-html[data-ui-version="v1"] .login-header p {
+html[data-ui-version="v1"] .main-title {
+    color: var(--m3-primary) !important;
+    font-family: var(--m3-font) !important;
+    font-weight: 800 !important;
+}
+
+html[data-ui-version="v1"] .sub-title {
     color: var(--m3-on-surface-variant) !important;
     font-family: var(--m3-font) !important;
 }
 
 html[data-ui-version="v1"] .input-group label {
     color: var(--m3-on-surface-variant) !important;
-    font-weight: 600 !important;
     font-family: var(--m3-font) !important;
-    text-transform: none !important;
-    letter-spacing: normal !important;
-    font-size: 0.85rem !important;
+    font-weight: 600 !important;
 }
 
-html[data-ui-version="v1"] .input-group input {
+html[data-ui-version="v1"] .input-wrapper input {
     background-color: var(--m3-surface-container-highest) !important;
     border: 1px solid var(--m3-outline-variant) !important;
-    border-radius: 16px !important;
     color: var(--m3-on-surface) !important;
-    padding: 0.85rem 1.25rem !important;
+    border-radius: 12px !important;
     font-family: var(--m3-font) !important;
-    transition: all 0.2s ease !important;
 }
 
-html[data-ui-version="v1"] .input-group input:focus {
+html[data-ui-version="v1"] .input-wrapper input:focus {
     border-color: var(--m3-primary) !important;
     box-shadow: 0 0 0 3px rgba(128, 222, 197, 0.1) !important;
 }
 
-html[data-ui-version="v1"] .btn-login {
+html[data-ui-version="v1"] .input-icon-left,
+html[data-ui-version="v1"] .input-icon-right {
+    color: var(--m3-on-surface-variant) !important;
+}
+
+html[data-ui-version="v1"] .checkmark {
+    background-color: var(--m3-surface-container-highest) !important;
+    border-color: var(--m3-outline-variant) !important;
+}
+
+html[data-ui-version="v1"] .checkbox-container input:checked ~ .checkmark {
+    background-color: var(--m3-primary) !important;
+    border-color: var(--m3-primary) !important;
+}
+
+html[data-ui-version="v1"] .checkbox-container {
+    color: var(--m3-on-surface-variant) !important;
+    font-family: var(--m3-font) !important;
+}
+
+html[data-ui-version="v1"] .btn-submit {
     background-color: var(--m3-primary) !important;
     color: var(--m3-on-primary) !important;
     border-radius: 100px !important;
     font-weight: 700 !important;
-    padding: 0.85rem !important;
-    margin-top: 1rem !important;
     font-family: var(--m3-font) !important;
-    font-size: 0.95rem !important;
+    transition: all 0.22s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
 }
 
-html[data-ui-version="v1"] .btn-login:hover {
+html[data-ui-version="v1"] .btn-submit:hover {
     background-color: var(--m3-on-primary-container) !important;
     color: var(--m3-primary-container) !important;
     transform: translateY(-2px) !important;
     box-shadow: 0 8px 20px rgba(128, 222, 197, 0.2) !important;
 }
 
-html[data-ui-version="v1"] .forgot-link,
-html[data-ui-version="v1"] .register-link a {
-    color: var(--m3-primary) !important;
-    font-weight: 600 !important;
-    text-transform: none !important;
-    letter-spacing: normal !important;
-    font-size: 0.8rem !important;
+html[data-ui-version="v1"] .divider {
+    color: var(--m3-on-surface-variant) !important;
 }
 
-html[data-ui-version="v1"] .login-footer p {
+html[data-ui-version="v1"] .divider::before,
+html[data-ui-version="v1"] .divider::after {
+    border-color: var(--m3-outline-variant) !important;
+}
+
+html[data-ui-version="v1"] .switch-auth,
+html[data-ui-version="v1"] .switch-auth a {
+    font-family: var(--m3-font) !important;
+}
+
+html[data-ui-version="v1"] .switch-auth a {
+    color: var(--m3-primary) !important;
+}
+
+html[data-ui-version="v1"] .auth-footer {
     color: var(--m3-on-surface-variant) !important;
 }
 
@@ -1230,6 +1353,73 @@ html[data-ui-version="v1"] .btn-toggle-sidebar:active {
 html[data-ui-version="v1"] .sidebar-overlay {
     background: rgba(0, 0, 0, 0.4) !important;
     backdrop-filter: blur(8px) !important;
+}
+
+/* Modal Reset untuk Material3 */
+html[data-ui-version="v1"] .modal-overlay {
+    background: rgba(0, 0, 0, 0.32) !important;
+    backdrop-filter: blur(4px) !important;
+}
+
+html[data-ui-version="v1"] .modal-box {
+    background: var(--m3-surface-container-high) !important;
+    border: none !important;
+    border-radius: 28px !important;
+    box-shadow: var(--m3-elevation-3) !important;
+    color: var(--m3-on-surface) !important;
+}
+
+html[data-ui-version="v1"] .modal-icon-wrapper {
+    color: var(--m3-error) !important;
+    border-color: var(--m3-error) !important;
+    background: var(--m3-error-container) !important;
+}
+
+html[data-ui-version="v1"] .modal-title {
+    color: var(--m3-on-surface) !important;
+    font-family: var(--m3-font) !important;
+}
+
+html[data-ui-version="v1"] .modal-subtitle {
+    color: var(--m3-on-surface-variant) !important;
+    font-family: var(--m3-font) !important;
+}
+
+html[data-ui-version="v1"] .modal-badge {
+    background: var(--m3-error-container) !important;
+    color: var(--m3-on-error-container) !important;
+    border: none !important;
+}
+
+html[data-ui-version="v1"] .modal-input-group input {
+    background: var(--m3-surface-container) !important;
+    border: 1px solid var(--m3-outline) !important;
+    color: var(--m3-on-surface) !important;
+    border-radius: 4px !important;
+}
+
+html[data-ui-version="v1"] .modal-input-group input:focus {
+    border-color: var(--m3-primary) !important;
+}
+
+html[data-ui-version="v1"] .modal-actions .btn-danger.danger-active {
+    background: var(--m3-error) !important;
+    color: var(--m3-on-error) !important;
+    border-radius: 100px !important;
+}
+
+html[data-ui-version="v1"] .modal-actions .btn-danger:disabled {
+    background: var(--m3-surface-container-highest) !important;
+    color: var(--m3-on-surface-variant) !important;
+    opacity: 0.38 !important;
+    border-radius: 100px !important;
+}
+
+html[data-ui-version="v1"] .modal-actions .btn-cancel {
+    background: transparent !important;
+    border: none !important;
+    color: var(--m3-primary) !important;
+    border-radius: 100px !important;
 }
 
 @media (max-width: 768px) {

@@ -624,64 +624,7 @@
 
         <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
-        <!-- SIDEBAR (ADMIN) -->
-        <aside class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <h2>JAMKOT</h2>
-            </div>
-
-            <nav class="sidebar-nav">
-                @if(auth()->user()->canAccess('admin'))
-                <a href="{{ route('admin.users') }}" class="nav-link nav-link-admin {{ Route::is('admin.*') ? 'active' : '' }}">
-                    <i class="fa-solid fa-users-gear"></i>
-                    <span>Admin</span>
-                </a>
-                @endif
-                @if(auth()->user()->canAccess('panel'))
-                <a href="{{ route('panel') }}" class="nav-link {{ Route::is('panel') ? 'active' : '' }}">
-                    <i class="fa-solid fa-gauge"></i>
-                    <span>Panel Utama</span>
-                </a>
-                @endif
-                @if(auth()->user()->canAccess('analisis'))
-                <a href="{{ route('analisis') }}" class="nav-link {{ Route::is('analisis') ? 'active' : '' }}">
-                    <i class="fa-solid fa-chart-simple"></i>
-                    <span>Analisis</span>
-                </a>
-                @endif
-                @if(auth()->user()->canAccess('schedule'))
-                <a href="{{ route('schedule') }}" class="nav-link {{ Route::is('schedule') ? 'active' : '' }}">
-                    <i class="fa-solid fa-clock"></i>
-                    <span>Schedules</span>
-                </a>
-                @endif
-                @if(auth()->user()->canAccess('settings'))
-                <a href="{{ route('settings.index') }}" class="nav-link {{ Route::is('settings.*') ? 'active' : '' }}">
-                    <i class="fa-solid fa-gear"></i>
-                    <span>Settings</span>
-                </a>
-                @endif
-                @if(auth()->user()->canAccess('view3d'))
-                <a href="{{ route('view3d') }}" class="nav-link {{ Route::is('view3d') ? 'active' : '' }}">
-                    <i class="fa-solid fa-cube"></i>
-                    <span>3D View</span>
-                </a>
-                @endif
-
-
-            </nav>
-
-            <div class="sidebar-footer">
-                <span class="user-greeting">Halo, {{ auth()->user()->username ?? 'admin' }}</span>
-                <form action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button type="submit" class="btn-logout-sidebar" title="Logout">
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                        <span>Logout</span>
-                    </button>
-                </form>
-            </div>
-        </aside>
+        @include('partials.sidebar')
 
         <!-- KONTEN UTAMA -->
         <main class="panel-content">
