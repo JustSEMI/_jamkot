@@ -135,10 +135,77 @@
     <script src="{{ asset('js/clock.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script>
-        window.dataJamkot = @json($riwayatGrafik);
-        // Custom chart for LDR if needed, for now use the same structure
+        document.addEventListener('DOMContentLoaded', function() {
+            const rawData = @json($riwayatGrafik);
+            
+            if (!rawData || rawData.length === 0) {
+                document.querySelector("#chart-jamkot").innerHTML = 
+                    `<div style='text-align: center; color: #6b7280; padding: 2rem 0;'>Belum ada data sensor untuk menampilkan grafik.</div>`;
+                return;
+            }
+
+            const waktuLabels = rawData.map(item => {
+                let date = new Date(item.created_at);
+                return date.getHours().toString().padStart(2, '0') + ':' + date.getMinutes().toString().padStart(2, '0');
+            });
+
+            const cahayaSeries = rawData.map(item => item.cahaya);
+            
+            const isM3 = localStorage.getItem('jamkot-ui-version') === 'v1';
+            const chartTextColors = isM3 ? '#a2aba7' : '#6b7280';
+            const chartGridBorder = isM3 ? '#242c29' : '#1f1f1f';
+            
+            const options = {
+                series: [{
+                    name: 'Intensitas Cahaya (Lux)',
+                    data: cahayaSeries
+                }],
+                chart: {
+                    height: 300,
+                    type: 'area',
+                    toolbar: { show: false },
+                    background: 'transparent',
+                    fontFamily: 'Outfit, Inter, sans-serif'
+                },
+                colors: ['#fbbf24'], // Warna kuning/amber untuk cahaya
+                dataLabels: { enabled: false },
+                stroke: { curve: 'smooth', width: 3 },
+                xaxis: {
+                    categories: waktuLabels,
+                    labels: { style: { colors: chartTextColors } },
+                    axisBorder: { color: chartGridBorder },
+                    axisTicks: { color: chartGridBorder }
+                },
+                yaxis: {
+                    labels: { style: { colors: chartTextColors } }
+                },
+                grid: {
+                    borderColor: chartGridBorder,
+                    strokeDashArray: 4
+                },
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                        shadeIntensity: 1,
+                        opacityFrom: 0.35,
+                        opacityTo: 0.05,
+                        stops: [0, 100]
+                    }
+                },
+                legend: {
+                    labels: { colors: isM3 ? '#e1e3e1' : '#ededed' }
+                }
+            };
+
+            const chart = new ApexCharts(document.querySelector("#chart-jamkot"), options);
+            chart.render().then(() => {
+                const skeleton = document.getElementById('chart-skeleton');
+                const chartDiv = document.getElementById('chart-jamkot');
+                if (skeleton) skeleton.style.display = 'none';
+                if (chartDiv) chartDiv.style.opacity = '1';
+            });
+        });
     </script>
-    <script src="{{ asset('js/chart.js') }}?v={{ time() }}"></script>
     <script src="{{ asset('js/sidebar.js') }}?v={{ time() }}"></script>
     <script src="{{ asset('js/realtime.js') }}?v={{ time() }}"></script>
 

@@ -115,21 +115,60 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         let html = '';
+        const isLDR = document.querySelector('th.text-right')?.innerText.includes('CAHAYA');
+        const headerCount = document.querySelectorAll('.data-table thead th').length;
+
         riwayatTabel.forEach(log => {
-            const pompaClass = log.pompa_status === 'ON' ? 'text-blue' : 'text-muted';
-            html += `
-                <tr>
-                    <td class="text-muted">${log.time_diff}</td>
-                    <td>${log.sensor_id}</td>
-                    <td><span class="badge success">Tercatat</span></td>
-                    <td>
-                        <span class="fw-bold ${pompaClass}">
-                            ${log.pompa_status}
-                        </span>
-                    </td>
-                    <td class="text-right">${log.kelembapan}% | ${log.suhu}°C</td>
-                </tr>
-            `;
+            if (headerCount === 6) {
+                const pompaClass = log.pompa_status === 'ON' ? 'text-blue' : 'text-muted';
+                html += `
+                    <tr>
+                        <td class="text-muted">${log.time_diff}</td>
+                        <td>${log.sensor_id}</td>
+                        <td><span class="badge success">Tercatat</span></td>
+                        <td>
+                            <span class="fw-bold ${pompaClass}">
+                                ${log.pompa_status}
+                            </span>
+                        </td>
+                        <td>${log.cahaya ?? '--'} Lux</td>
+                        <td class="text-right">${log.kelembapan}% | ${log.suhu}°C</td>
+                    </tr>
+                `;
+            } else if (isLDR) {
+                html += `
+                    <tr>
+                        <td class="text-muted">${log.time_diff}</td>
+                        <td>${log.sensor_id}</td>
+                        <td><span class="badge success">Tercatat</span></td>
+                        <td class="text-right">${log.cahaya ?? '--'} Lux</td>
+                    </tr>
+                `;
+            } else if (document.querySelector('th.text-right')?.innerText.includes('NILAI')) {
+                html += `
+                    <tr>
+                        <td class="text-muted">${log.time_diff}</td>
+                        <td>${log.sensor_id}</td>
+                        <td><span class="badge success">Tercatat</span></td>
+                        <td class="text-right">${log.kelembapan}% | ${log.suhu}°C</td>
+                    </tr>
+                `;
+            } else {
+                const pompaClass = log.pompa_status === 'ON' ? 'text-blue' : 'text-muted';
+                html += `
+                    <tr>
+                        <td class="text-muted">${log.time_diff}</td>
+                        <td>${log.sensor_id}</td>
+                        <td><span class="badge success">Tercatat</span></td>
+                        <td>
+                            <span class="fw-bold ${pompaClass}">
+                                ${log.pompa_status}
+                            </span>
+                        </td>
+                        <td class="text-right">${log.kelembapan}% | ${log.suhu}°C</td>
+                    </tr>
+                `;
+            }
         });
         
         tbody.innerHTML = html;

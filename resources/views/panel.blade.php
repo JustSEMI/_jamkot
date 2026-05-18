@@ -150,6 +150,7 @@
                                 <th>ID DEVICE</th>
                                 <th>STATUS</th>
                                 <th>POMPA</th>
+                                <th>CAHAYA</th>
                                 <th class="text-right">NILAI (H | T)</th>
                             </tr>
                         </thead>
@@ -164,11 +165,12 @@
                                             {{ $log->pompa_status }}
                                         </span>
                                     </td>
+                                    <td>{{ $log->cahaya ?? '--' }} Lux</td>
                                     <td class="text-right">{{ $log->kelembapan }}% | {{ $log->suhu }}°C</td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="5" class="text-muted" style="text-align: center; padding: 2rem;">Belum ada data
+                                    <td colspan="6" class="text-muted" style="text-align: center; padding: 2rem;">Belum ada data
                                         sensor masuk.</td>
                                 </tr>
                             @endforelse

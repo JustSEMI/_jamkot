@@ -182,6 +182,7 @@
                                 <th>ID DEVICE</th>
                                 <th>STATUS</th>
                                 <th>POMPA</th>
+                                <th>CAHAYA</th>
                                 <th class="text-right">NILAI (H | T)</th>
                             </tr>
                         </thead>
@@ -199,11 +200,12 @@
                                             {{ $log->pompa_status }}
                                         </span>
                                     </td>
+                                    <td>{{ $log->cahaya ?? '--' }} Lux</td>
                                     <td class="text-right fw-bold" style="letter-spacing: 0.05em;">{{ $log->kelembapan }}% | {{ $log->suhu }}°C</td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="5" class="text-muted" style="text-align: center; padding: 4rem 2rem;">
+                                 </tr>
+                             @empty
+                                 <tr>
+                                     <td colspan="6" class="text-muted" style="text-align: center; padding: 4rem 2rem;">
                                         <i class="fa-solid fa-folder-open" style="display: block; font-size: 2rem; margin-bottom: 1rem; opacity: 0.3;"></i>
                                         Tidak ada data ditemukan untuk filter yang dipilih.
                                     </td>

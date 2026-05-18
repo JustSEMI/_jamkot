@@ -77,6 +77,7 @@ class PanelController extends Controller
                 'pompa_status' => $log->pompa_status,
                 'kelembapan' => $log->kelembapan,
                 'suhu' => $log->suhu,
+                'cahaya' => $log->cahaya,
             ];
         });
 
