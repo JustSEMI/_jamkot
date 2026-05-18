@@ -142,6 +142,7 @@
     <script src="{{ asset('js/sidebar.js') }}?v={{ time() }}"></script>
     <script src="{{ asset('js/realtime.js') }}?v={{ time() }}"></script>
 
+    @include('partials.bottom-nav')
 </body>
 
 </html>

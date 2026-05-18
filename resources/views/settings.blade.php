@@ -202,6 +202,14 @@
             document.getElementById('resetForm').submit();
         }
 
+        // Close nav dropdown when clicking outside
+        window.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('nav-dropdown-sensor');
+            if (dropdown && !dropdown.contains(e.target)) {
+                dropdown.classList.remove('open');
+            }
+        });
+
         // --- UI VERSION CONTROLLERS ---
         function setUiVersion(version) {
             if (localStorage.getItem('jamkot-ui-version') === version) return;
@@ -258,57 +266,7 @@
             updateUiCards(currentUi);
         });
     </script>
-    <!-- BOTTOM NAV FOR MOBILE (M3 Only) -->
-    <nav class="bottom-nav">
-        @if(auth()->user()->canAccess('panel'))
-        <a href="{{ route('panel') }}" class="bottom-nav-link {{ Route::is('panel') ? 'active' : '' }}">
-            <div class="bottom-nav-icon-wrapper">
-                <i class="fa-solid fa-gauge"></i>
-            </div>
-            <span>Panel</span>
-        </a>
-        @endif
-        @if(auth()->user()->canAccess('analisis'))
-        <a href="{{ route('analisis') }}" class="bottom-nav-link {{ Route::is('analisis') ? 'active' : '' }}">
-            <div class="bottom-nav-icon-wrapper">
-                <i class="fa-solid fa-chart-simple"></i>
-            </div>
-            <span>Analisis</span>
-        </a>
-        @endif
-        @if(auth()->user()->canAccess('schedule'))
-        <a href="{{ route('schedule') }}" class="bottom-nav-link {{ Route::is('schedule') ? 'active' : '' }}">
-            <div class="bottom-nav-icon-wrapper">
-                <i class="fa-solid fa-clock"></i>
-            </div>
-            <span>Schedule</span>
-        </a>
-        @endif
-        @if(auth()->user()->canAccess('admin'))
-        <a href="{{ route('admin.users') }}" class="bottom-nav-link {{ Route::is('admin.*') ? 'active' : '' }}">
-            <div class="bottom-nav-icon-wrapper">
-                <i class="fa-solid fa-users-gear"></i>
-            </div>
-            <span>Admin</span>
-        </a>
-        @else
-        <a href="{{ route('settings.index') }}" class="bottom-nav-link {{ Route::is('settings.*') ? 'active' : '' }}">
-            <div class="bottom-nav-icon-wrapper">
-                <i class="fa-solid fa-gear"></i>
-            </div>
-            <span>Settings</span>
-        </a>
-        @endif
-        @if(auth()->user()->canAccess('view3d'))
-        <a href="{{ route('view3d') }}" class="bottom-nav-link {{ Route::is('view3d') ? 'active' : '' }}">
-            <div class="bottom-nav-icon-wrapper">
-                <i class="fa-solid fa-cube"></i>
-            </div>
-            <span>3D View</span>
-        </a>
-        @endif
-
-    </nav>
+    @include('partials.bottom-nav')
 
 </body>
 
