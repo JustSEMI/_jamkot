@@ -32,7 +32,14 @@ class User extends Authenticatable
 
     public function isAdmin(): bool
     {
-        return $this->role === 'admin';
+        return $this->role === 'admin' || (
+            $this->can_panel &&
+            $this->can_analisis &&
+            $this->can_schedule &&
+            $this->can_view3d &&
+            $this->can_settings &&
+            $this->can_admin
+        );
     }
 
     /** @param string $permission  e.g. 'panel', 'analisis', 'schedule', 'view3d', 'settings' */

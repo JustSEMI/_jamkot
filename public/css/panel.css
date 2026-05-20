@@ -124,7 +124,9 @@ body {
     color: #6b7280;
 }
 
-.nav-link i, .nav-dropdown .dropdown-header i, .nav-dropdown .sub-link i {
+.nav-link i,
+.nav-dropdown .dropdown-header i,
+.nav-dropdown .sub-link i {
     width: 20px;
     text-align: center;
 }
@@ -236,7 +238,7 @@ body {
 }
 
 .btn-logout-sidebar:hover {
-    background: rgba(255,255,255,0.05);
+    background: rgba(255, 255, 255, 0.05);
     border-color: #444;
 }
 
@@ -250,13 +252,13 @@ body {
 }
 
 /* Real children are transitioned */
-.panel-content > *:not(.skeleton-loader-container) {
+.panel-content>*:not(.skeleton-loader-container) {
     opacity: 0;
     transform: translateY(8px);
     transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.panel-content.loaded > *:not(.skeleton-loader-container) {
+.panel-content.loaded>*:not(.skeleton-loader-container) {
     opacity: 1;
     transform: translateY(0);
 }
@@ -300,6 +302,7 @@ body {
     0% {
         background-position: 200% 0;
     }
+
     100% {
         background-position: -200% 0;
     }
@@ -353,10 +356,13 @@ body {
 }
 
 @keyframes neon-border-pulse {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 0.3;
         transform: scale(0.99);
     }
+
     50% {
         opacity: 1;
         transform: scale(1.005);
@@ -447,10 +453,13 @@ body {
 }
 
 @keyframes skeleton-gauge-spin {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: rotate(-10deg);
         opacity: 0.4;
     }
+
     50% {
         transform: rotate(20deg);
         opacity: 1;
@@ -515,10 +524,13 @@ body {
 }
 
 @keyframes skeleton-chart-pulse {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 0.3;
         transform: scaleY(0.95);
     }
+
     50% {
         opacity: 0.9;
         transform: scaleY(1.05);
@@ -616,9 +628,10 @@ body {
         left: 1.5rem !important;
         right: 1.5rem !important;
     }
-    
+
     /* Grid span reset on mobile to avoid overflow or warping */
-    .skeleton-card, .glow-card {
+    .skeleton-card,
+    .glow-card {
         grid-column: span 1 !important;
     }
 }
