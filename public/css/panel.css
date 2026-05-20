@@ -246,14 +246,389 @@ body {
     overflow-y: auto;
     padding: 3rem 4rem;
     background-color: #0a0a0a;
+    position: relative;
+}
+
+/* Real children are transitioned */
+.panel-content > *:not(.skeleton-loader-container) {
     opacity: 0;
     transform: translateY(8px);
     transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.panel-content.loaded {
+.panel-content.loaded > *:not(.skeleton-loader-container) {
     opacity: 1;
     transform: translateY(0);
+}
+
+/* --- SKELETON LOADER SYSTEM --- */
+.skeleton-loader-container {
+    position: absolute;
+    top: 3rem;
+    left: 4rem;
+    right: 4rem;
+    z-index: 100;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.25s;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    pointer-events: none;
+}
+
+.panel-content.loaded .skeleton-loader-container {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+}
+
+.skeleton-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.skeleton-bone {
+    border-radius: 6px;
+    background: linear-gradient(90deg, #121214 25%, #1e1e22 50%, #121214 75%);
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.5s infinite cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes skeleton-shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+.skeleton-title {
+    height: 28px;
+    width: 220px;
+}
+
+.skeleton-subtitle {
+    height: 14px;
+    width: 420px;
+    max-width: 80%;
+}
+
+.skeleton-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.skeleton-card {
+    background: #141414;
+    border: 1px solid #262626;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-height: 160px;
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Expressive glowing neon outline pulses for Neon V2 Theme */
+.skeleton-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    border: 1.5px solid transparent;
+    background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.15), rgba(16, 185, 129, 0.3), rgba(16, 185, 129, 0.15), transparent) border-box;
+    -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    animation: neon-border-pulse 2s infinite cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes neon-border-pulse {
+    0%, 100% {
+        opacity: 0.3;
+        transform: scale(0.99);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.005);
+    }
+}
+
+.skeleton-card-title {
+    height: 12px;
+    width: 60%;
+}
+
+.skeleton-card-value {
+    height: 36px;
+    width: 45%;
+    margin: 0.5rem 0;
+}
+
+.skeleton-card-desc {
+    height: 12px;
+    width: 80%;
+}
+
+.skeleton-body-row {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.skeleton-large-card {
+    min-height: 300px;
+}
+
+.skeleton-large-title {
+    height: 16px;
+    width: 180px;
+}
+
+.skeleton-large-content {
+    flex: 1;
+    width: 100%;
+    min-height: 180px;
+}
+
+/* Custom layout-specific skeleton styles */
+.skeleton-section-title {
+    height: 18px;
+    width: 160px;
+    margin-bottom: 1rem;
+    margin-top: 0.5rem;
+}
+
+.skeleton-gauge-container {
+    position: relative;
+    height: 90px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.skeleton-gauge-arc {
+    position: absolute;
+    width: 110px;
+    height: 55px;
+    border-radius: 110px 110px 0 0;
+    border: 9px solid rgba(255, 255, 255, 0.05);
+    border-bottom: none;
+    top: 15px;
+    box-sizing: border-box;
+}
+
+/* Gauge active pulsing arc overlay */
+.skeleton-gauge-arc::after {
+    content: '';
+    position: absolute;
+    top: -9px;
+    left: -9px;
+    right: -9px;
+    bottom: 0;
+    border-radius: 110px 110px 0 0;
+    border: 9px solid transparent;
+    border-top-color: rgba(16, 185, 129, 0.15);
+    border-right-color: rgba(16, 185, 129, 0.15);
+    border-bottom: none;
+    box-sizing: border-box;
+    transform-origin: bottom center;
+    animation: skeleton-gauge-spin 2s infinite ease-in-out;
+}
+
+@keyframes skeleton-gauge-spin {
+    0%, 100% {
+        transform: rotate(-10deg);
+        opacity: 0.4;
+    }
+    50% {
+        transform: rotate(20deg);
+        opacity: 1;
+    }
+}
+
+.skeleton-gauge-value {
+    height: 24px;
+    width: 60px;
+    position: absolute;
+    bottom: 0;
+}
+
+.skeleton-actuator-card {
+    flex-direction: row !important;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 110px !important;
+    padding: 1.5rem 2rem !important;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.skeleton-actuator-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.skeleton-btn-pill {
+    height: 48px;
+    width: 140px;
+    border-radius: 100px;
+}
+
+.skeleton-chart-placeholder {
+    height: 220px;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    padding: 2rem 0.5rem 0.5rem;
+}
+
+.skeleton-chart-line {
+    flex: 1;
+    height: 45%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, transparent 100%);
+    border-radius: 4px 4px 0 0;
+    animation: skeleton-chart-pulse 2s infinite ease-in-out;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.skeleton-chart-line.delay-1 {
+    height: 65%;
+    animation-delay: 0.3s;
+}
+
+.skeleton-chart-line.delay-2 {
+    height: 35%;
+    animation-delay: 0.6s;
+}
+
+@keyframes skeleton-chart-pulse {
+    0%, 100% {
+        opacity: 0.3;
+        transform: scaleY(0.95);
+    }
+    50% {
+        opacity: 0.9;
+        transform: scaleY(1.05);
+        background: linear-gradient(180deg, rgba(16, 185, 129, 0.06) 0%, transparent 100%);
+        border-top-color: rgba(16, 185, 129, 0.2);
+    }
+}
+
+.skeleton-table-card {
+    padding: 1.5rem 2rem !important;
+}
+
+.skeleton-table {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+    overflow-x: auto;
+}
+
+.skeleton-table-row {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 1.2fr 1fr 1.5fr 2fr;
+    gap: 1.5rem;
+    padding: 0.75rem 0.25rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+}
+
+.skeleton-table-row.cols-4 {
+    grid-template-columns: 2fr 1.5fr 1.5fr 2fr !important;
+}
+
+.skeleton-table-row.cols-6 {
+    grid-template-columns: 2fr 1.5fr 1.2fr 1fr 1.5fr 2fr !important;
+}
+
+.skeleton-table-row:last-child {
+    border-bottom: none;
+}
+
+.skeleton-table-row .cell {
+    height: 14px;
+    width: 100%;
+}
+
+.skeleton-table-row.skeleton-table-head {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.skeleton-table-row.skeleton-table-head .cell {
+    height: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+/* Clean geometric arc bug fix on mobile & desktop skeletons */
+.sensor-meter-card.skeleton-card::before,
+.sensor-meter-card.skeleton-card::after,
+.meter-card.skeleton-card::before,
+.meter-card.skeleton-card::after {
+    display: none !important;
+}
+
+/* Ensure skeleton gauge cards are perfectly balanced and layout-shift free */
+.sensor-meter-card.skeleton-card,
+.meter-card.skeleton-card {
+    height: 280px !important;
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 1.75rem 1.5rem !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+}
+
+.sensor-meter-card.skeleton-card .skeleton-card-title,
+.meter-card.skeleton-card .skeleton-card-title {
+    width: 140px;
+    height: 14px;
+    margin: 0 auto;
+}
+
+.sensor-meter-card.skeleton-card .skeleton-card-desc,
+.meter-card.skeleton-card .skeleton-card-desc {
+    width: 160px;
+    height: 12px;
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    .skeleton-loader-container {
+        top: 1.5rem !important;
+        left: 1.5rem !important;
+        right: 1.5rem !important;
+    }
+    
+    /* Grid span reset on mobile to avoid overflow or warping */
+    .skeleton-card, .glow-card {
+        grid-column: span 1 !important;
+    }
+}
+
+@media (max-width: 599px) {
+    .skeleton-loader-container {
+        top: 1.25rem !important;
+        left: 1rem !important;
+        right: 1rem !important;
+    }
 }
 
 /* --- PAGE TRANSITION OVERLAY --- */

@@ -1481,3 +1481,81 @@ html[data-ui-version="v1"] .bottom-nav-dropdown-menu a.active {
         display: none !important;
     }
 }
+
+/* --- MATERIAL 3 SKELETON ADAPTABILITY --- */
+html[data-ui-version="v1"] .skeleton-card {
+    background: var(--m3-surface-container) !important;
+    border: none !important;
+    border-radius: 24px !important;
+    box-shadow: none !important;
+}
+
+html[data-ui-version="v1"] .skeleton-card::before {
+    display: none !important; /* Hide neon pulse for M3 */
+}
+
+/* Elegant radial container glow for Material 3 using active M3 primary accent color */
+html[data-ui-version="v1"] .skeleton-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(circle at 50% 50%, rgba(128, 222, 197, 0.05), transparent 70%);
+    pointer-events: none;
+    animation: m3-card-pulse 3s infinite ease-in-out;
+}
+
+@keyframes m3-card-pulse {
+    0%, 100% {
+        opacity: 0.4;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+html[data-ui-version="v1"] .skeleton-bone {
+    border-radius: 100px !important; /* Pill shapes for M3 */
+    background: linear-gradient(90deg, var(--m3-surface-container-high) 25%, var(--m3-surface-container-highest) 50%, var(--m3-surface-container-high) 75%) !important;
+    background-size: 200% 100% !important;
+}
+
+/* Material 3 layout-specific skeleton overrides */
+html[data-ui-version="v1"] .skeleton-gauge-arc {
+    border-color: var(--m3-outline-variant) !important;
+    border-bottom: none !important;
+}
+
+html[data-ui-version="v1"] .skeleton-gauge-arc::after {
+    border-top-color: var(--m3-primary) !important;
+    border-right-color: var(--m3-primary) !important;
+    border-bottom: none !important;
+    opacity: 0.25;
+}
+
+html[data-ui-version="v1"] .skeleton-actuator-card {
+    background: var(--m3-surface-container) !important;
+    border: none !important;
+    border-radius: 28px !important;
+}
+
+html[data-ui-version="v1"] .skeleton-table-row {
+    border-bottom-color: var(--m3-outline-variant) !important;
+}
+
+html[data-ui-version="v1"] .skeleton-table-row.skeleton-table-head .cell {
+    background: var(--m3-surface-container-highest) !important;
+}
+
+html[data-ui-version="v1"] .skeleton-danger-zone {
+    border-color: var(--m3-error) !important;
+    border-radius: 20px !important;
+    background: rgba(186, 26, 26, 0.03) !important;
+}
+
+html[data-ui-version="v1"] .skeleton-ui-card,
+html[data-ui-version="v1"] .skeleton-user-accordion-card {
+    border-color: var(--m3-outline-variant) !important;
+    border-radius: 20px !important;
+    background: var(--m3-surface-container-low) !important;
+}
