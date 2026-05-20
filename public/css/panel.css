@@ -574,11 +574,52 @@ body {
     border-radius: 4px;
 }
 
+/* Clean geometric arc bug fix on mobile & desktop skeletons */
+.sensor-meter-card.skeleton-card::before,
+.sensor-meter-card.skeleton-card::after,
+.meter-card.skeleton-card::before,
+.meter-card.skeleton-card::after {
+    display: none !important;
+}
+
+/* Ensure skeleton gauge cards are perfectly balanced and layout-shift free */
+.sensor-meter-card.skeleton-card,
+.meter-card.skeleton-card {
+    height: 280px !important;
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 1.75rem 1.5rem !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+}
+
+.sensor-meter-card.skeleton-card .skeleton-card-title,
+.meter-card.skeleton-card .skeleton-card-title {
+    width: 140px;
+    height: 14px;
+    margin: 0 auto;
+}
+
+.sensor-meter-card.skeleton-card .skeleton-card-desc,
+.meter-card.skeleton-card .skeleton-card-desc {
+    width: 160px;
+    height: 12px;
+    margin: 0 auto;
+}
+
 @media (max-width: 768px) {
     .skeleton-loader-container {
         top: 1.5rem !important;
         left: 1.5rem !important;
         right: 1.5rem !important;
+    }
+    
+    /* Grid span reset on mobile to avoid overflow or warping */
+    .skeleton-card, .glow-card {
+        grid-column: span 1 !important;
     }
 }
 
