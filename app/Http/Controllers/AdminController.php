@@ -20,7 +20,7 @@ class AdminController extends Controller
     /** Update permission untuk satu user. */
     public function updatePermissions(Request $request, User $user): RedirectResponse
     {
-        if ($user->isAdmin()) {
+        if ($user->role === 'admin') {
             return back()->with('error', 'Tidak bisa mengubah permission admin.');
         }
 
@@ -48,7 +48,7 @@ class AdminController extends Controller
     /** Hapus user dari sistem. */
     public function destroy(User $user): RedirectResponse
     {
-        if ($user->isAdmin() || $user->id === auth()->id()) {
+        if ($user->role === 'admin' || $user->id === auth()->id()) {
             return back()->with('error', 'Tidak bisa menghapus akun admin atau akun sendiri.');
         }
 

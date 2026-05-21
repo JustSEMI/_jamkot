@@ -18,7 +18,7 @@
             <span class="username">{{ $username }}</span>
             <div class="role-badge">
                 <span class="status-dot online"></span>
-                <span>{{ strtoupper(auth()->user()->role ?? 'user') }}</span>
+                <span>{{ auth()->user()->isAdmin() ? 'ADMIN' : strtoupper(auth()->user()->role ?? 'user') }}</span>
             </div>
         </div>
     </div>
