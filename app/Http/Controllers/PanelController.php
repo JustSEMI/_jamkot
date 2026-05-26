@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SensorLog;
 use App\Models\Schedule;
+use App\Models\SensorLog;
 use Illuminate\Http\Request;
-
 
 class PanelController extends Controller
 {
@@ -65,7 +64,7 @@ class PanelController extends Controller
     {
         // Data Realtime
         $allRecent = SensorLog::latest()->take(20)->get();
-        
+
         $latest = $allRecent->first();
         $riwayatGrafik = $allRecent->reverse()->values();
         $riwayatTabelRaw = $allRecent->take(5);
@@ -93,6 +92,7 @@ class PanelController extends Controller
                 'suhu_raw' => $latest->suhu ?? 0,
                 'kelembapan_raw' => $latest->kelembapan ?? 0,
                 'is_online' => $latest ? true : false,
+                'pompa_status' => $latest->pompa_status ?? 'OFF',
             ],
             'riwayatTabel' => $riwayatTabel,
             'riwayatGrafik' => $riwayatGrafik,
@@ -106,12 +106,13 @@ class PanelController extends Controller
     public function togglePump(Request $request)
     {
         $jadwal = Schedule::first();
-        if (!$jadwal) {
-            return response()->json(['status' => 'error', 'message' => 'Konfigurasi jadwal belum ada.']);
+        if (! $jadwal) {
+            $jadwal = new Schedule;
+            $jadwal->save();
         }
 
         $request->validate([
-            'status' => 'required|in:AUTO,ON,OFF'
+            'status' => 'required|in:AUTO,ON,OFF',
         ]);
 
         $jadwal->manual_pump_status = $request->status;
@@ -195,7 +196,7 @@ class PanelController extends Controller
     {
         $date = $request->get('date');
         $query = SensorLog::query();
-        
+
         if ($date) {
             $query->whereDate('created_at', $date);
         }
