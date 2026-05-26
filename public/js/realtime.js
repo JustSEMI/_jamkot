@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let lastChartDataJson = '';
 
     // Polling interval 5 seconds
+    fetchRealtimeData();
     setInterval(fetchRealtimeData, 5000);
 
     function fetchRealtimeData() {
@@ -33,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
         lastTargetKelembapan = targetKelembapan;
         lastManualPumpStatus = manualPumpStatus;
 
-        // Sync Pump UI based on server manual_pump_status
+        // Sync Pump UI based on server manual_pump_status and actual running status
         const btnText = document.getElementById('pump-btn-text');
         const stateLabel = document.getElementById('pump-state-label');
         const indicatorDot = document.getElementById('pump-indicator-dot');
@@ -43,16 +44,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (isPumpOn) {
                 btnText.innerText = "MATIKAN";
-                stateLabel.innerText = "ON";
+                stateLabel.innerText = "MANUAL ON";
                 stateLabel.style.color = "#10b981";
                 indicatorDot.classList.remove('offline');
                 indicatorDot.classList.add('online');
             } else {
                 btnText.innerText = "NYALAKAN";
-                stateLabel.innerText = "OFF";
-                stateLabel.style.color = "#ededed";
-                indicatorDot.classList.remove('online');
-                indicatorDot.classList.add('offline');
+                
+                const actualPumpStatus = latest.pompa_status || 'OFF';
+                if (actualPumpStatus === 'ON') {
+                    stateLabel.innerText = "OTOMATIS (ON)";
+                    stateLabel.style.color = "#10b981";
+                    indicatorDot.classList.remove('offline');
+                    indicatorDot.classList.add('online');
+                } else {
+                    stateLabel.innerText = "OTOMATIS (OFF)";
+                    stateLabel.style.color = "#ededed";
+                    indicatorDot.classList.remove('online');
+                    indicatorDot.classList.add('offline');
+                }
             }
         }
 

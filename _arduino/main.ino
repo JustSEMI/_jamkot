@@ -42,7 +42,7 @@ const unsigned long pumpStatusUpdateInterval =
 
 unsigned long lastSensorRead = 0;
 const unsigned long sensorReadInterval =
-    60000; // Baca sensor & kirim web tiap 60 detik
+    15000; // Baca sensor & kirim web tiap 15 detik
 
 // VARIABLES
 float batasSuhuPanas = 30.0;
@@ -251,12 +251,12 @@ void loop() {
 
   // -- POMPA LOGIC
   if (manualPumpStatus == "ON") {
-    // Paksa nyala dari Web
-    digitalWrite(RELAY_POMPA, LOW);
+    // Manual ON dari Web - Paksa Menyala
+    digitalWrite(RELAY_POMPA, LOW); // ON
     actualPumpStatus = "ON";
   } else if (manualPumpStatus == "OFF") {
-    // Paksa mati dari Web
-    digitalWrite(RELAY_POMPA, HIGH);
+    // Paksa mati dari Web - Paksa Mati
+    digitalWrite(RELAY_POMPA, HIGH); // OFF
     actualPumpStatus = "OFF";
   } else {
     // AUTO MODE (Jadwal / Kelembapan)
@@ -278,7 +278,7 @@ void loop() {
     }
   }
 
-  // 4. BACA SENSOR & KIRIM DATA KE WEB (Tiap 60 Detik)
+  // 4. BACA SENSOR & KIRIM DATA KE WEB (Tiap 15 Detik)
   if (currentMillis - lastSensorRead >= sensorReadInterval) {
     lastSensorRead = currentMillis;
 
