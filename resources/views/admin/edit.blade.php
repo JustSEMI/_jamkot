@@ -318,6 +318,203 @@
             gap: 1rem;
         }
     }
+
+    /* --- MATERIAL 3 EXPRESSIVE OVERRIDES --- */
+    html[data-ui-version="v1"] .btn-back {
+        padding: 0.65rem 1.35rem !important;
+        border-radius: 100px !important;
+        border: 1px solid var(--m3-outline) !important;
+        background: transparent !important;
+        color: var(--m3-primary) !important;
+        font-family: var(--m3-font) !important;
+        font-weight: 600 !important;
+        transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+    }
+
+    html[data-ui-version="v1"] .btn-back:hover {
+        background: var(--m3-primary-container) !important;
+        color: var(--m3-on-primary-container) !important;
+        border-color: var(--m3-primary) !important;
+    }
+
+    html[data-ui-version="v1"] .profile-sidebar-card {
+        background: var(--m3-surface-container) !important;
+        border: 1px solid var(--m3-outline-variant) !important;
+        border-radius: 24px !important;
+        padding: 2.5rem 1.75rem !important;
+    }
+
+    html[data-ui-version="v1"] .profile-avatar {
+        background: var(--m3-primary-container) !important;
+        color: var(--m3-on-primary-container) !important;
+        border: 1px solid var(--m3-primary) !important;
+    }
+
+    html[data-ui-version="v1"] .profile-username {
+        color: var(--m3-on-surface) !important;
+        font-family: var(--m3-font) !important;
+    }
+
+    html[data-ui-version="v1"] .profile-email {
+        color: var(--m3-on-surface-variant) !important;
+    }
+
+    html[data-ui-version="v1"] .self-account-badge {
+        color: var(--m3-on-surface-variant) !important;
+    }
+
+    html[data-ui-version="v1"] .form-content-card {
+        background: var(--m3-surface-container) !important;
+        border: 1px solid var(--m3-outline-variant) !important;
+        border-radius: 24px !important;
+        padding: 2.5rem !important;
+    }
+
+    html[data-ui-version="v1"] .section-title-small {
+        color: var(--m3-primary) !important;
+        font-family: var(--m3-font) !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.08em !important;
+    }
+
+    html[data-ui-version="v1"] .role-select-card {
+        background: var(--m3-surface-container-low) !important;
+        border: 1px solid var(--m3-outline-variant) !important;
+        border-radius: 20px !important;
+        transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+    }
+
+    html[data-ui-version="v1"] .role-select-card:hover {
+        background: var(--m3-surface-container-high) !important;
+        border-color: var(--m3-outline) !important;
+    }
+
+    html[data-ui-version="v1"] .role-select-card.active#role-card-admin {
+        background: var(--m3-primary-container) !important;
+        border-color: var(--m3-primary) !important;
+    }
+
+    html[data-ui-version="v1"] .role-select-card.active#role-card-user {
+        background: var(--m3-secondary-container) !important;
+        border-color: var(--m3-secondary) !important;
+    }
+
+    html[data-ui-version="v1"] .role-icon-box {
+        background: var(--m3-surface-container-highest) !important;
+        color: var(--m3-on-surface-variant) !important;
+        border-radius: 12px !important;
+    }
+
+    html[data-ui-version="v1"] .role-select-card.active#role-card-admin .role-icon-box {
+        background: var(--m3-primary) !important;
+        color: var(--m3-on-primary) !important;
+    }
+
+    html[data-ui-version="v1"] .role-select-card.active#role-card-user .role-icon-box {
+        background: var(--m3-secondary) !important;
+        color: var(--m3-on-secondary) !important;
+    }
+
+    html[data-ui-version="v1"] .role-info h4 {
+        color: var(--m3-on-surface) !important;
+        font-family: var(--m3-font) !important;
+    }
+
+    html[data-ui-version="v1"] .role-select-card.active#role-card-admin .role-info h4 {
+        color: var(--m3-on-primary-container) !important;
+    }
+
+    html[data-ui-version="v1"] .role-select-card.active#role-card-admin .role-info p {
+        color: var(--m3-on-primary-container) !important;
+        opacity: 0.8;
+    }
+
+    html[data-ui-version="v1"] .role-select-card.active#role-card-user .role-info h4 {
+        color: var(--m3-on-secondary-container) !important;
+    }
+
+    html[data-ui-version="v1"] .role-select-card.active#role-card-user .role-info p {
+        color: var(--m3-on-secondary-container) !important;
+        opacity: 0.8;
+    }
+
+    html[data-ui-version="v1"] .role-info p {
+        color: var(--m3-on-surface-variant) !important;
+    }
+
+    html[data-ui-version="v1"] .admin-info-banner {
+        background: var(--m3-primary-container) !important;
+        border: 1px solid var(--m3-primary) !important;
+        color: var(--m3-on-primary-container) !important;
+        border-radius: 16px !important;
+        padding: 1.15rem 1.5rem !important;
+        font-family: var(--m3-font) !important;
+        font-weight: 500 !important;
+    }
+
+    html[data-ui-version="v1"] .perm-toggle-row {
+        background: var(--m3-surface-container-low) !important;
+        border: 1px solid var(--m3-outline-variant) !important;
+        border-radius: 16px !important;
+        padding: 1.15rem 1.5rem !important;
+        transition: all 0.2s ease !important;
+    }
+
+    html[data-ui-version="v1"] .perm-toggle-row:hover {
+        background: var(--m3-surface-container-high) !important;
+    }
+
+    html[data-ui-version="v1"] .perm-info h4 {
+        color: var(--m3-on-surface) !important;
+        font-family: var(--m3-font) !important;
+    }
+
+    html[data-ui-version="v1"] .perm-info p {
+        color: var(--m3-on-surface-variant) !important;
+    }
+
+    html[data-ui-version="v1"] .toggle-slider {
+        background-color: var(--m3-surface-container-highest) !important;
+        border: 1px solid var(--m3-outline-variant) !important;
+    }
+
+    html[data-ui-version="v1"] .toggle-slider:before {
+        background-color: var(--m3-outline) !important;
+    }
+
+    html[data-ui-version="v1"] .toggle-switch input:checked + .toggle-slider {
+        background-color: var(--m3-primary-container) !important;
+        border-color: var(--m3-primary) !important;
+    }
+
+    html[data-ui-version="v1"] .toggle-switch input:checked + .toggle-slider:before {
+        background-color: var(--m3-primary) !important;
+    }
+
+    html[data-ui-version="v1"] .form-action-footer {
+        border-top: 1px solid var(--m3-outline-variant) !important;
+    }
+
+    html[data-ui-version="v1"] .footer-note {
+        color: var(--m3-on-surface-variant) !important;
+    }
+
+    html[data-ui-version="v1"] .btn-save {
+        background: var(--m3-primary) !important;
+        color: var(--m3-on-primary) !important;
+        border-radius: 100px !important;
+        padding: 0.75rem 2.25rem !important;
+        font-family: var(--m3-font) !important;
+        font-weight: 700 !important;
+        transition: all 0.22s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+    }
+
+    html[data-ui-version="v1"] .btn-save:hover {
+        background: var(--m3-on-primary-container) !important;
+        color: var(--m3-primary-container) !important;
+        box-shadow: 0 6px 20px rgba(128, 222, 197, 0.2) !important;
+        transform: translateY(-2px) !important;
+    }
 </style>
 @endpush
 
@@ -337,7 +534,7 @@
 
     <div class="settings-container">
         <!-- Back Button -->
-        <div style="margin-bottom: 1.5rem;">
+        <div style="margin-top: 1.25rem; margin-bottom: 1.5rem;">
             <a href="{{ route('admin.users') }}" class="btn-back">
                 <i class="fa-solid fa-chevron-left"></i> Kembali
             </a>

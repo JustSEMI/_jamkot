@@ -188,13 +188,115 @@
             gap: 1rem;
         }
     }
+
+    /* --- MATERIAL 3 EXPRESSIVE OVERRIDES --- */
+    html[data-ui-version="v1"] .stats-card {
+        background: var(--m3-surface-container) !important;
+        border: 1px solid var(--m3-outline-variant) !important;
+        border-radius: 24px !important;
+        padding: 1.75rem !important;
+        transition: all 0.2s ease;
+    }
+
+    html[data-ui-version="v1"] .stats-card:hover {
+        background: var(--m3-surface-container-high) !important;
+        transform: translateY(-2px);
+    }
+
+    html[data-ui-version="v1"] .stats-value {
+        color: var(--m3-on-surface);
+    }
+
+    html[data-ui-version="v1"] .stats-card:nth-child(2) .stats-value {
+        color: var(--m3-primary) !important;
+    }
+
+    html[data-ui-version="v1"] .stats-card:nth-child(3) .stats-value {
+        color: var(--m3-on-surface-variant) !important;
+    }
+
+    html[data-ui-version="v1"] .stats-label {
+        color: var(--m3-on-surface-variant) !important;
+        font-family: var(--m3-font) !important;
+        font-weight: 600 !important;
+    }
+
+    html[data-ui-version="v1"] .user-list-card {
+        background: var(--m3-surface-container-low) !important;
+        border: 1px solid var(--m3-outline-variant) !important;
+        border-radius: 20px !important;
+        padding: 1.25rem 1.75rem !important;
+        transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+    }
+
+    html[data-ui-version="v1"] .user-list-card:hover {
+        background: var(--m3-surface-container-high) !important;
+        border-color: var(--m3-primary) !important;
+        transform: translateY(-2px) !important;
+    }
+
+    html[data-ui-version="v1"] .user-avatar-circle {
+        background: var(--m3-primary-container) !important;
+        color: var(--m3-on-primary-container) !important;
+        border: 1px solid var(--m3-primary) !important;
+    }
+
+    html[data-ui-version="v1"] .user-name {
+        color: var(--m3-on-surface) !important;
+    }
+
+    html[data-ui-version="v1"] .user-email {
+        color: var(--m3-on-surface-variant) !important;
+    }
+
+    html[data-ui-version="v1"] .badge-role-admin {
+        background: var(--m3-primary-container) !important;
+        color: var(--m3-on-primary-container) !important;
+        border: 1px solid var(--m3-primary) !important;
+    }
+
+    html[data-ui-version="v1"] .badge-role-user {
+        background: var(--m3-surface-container-highest) !important;
+        color: var(--m3-on-surface-variant) !important;
+        border: 1px solid var(--m3-outline-variant) !important;
+    }
+
+    html[data-ui-version="v1"] .badge-perm-item {
+        background: var(--m3-secondary-container) !important;
+        color: var(--m3-on-secondary-container) !important;
+        border: 1px solid var(--m3-secondary) !important;
+        border-radius: 8px !important;
+        font-family: var(--m3-font) !important;
+        font-weight: 500 !important;
+    }
+
+    html[data-ui-version="v1"] .badge-perm-text {
+        color: var(--m3-on-surface-variant) !important;
+    }
+
+    html[data-ui-version="v1"] .btn-edit-user {
+        border-radius: 100px !important;
+        border: 1px solid var(--m3-outline) !important;
+        background: transparent !important;
+        color: var(--m3-primary) !important;
+        padding: 0.6rem 1.25rem !important;
+        font-family: var(--m3-font) !important;
+        font-weight: 600 !important;
+        transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+    }
+
+    html[data-ui-version="v1"] .btn-edit-user:hover {
+        background: var(--m3-primary-container) !important;
+        color: var(--m3-on-primary-container) !important;
+        border-color: var(--m3-primary) !important;
+    }
 </style>
 @endpush
 
 @section('content')
     <header class="content-header-flex">
         <div>
-            <h1 style="color: var(--warna-utama, #10b981); text-transform: none;">Kelola User</h1>
+            <h1 style="color: var(--warna-utama, #10b981); text-transform: none;">KELOLA USER</h1>
             <p style="text-transform: none;">Atur role dan akses halaman untuk setiap pengguna.</p>
         </div>
 
