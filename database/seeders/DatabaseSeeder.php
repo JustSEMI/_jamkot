@@ -16,7 +16,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
 
         if (User::where('username', 'keju')->count() === 0) {
             User::factory()->create([

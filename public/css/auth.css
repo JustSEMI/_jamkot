@@ -1,4 +1,4 @@
-/* public/css/auth.css */
+
 
 /* --- GLOBAL STYLES --- */
 * {
@@ -106,8 +106,8 @@ body {
     border: 1px solid #2e2e38;
     border-radius: 0.5rem;
     padding: 0.75rem 1rem;
-    padding-left: 2.75rem; /* Space for left icon */
-    padding-right: 2.75rem; /* Space for right icon */
+    padding-left: 2.75rem;
+    padding-right: 2.75rem;
     color: #ffffff;
     font-size: 0.875rem;
     font-family: inherit;

@@ -17,7 +17,6 @@ class AuthController extends Controller
     // REGISTER PAGE
     public function store(Request $request)
     {
-        // VALIDASI
         $validated = $request->validate([
             'username' => 'required|unique:user,username|max:50',
             'email' => 'required|email|unique:user,email|max:100',
@@ -29,7 +28,6 @@ class AuthController extends Controller
             'password.min' => 'Password minimal 5 karakter.',
         ]);
 
-        // SEND DATABASE
         $user = User::create([
             'username' => $validated['username'],
             'email' => $validated['email'],
@@ -44,7 +42,6 @@ class AuthController extends Controller
             'can_admin' => false,
         ]);
 
-        // AUTO LOGIN
         return view('auth.login')->with('success', 'Registrasi berhasil! Silakan login dengan akun baru Anda.');
     }
 

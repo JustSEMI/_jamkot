@@ -1,26 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.guest')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- PREVENT FOUC & SETUP UI THEME -->
-    <script>
-        (function() {
-            const uiVersion = localStorage.getItem('jamkot-ui-version') || 'v1';
-            document.documentElement.setAttribute('data-ui-version', uiVersion);
-        })();
-    </script>
-    <title>Reset Password | JAMKOT</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/mobile.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/material3.css') }}">
-    @vite('resources/js/app.js')
-</head>
+@section('title', 'Reset Password')
 
-<body>
+@section('content')
     <div class="login-container">
         <div class="login-header">
             <h1>JAMKOT</h1>
@@ -39,9 +21,7 @@
                 @enderror
             </div>
 
-            <button type="submit" class="btn-login">Simpan Password</button>
+            <button type="submit" class="btn-login" style="width: 100%; padding: 0.85rem; background: var(--warna-utama, #10b981); color: #111; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s; margin-top: 1rem;">Simpan Password</button>
         </form>
     </div>
-</body>
-
-</html>
+@endsection

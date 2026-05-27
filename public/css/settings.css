@@ -1,4 +1,4 @@
-/* public/css/settings.css */
+
 
 .settings-container {
     max-width: 700px;
@@ -419,7 +419,7 @@
 }
 
 .ui-preview-icon.m3-v1 {
-    background: rgba(103, 80, 164, 0.15); /* Material 3 Purple */
+    background: rgba(103, 80, 164, 0.15);
     color: #a48df6;
     box-shadow: 0 0 15px rgba(103, 80, 164, 0.2);
 }
@@ -452,3 +452,71 @@
 .ui-version-card.active .ui-select-indicator {
     color: #10b981;
 }
+
+/* ========================================================
+   UI V2 OVERHAUL: MINIMALIST DARK (MINIM GLOW & ULTRA CLEAN)
+   ======================================================== */
+
+html[data-ui-version="v2"] .ui-version-card.active {
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    background: rgba(255, 255, 255, 0.02) !important;
+}
+
+html[data-ui-version="v2"] .ui-version-card.active .ui-select-indicator {
+    color: #ffffff !important;
+}
+
+html[data-ui-version="v2"] .ui-preview-icon.glow-v2 {
+    background: rgba(255, 255, 255, 0.06) !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+html[data-ui-version="v2"] .danger-zone {
+    border: 1px solid rgba(239, 68, 68, 0.15) !important;
+    background: rgba(239, 68, 68, 0.02) !important;
+}
+
+html[data-ui-version="v2"] .danger-zone:hover {
+    background: rgba(239, 68, 68, 0.03) !important;
+    box-shadow: none !important;
+}
+
+html[data-ui-version="v2"] .danger-icon {
+    box-shadow: none !important;
+    background: rgba(239, 68, 68, 0.08) !important;
+}
+
+html[data-ui-version="v2"] .modal-box {
+    background: #111111 !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.6) !important;
+    border-radius: 20px !important;
+}
+
+html[data-ui-version="v2"] .modal-icon-wrapper {
+    box-shadow: none !important;
+    background: rgba(239, 68, 68, 0.08) !important;
+    color: #ef4444 !important;
+}
+
+html[data-ui-version="v2"] .toggle-switch input:checked + .toggle-slider {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    border-color: #ffffff !important;
+}
+
+html[data-ui-version="v2"] .toggle-switch input:checked + .toggle-slider:before {
+    background-color: #ffffff !important;
+    box-shadow: none !important;
+}
+
+html[data-ui-version="v2"] .btn-danger:hover {
+    box-shadow: none !important;
+    background: #dc2626 !important;
+}
+
+html[data-ui-version="v2"] .modal-actions .btn-danger.danger-active {
+    box-shadow: none !important;
+}
+

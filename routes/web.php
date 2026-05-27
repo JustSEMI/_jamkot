@@ -4,7 +4,6 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PanelController;
 use App\Http\Controllers\ResetPasswordController;
-
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\SettingsController;
 use Illuminate\Support\Facades\Route;
@@ -27,13 +26,14 @@ Route::middleware('guest')->group(function () {
 // PROTEKSI HALAMAN ADMIN
 Route::middleware(['auth', 'permission:admin'])->group(function () {
     Route::get('/admin/users', [AdminController::class, 'index'])->name('admin.users');
+    Route::get('/admin/users/{user}/edit', [AdminController::class, 'edit'])->name('admin.users.edit');
+    Route::put('/admin/users/{user}', [AdminController::class, 'update'])->name('admin.users.update');
     Route::post('/admin/users/{user}/permissions', [AdminController::class, 'updatePermissions'])->name('admin.users.permissions');
     Route::delete('/admin/users/{user}', [AdminController::class, 'destroy'])->name('admin.users.destroy');
 });
 
 // PROTEKSI HALAMAN DASHBOARD & PANEL
 Route::middleware('auth')->group(function () {
-    // Dashboard hanya untuk user biasa (admin langsung ke panel)
     Route::get('/dashboard', function () {
         if (auth()->user()->isAdmin()) {
             return redirect()->route('panel');
@@ -45,7 +45,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/panel', [PanelController::class, 'index'])->middleware('permission:panel')->name('panel');
     Route::get('/panel/data/realtime', [PanelController::class, 'realtimeData'])->middleware('permission:panel')->name('panel.data.realtime');
     Route::post('/panel/pump/toggle', [PanelController::class, 'togglePump'])->middleware('permission:panel')->name('panel.pump.toggle');
-    
+
     // SENSOR ROUTES
     Route::get('/sensor/ldr', [PanelController::class, 'ldr'])->middleware('permission:panel')->name('sensor.ldr');
     Route::get('/sensor/dht22', [PanelController::class, 'dht22'])->middleware('permission:panel')->name('sensor.dht22');
@@ -60,7 +60,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/settings', [SettingsController::class, 'index'])->middleware('permission:settings')->name('settings.index');
     Route::post('/settings/reset', [SettingsController::class, 'resetData'])->middleware('permission:settings')->name('settings.reset');
     Route::get('/view3d', [PanelController::class, 'view3d'])->middleware('permission:view3d')->name('view3d');
-
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });

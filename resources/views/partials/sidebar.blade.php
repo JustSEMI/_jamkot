@@ -128,7 +128,6 @@
             dropdown.classList.remove('expanded');
         }
 
-        // Check if active or should be open
         if (dropdown.classList.contains('active') || {{ Request::is('sensor/*') ? 'true' : 'false' }}) {
             expand();
         }

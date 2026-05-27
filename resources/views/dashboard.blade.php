@@ -140,18 +140,19 @@
 
         /* NEON GLOW CARD STYLE */
         html[data-ui-version="v2"] .menu-card {
-            background: #141414;
-            border: 1px solid #262626;
+            background: #111111;
+            border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 1.25rem;
             color: #9ca3af;
         }
 
         html[data-ui-version="v2"] .menu-card:hover {
-            border-color: var(--warna-utama, #10b981);
+            border-color: rgba(255, 255, 255, 0.15);
             color: #ededed;
             transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 15px rgba(16, 185, 129, 0.1);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
         }
+
 
         .menu-card .menu-icon {
             font-size: 2rem;
@@ -446,7 +447,6 @@
             mobileNav.classList.remove('show');
         });
 
-        // Close on link click
         document.querySelectorAll('.m-link').forEach(link => {
             link.addEventListener('click', () => {
                 mobileNav.classList.remove('show');

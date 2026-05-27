@@ -62,7 +62,6 @@ class PanelController extends Controller
 
     public function realtimeData()
     {
-        // Data Realtime
         $allRecent = SensorLog::latest()->take(20)->get();
 
         $latest = $allRecent->first();
@@ -80,9 +79,8 @@ class PanelController extends Controller
             ];
         });
 
-        // Ambil status pompa manual
         $jadwal = Schedule::first();
-        $manualPumpStatus = $jadwal ? $jadwal->manual_pump_status : 'AUTO';
+        $manualPumpStatus = $jadwal ? $jadwal->manual_pump_status : 'OFF';
 
         return response()->json([
             'latest' => [
@@ -112,7 +110,7 @@ class PanelController extends Controller
         }
 
         $request->validate([
-            'status' => 'required|in:AUTO,ON,OFF',
+            'status' => 'required|in:ON,OFF',
         ]);
 
         $jadwal->manual_pump_status = $request->status;
@@ -126,7 +124,6 @@ class PanelController extends Controller
         $date = $request->get('date');
         $limit = $request->get('limit', 10);
 
-        // Statistik Utama
         $stats = SensorLog::selectRaw('
             COUNT(*) as total_data,
             AVG(suhu) as avg_suhu,
@@ -137,7 +134,6 @@ class PanelController extends Controller
             MIN(kelembapan) as min_kelembapan
         ')->first()->toArray();
 
-        // Filter Log
         $query = SensorLog::query();
         if ($date) {
             $query->whereDate('created_at', $date);
@@ -201,7 +197,7 @@ class PanelController extends Controller
             $query->whereDate('created_at', $date);
         }
 
-        $logs = $query->latest()->limit(500)->get(); // Limit for safety in print view
+        $logs = $query->latest()->limit(500)->get();
 
         return view('exports.pdf', compact('logs'));
     }

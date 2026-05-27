@@ -1,4 +1,4 @@
-/* public/css/panel.css */
+
 
 /* --- GLOBAL STYLES --- */
 @property --meter-angle {
@@ -200,7 +200,6 @@ body {
     font-weight: 600;
 }
 
-/* Sembunyikan ikon di sidebar untuk tema Neon Glow (kecuali panah) */
 .nav-dropdown .dropdown-header i:not(.arrow-icon),
 .nav-dropdown .sub-link i {
     display: none !important;
@@ -251,7 +250,6 @@ body {
     position: relative;
 }
 
-/* Real children are transitioned */
 .panel-content>*:not(.skeleton-loader-container) {
     opacity: 0;
     transform: translateY(8px);
@@ -340,7 +338,6 @@ body {
     border-color: rgba(255, 255, 255, 0.05);
 }
 
-/* Expressive glowing neon outline pulses for Neon V2 Theme */
 .skeleton-card::before {
     content: '';
     position: absolute;
@@ -406,7 +403,6 @@ body {
     min-height: 180px;
 }
 
-/* Custom layout-specific skeleton styles */
 .skeleton-section-title {
     height: 18px;
     width: 160px;
@@ -434,7 +430,6 @@ body {
     box-sizing: border-box;
 }
 
-/* Gauge active pulsing arc overlay */
 .skeleton-gauge-arc::after {
     content: '';
     position: absolute;
@@ -586,7 +581,6 @@ body {
     border-radius: 4px;
 }
 
-/* Clean geometric arc bug fix on mobile & desktop skeletons */
 .sensor-meter-card.skeleton-card::before,
 .sensor-meter-card.skeleton-card::after,
 .meter-card.skeleton-card::before,
@@ -594,7 +588,6 @@ body {
     display: none !important;
 }
 
-/* Ensure skeleton gauge cards are perfectly balanced and layout-shift free */
 .sensor-meter-card.skeleton-card,
 .meter-card.skeleton-card {
     height: 280px !important;
@@ -629,7 +622,6 @@ body {
         right: 1.5rem !important;
     }
 
-    /* Grid span reset on mobile to avoid overflow or warping */
     .skeleton-card,
     .glow-card {
         grid-column: span 1 !important;
@@ -847,7 +839,6 @@ body {
     z-index: 1;
 }
 
-/* Section Title Global */
 .section-title {
     font-size: 1rem;
     color: #ededed;
@@ -1051,4 +1042,88 @@ body {
     .chart-wrapper {
         animation: none;
     }
+}
+
+/* ========================================================
+   UI V2 OVERHAUL: MINIMALIST DARK (MINIM GLOW & ULTRA CLEAN)
+   ======================================================== */
+
+html[data-ui-version="v2"] .glow-card {
+    background: #121212 !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+}
+
+html[data-ui-version="v2"] .glow-card:hover {
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+    transform: translateY(-2px) !important;
+}
+
+html[data-ui-version="v2"] .status-dot {
+    box-shadow: none !important;
+}
+
+html[data-ui-version="v2"] .status-dot.online {
+    background-color: #10b981 !important;
+}
+
+html[data-ui-version="v2"] .status-dot.status-kelembapan.online {
+    background-color: #06b6d4 !important;
+}
+
+html[data-ui-version="v2"] .status-dot.offline {
+    background-color: #ef4444 !important;
+}
+
+html[data-ui-version="v2"] .nav-link.active {
+    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+html[data-ui-version="v2"] .actuator-card {
+    background: #121212 !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+html[data-ui-version="v2"] #btn-toggle-pump {
+    background: #1a1a1a !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    box-shadow: none !important;
+    transition: all 0.2s ease !important;
+}
+
+html[data-ui-version="v2"] #btn-toggle-pump:hover {
+    background: #262626 !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+html[data-ui-version="v2"] #btn-toggle-pump.pump-active {
+    background: #ffffff !important;
+    color: #0a0a0a !important;
+    border: 1px solid #ffffff !important;
+}
+
+html[data-ui-version="v2"] #btn-toggle-pump.pump-active:hover {
+    background: #e5e5e5 !important;
+    border-color: #e5e5e5 !important;
+}
+
+html[data-ui-version="v2"] .sensor-meter-card::before {
+    background: #1a1a1a !important;
+}
+
+html[data-ui-version="v2"] .apexcharts-tooltip,
+html[data-ui-version="v2"] .apexcharts-tooltip.apexcharts-theme-light,
+html[data-ui-version="v2"] .apexcharts-tooltip.apexcharts-theme-dark {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+html[data-ui-version="v2"] .skeleton-card::before {
+    animation: none !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.03) !important;
+    background: none !important;
 }

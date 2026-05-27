@@ -1,4 +1,4 @@
-/* public/css/view3d.css */
+
 
 .view3d-container {
     display: grid;
@@ -162,7 +162,6 @@
     color: var(--warna-utama, #10b981);
 }
 
-/* Sliders */
 .slider-group {
     display: flex;
     flex-direction: column;
@@ -204,7 +203,6 @@
     transform: scale(1.25);
 }
 
-/* Instructions */
 .instruction-list {
     display: flex;
     flex-direction: column;
@@ -226,7 +224,6 @@
     margin-top: 2px;
 }
 
-/* Model Info */
 .info-table {
     width: 100%;
     border-collapse: collapse;
@@ -298,8 +295,42 @@
         display: block !important;
     }
     
-    /* Special case for instruction-list which is flex */
+
     .instruction-list.mobile-only {
         display: flex !important;
     }
 }
+
+/* ========================================================
+   UI V2 OVERHAUL: MINIMALIST DARK (MINIM GLOW & ULTRA CLEAN)
+   ======================================================= */
+
+html[data-ui-version="v2"] .panel-card {
+    background: #121212 !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+html[data-ui-version="v2"] .spinner-modern {
+    box-shadow: none !important;
+}
+
+html[data-ui-version="v2"] .progress-bar-fill {
+    box-shadow: none !important;
+    background: #10b981 !important;
+}
+
+html[data-ui-version="v2"] .slider-input::-webkit-slider-thumb {
+    box-shadow: none !important;
+    background: #ffffff !important;
+}
+
+html[data-ui-version="v2"] .btn-control.active {
+    background-color: rgba(255, 255, 255, 0.04) !important;
+    border-color: rgba(255, 255, 255, 0.25) !important;
+    color: #ffffff !important;
+}
+
+html[data-ui-version="v2"] .btn-control.active i {
+    color: #ffffff !important;
+}
+

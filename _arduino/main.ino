@@ -4,26 +4,16 @@
 #include <WiFi.h>
 #include <time.h>
 
-// CONNECT TO YOUR WIFI
 const char *ssid = "Maison";
 const char *password = "SANGATLUXU";
 
-// REST API - VERSI LOCAL (GANTI IP SESUAI IP WIFI PC KAMU, MISAL: 192.168.1.4)
 const char *laravelEndpointData = "http://localhost:8000/api/sensor/data";
 const char *laravelEndpointSchedule = "http://localhost:8000/api/schedule";
 const char *laravelEndpointPumpStatus = "http://localhost:8000/api/pump/status";
 
-// REST API - VERSI PRODUCTION (VERCEL)
-// Uncomment baris di bawah ini dan comment versi local jika ingin ke Vercel:
-// const char *laravelEndpointData = "https://jamkot.vercel.app/api/sensor/data";
-// const char *laravelEndpointSchedule = "https://jamkot.vercel.app/api/schedule";
-// const char *laravelEndpointPumpStatus = "https://jamkot.vercel.app/api/pump/status";
-
-// NTP TIME SERVER (WIB = UTC+7)
 const long gmtOffset_sec = 7 * 3600;
 const int daylightOffset_sec = 0;
 
-// PIN DEFINITIONS
 #define DHTPIN 4
 #define DHTTYPE DHT22
 DHT dht(DHTPIN, DHTTYPE);
@@ -32,19 +22,15 @@ DHT dht(DHTPIN, DHTTYPE);
 #define RELAY_KIPAS 26
 #define RELAY_POMPA 27
 
-// TIMERS (NON-BLOCKING)
 unsigned long lastScheduleUpdate = 0;
-const unsigned long scheduleUpdateInterval = 3600000; // 1 Jam
+const unsigned long scheduleUpdateInterval = 3600000;
 
 unsigned long lastPumpStatusUpdate = 0;
-const unsigned long pumpStatusUpdateInterval =
-    5000; // Cek status manual tiap 5 detik
+const unsigned long pumpStatusUpdateInterval = 1000;
 
 unsigned long lastSensorRead = 0;
-const unsigned long sensorReadInterval =
-    15000; // Baca sensor & kirim web tiap 15 detik
+const unsigned long sensorReadInterval = 15000;
 
-// VARIABLES
 float batasSuhuPanas = 30.0;
 float batasKelembapanKering = 78.0;
 
@@ -52,11 +38,12 @@ int pagi_mulai = 0, pagi_selesai = 0;
 int siang_mulai = 0, siang_selesai = 0;
 int sore_mulai = 0, sore_selesai = 0;
 
-String manualPumpStatus = "AUTO"; // 'AUTO', 'ON', 'OFF'
+String manualPumpStatus = "OFF";
 float currentT = 0.0;
 float currentH = 0.0;
 int currentCahaya = 0;
 
+// Mengonversi waktu string (HH:MM) ke menit
 int timeToMinutes(String timeStr) {
   if (timeStr.length() < 5)
     return -1;
@@ -65,7 +52,7 @@ int timeToMinutes(String timeStr) {
   return (h * 60) + m;
 }
 
-// FUNGSI 1: AMBIL JADWAL
+// Mengambil data jadwal penyiraman dari server
 void fetchScheduleFromWeb() {
   if (WiFi.status() == WL_CONNECTED) {
     Serial.println("\n[API GET] Meminta data jadwal dari server...");
@@ -102,7 +89,7 @@ void fetchScheduleFromWeb() {
   }
 }
 
-// FUNGSI 2: AMBIL STATUS POMPA MANUAL
+// Mengambil status manual pompa dari server
 void fetchPumpStatusFromWeb() {
   if (WiFi.status() == WL_CONNECTED) {
     HTTPClient http;
@@ -111,9 +98,6 @@ void fetchPumpStatusFromWeb() {
 
     if (httpResponseCode == 200) {
       String payload = http.getString();
-      // Un-comment baris di bawah ini kalau lu mau lihat log JSON pompa tiap 5
-      // detik (agak spam sih) Serial.println("\n[API GET] Status Pompa: " +
-      // payload);
 
       DynamicJsonDocument doc(256);
       deserializeJson(doc, payload);
@@ -132,7 +116,7 @@ void fetchPumpStatusFromWeb() {
   }
 }
 
-// FUNGSI 3: KIRIM DATA SENSOR
+// Mengirim data sensor ke server
 void sendDataToWeb(String statusPompa) {
   if (WiFi.status() == WL_CONNECTED) {
     Serial.println("\n[API POST] Menyiapkan pengiriman data ke server...");
@@ -140,10 +124,8 @@ void sendDataToWeb(String statusPompa) {
     http.begin(laravelEndpointData);
     http.addHeader("Content-Type", "application/json");
 
-    // Merakit JSON
     String jsonPayload = "{";
-    jsonPayload +=
-        "\"sensor_id\":\"JAMKOT-01\","; // Sesuaikan dengan ID di database lu
+    jsonPayload += "\"sensor_id\":\"JAMKOT-01\",";
     jsonPayload += "\"suhu\":" + String(currentT) + ",";
     jsonPayload += "\"kelembapan\":" + String(currentH) + ",";
     jsonPayload += "\"cahaya\":" + String(currentCahaya) + ",";
@@ -152,7 +134,6 @@ void sendDataToWeb(String statusPompa) {
 
     Serial.println(">> Payload JSON yang dikirim: " + jsonPayload);
 
-    // Eksekusi pengiriman
     int httpResponseCode = http.POST(jsonPayload);
 
     if (httpResponseCode > 0) {
@@ -170,6 +151,7 @@ void sendDataToWeb(String statusPompa) {
   }
 }
 
+// Inisialisasi perangkat keras dan koneksi sistem
 void setup() {
   Serial.begin(115200);
   Serial.println("\n=========================================");
@@ -184,7 +166,6 @@ void setup() {
   dht.begin();
   pinMode(LDR_PIN, INPUT);
 
-  // Konek WiFi
   Serial.print("Menghubungkan ke WiFi: ");
   Serial.print(ssid);
   WiFi.begin(ssid, password);
@@ -195,10 +176,9 @@ void setup() {
 
   Serial.println("\n[SUKSES] Terhubung ke Jaringan!");
   Serial.print(">> IP Address ESP32: ");
-  Serial.println(WiFi.localIP()); // <-- NAMPILIN IP ADDRESS DI SINI
+  Serial.println(WiFi.localIP());
   Serial.println("-----------------------------------------");
 
-  // Setup Waktu
   Serial.print("Sinkronisasi waktu NTP...");
   configTime(gmtOffset_sec, daylightOffset_sec, "pool.ntp.org");
   struct tm timeinfo;
@@ -207,10 +187,8 @@ void setup() {
   }
   Serial.println(" [SUKSES]");
 
-  // Tarik data awal
   fetchScheduleFromWeb();
 
-  // Baca sensor pertama kali agar tidak bernilai 0 di awal
   currentH = dht.readHumidity();
   currentT = dht.readTemperature();
   currentCahaya = (analogRead(LDR_PIN) / 4095.0) * 100;
@@ -218,22 +196,20 @@ void setup() {
   Serial.println("\n[SISTEM] JAMKOT SIAP TEMPUR!");
 }
 
+// Loop utama sistem
 void loop() {
   unsigned long currentMillis = millis();
 
-  // 1. POLLING JADWAL (Tiap 1 Jam)
   if (currentMillis - lastScheduleUpdate >= scheduleUpdateInterval) {
     lastScheduleUpdate = currentMillis;
     fetchScheduleFromWeb();
   }
 
-  // 2. POLLING STATUS MANUAL POMPA (Tiap 5 Detik)
   if (currentMillis - lastPumpStatusUpdate >= pumpStatusUpdateInterval) {
     lastPumpStatusUpdate = currentMillis;
     fetchPumpStatusFromWeb();
   }
 
-  // 3. LOGIKA AKTUATOR (KIPAS & POMPA - Dieksekusi sangat cepat)
   struct tm timeinfo;
   int currentMinutes = -1;
   if (getLocalTime(&timeinfo, 10)) {
@@ -242,43 +218,20 @@ void loop() {
 
   String actualPumpStatus = "OFF";
 
-  // -- KIPAS LOGIC
   if (currentT > batasSuhuPanas) {
-    digitalWrite(RELAY_KIPAS, LOW); // ON
+    digitalWrite(RELAY_KIPAS, LOW);
   } else {
-    digitalWrite(RELAY_KIPAS, HIGH); // OFF
+    digitalWrite(RELAY_KIPAS, HIGH);
   }
 
-  // -- POMPA LOGIC
   if (manualPumpStatus == "ON") {
-    // Manual ON dari Web - Paksa Menyala
-    digitalWrite(RELAY_POMPA, LOW); // ON
+    digitalWrite(RELAY_POMPA, LOW);
     actualPumpStatus = "ON";
-  } else if (manualPumpStatus == "OFF") {
-    // Paksa mati dari Web - Paksa Mati
-    digitalWrite(RELAY_POMPA, HIGH); // OFF
-    actualPumpStatus = "OFF";
   } else {
-    // AUTO MODE (Jadwal / Kelembapan)
-    bool isScheduleActive = false;
-    if (currentMinutes != -1) {
-      if ((currentMinutes >= pagi_mulai && currentMinutes <= pagi_selesai) ||
-          (currentMinutes >= siang_mulai && currentMinutes <= siang_selesai) ||
-          (currentMinutes >= sore_mulai && currentMinutes <= sore_selesai)) {
-        isScheduleActive = true;
-      }
-    }
-
-    if (isScheduleActive || currentH < batasKelembapanKering) {
-      digitalWrite(RELAY_POMPA, LOW); // ON
-      actualPumpStatus = "ON";
-    } else {
-      digitalWrite(RELAY_POMPA, HIGH); // OFF
-      actualPumpStatus = "OFF";
-    }
+    digitalWrite(RELAY_POMPA, HIGH);
+    actualPumpStatus = "OFF";
   }
 
-  // 4. BACA SENSOR & KIRIM DATA KE WEB (Tiap 15 Detik)
   if (currentMillis - lastSensorRead >= sensorReadInterval) {
     lastSensorRead = currentMillis;
 
@@ -302,6 +255,5 @@ void loop() {
     sendDataToWeb(actualPumpStatus);
   }
 
-  // Delay super singkat agar ESP32 tidak kepanasan
   delay(50);
 }

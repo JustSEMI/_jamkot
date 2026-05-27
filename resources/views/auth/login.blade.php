@@ -1,27 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.guest')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- PREVENT FOUC & SETUP UI THEME -->
-    <script>
-        (function() {
-            const uiVersion = localStorage.getItem('jamkot-ui-version') || 'v1';
-            document.documentElement.setAttribute('data-ui-version', uiVersion);
-        })();
-    </script>
-    <title>Login | JAMKOT</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/mobile.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/material3.css') }}">
-    @vite('resources/js/app.js')
-</head>
+@section('title', 'Login')
 
-<body>
-
+@section('content')
     <div class="login-container">
         <div class="brand-logo">
             <div class="logo-icon">
@@ -89,21 +70,18 @@
             <span>Protected with rate limiting & encrypted sessions</span>
         </div>
     </div>
+@endsection
 
+@push('scripts')
     <script>
         const togglePassword = document.querySelector('#toggle-password');
         const password = document.querySelector('#password');
 
         togglePassword.addEventListener('click', function (e) {
-            // toggle the type attribute
             const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
             password.setAttribute('type', type);
-            // toggle the eye slash icon
             this.classList.toggle('fa-eye-slash');
             this.classList.toggle('fa-eye');
         });
     </script>
-
-</body>
-
-</html>
+@endpush

@@ -1,27 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.guest')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- PREVENT FOUC & SETUP UI THEME -->
-    <script>
-        (function() {
-            const uiVersion = localStorage.getItem('jamkot-ui-version') || 'v1';
-            document.documentElement.setAttribute('data-ui-version', uiVersion);
-        })();
-    </script>
-    <title>Daftar Akun | JAMKOT</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/mobile.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/material3.css') }}">
-    @vite('resources/js/app.js')
-</head>
+@section('title', 'Daftar Akun')
 
-<body>
-
+@section('content')
     <div class="login-container">
         <div class="brand-logo">
             <div class="logo-icon">
@@ -93,7 +74,9 @@
             </p>
         </form>
     </div>
+@endsection
 
+@push('scripts')
     <script>
         // Toggle Password Visibility
         const togglePassword = document.querySelector('#toggle-password');
@@ -129,30 +112,27 @@
                 return;
             }
 
-            // Length
             if (val.length >= 5) score++;
             if (val.length >= 8) score++;
-            // Complexity
             if (/[A-Z]/.test(val)) score++;
             if (/[0-9]/.test(val)) score++;
             if (/[^A-Za-z0-9]/.test(val)) score++;
 
-            // Map score to UI
             let width = '0%';
             let color = '#ef4444';
             let text = 'Weak password';
 
             if (score <= 2) {
                 width = '25%';
-                color = '#ef4444'; // Red
+                color = '#ef4444';
                 text = 'Weak password';
             } else if (score === 3 || score === 4) {
                 width = '60%';
-                color = '#f59e0b'; // Yellow/Orange
+                color = '#f59e0b';
                 text = 'Medium password';
             } else if (score >= 5) {
                 width = '100%';
-                color = '#10b981'; // Green
+                color = '#10b981';
                 text = 'Strong password';
             }
 
@@ -162,7 +142,4 @@
             strengthText.style.color = color;
         });
     </script>
-
-</body>
-
-</html>
+@endpush

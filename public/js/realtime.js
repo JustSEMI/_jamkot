@@ -1,11 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Cache to prevent unnecessary DOM updates and flickering
     let lastLatestJson = '';
     let lastTargetKelembapan = null;
     let lastTableDataJson = '';
     let lastChartDataJson = '';
 
-    // Polling interval 5 seconds
     fetchRealtimeData();
     setInterval(fetchRealtimeData, 5000);
 
@@ -25,7 +23,6 @@ document.addEventListener('DOMContentLoaded', function () {
     function updateCards(latest, targetKelembapan, manualPumpStatus) {
         if (!latest) return;
 
-        // Check if data actually changed to avoid redundant layout shifts / animations
         const currentJson = JSON.stringify(latest);
         if (currentJson === lastLatestJson && targetKelembapan === lastTargetKelembapan && manualPumpStatus === lastManualPumpStatus) {
             return;
@@ -34,39 +31,35 @@ document.addEventListener('DOMContentLoaded', function () {
         lastTargetKelembapan = targetKelembapan;
         lastManualPumpStatus = manualPumpStatus;
 
-        // Sync Pump UI based on server manual_pump_status and actual running status
         const btnText = document.getElementById('pump-btn-text');
         const stateLabel = document.getElementById('pump-state-label');
         const indicatorDot = document.getElementById('pump-indicator-dot');
-        
+        const toggleBtn = document.getElementById('btn-toggle-pump');
+
         if (btnText && stateLabel && indicatorDot) {
-            isPumpOn = (manualPumpStatus === 'ON'); // Update global variable
+            isPumpOn = (manualPumpStatus === 'ON');
 
             if (isPumpOn) {
                 btnText.innerText = "MATIKAN";
-                stateLabel.innerText = "MANUAL ON";
+                stateLabel.innerText = "ON";
                 stateLabel.style.color = "#10b981";
                 indicatorDot.classList.remove('offline');
                 indicatorDot.classList.add('online');
+                if (toggleBtn) {
+                    toggleBtn.classList.add('pump-active');
+                }
             } else {
                 btnText.innerText = "NYALAKAN";
-                
-                const actualPumpStatus = latest.pompa_status || 'OFF';
-                if (actualPumpStatus === 'ON') {
-                    stateLabel.innerText = "OTOMATIS (ON)";
-                    stateLabel.style.color = "#10b981";
-                    indicatorDot.classList.remove('offline');
-                    indicatorDot.classList.add('online');
-                } else {
-                    stateLabel.innerText = "OTOMATIS (OFF)";
-                    stateLabel.style.color = "#ededed";
-                    indicatorDot.classList.remove('online');
-                    indicatorDot.classList.add('offline');
+                stateLabel.innerText = "OFF";
+                stateLabel.style.color = "#ededed";
+                indicatorDot.classList.remove('online');
+                indicatorDot.classList.add('offline');
+                if (toggleBtn) {
+                    toggleBtn.classList.remove('pump-active');
                 }
             }
         }
 
-        // Update Values
         if (document.getElementById('val-cahaya')) {
             document.getElementById('val-cahaya').innerText = latest.cahaya + ' Lux';
         }
@@ -77,16 +70,15 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('val-kelembapan').innerText = latest.kelembapan + '%';
         }
 
-        // Update meter angles
         if (document.getElementById('card-suhu')) {
             const meterSuhu = Math.min(Math.max((latest.suhu_raw || 0) / 40, 0), 1) * 180;
             document.getElementById('card-suhu').style.setProperty('--meter-angle', meterSuhu + 'deg');
         }
-        
+
         if (document.getElementById('card-kelembapan')) {
             const meterKelembapan = Math.min(Math.max((latest.kelembapan_raw || 0) / 100, 0), 1) * 180;
             document.getElementById('card-kelembapan').style.setProperty('--meter-angle', meterKelembapan + 'deg');
-            
+
             const descKelembapan = document.getElementById('desc-kelembapan');
             if (descKelembapan) {
                 if ((latest.kelembapan_raw || 0) >= targetKelembapan) {
@@ -97,11 +89,10 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
-        // Update status dots
         const statusDots = document.querySelectorAll('.status-dot');
         const statusClass = latest.is_online ? 'online' : 'offline';
         const removeClass = latest.is_online ? 'offline' : 'online';
-        
+
         statusDots.forEach(dot => {
             dot.classList.remove(removeClass);
             dot.classList.add(statusClass);
@@ -112,83 +103,114 @@ document.addEventListener('DOMContentLoaded', function () {
         const tbody = document.getElementById('table-body-log');
         if (!tbody) return;
 
-        // Check if table data changed to avoid unnecessary DOM writes
         const currentJson = JSON.stringify(riwayatTabel);
         if (currentJson === lastTableDataJson) {
             return;
         }
         lastTableDataJson = currentJson;
 
+        tbody.textContent = '';
+
         if (!riwayatTabel || riwayatTabel.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="5" class="text-muted" style="text-align: center; padding: 2rem;">Belum ada data sensor masuk.</td></tr>';
+            const tr = document.createElement('tr');
+            const td = document.createElement('td');
+            td.colSpan = 5;
+            td.className = 'text-muted';
+            td.style.textAlign = 'center';
+            td.style.padding = '2rem';
+            td.textContent = 'Belum ada data sensor masuk.';
+            tr.appendChild(td);
+            tbody.appendChild(tr);
             return;
         }
 
-        let html = '';
         const isLDR = document.querySelector('th.text-right')?.innerText.includes('CAHAYA');
         const headerCount = document.querySelectorAll('.data-table thead th').length;
 
         riwayatTabel.forEach(log => {
+            const tr = document.createElement('tr');
+
+            const tdTime = document.createElement('td');
+            tdTime.className = 'text-muted';
+            tdTime.textContent = log.time_diff;
+            tr.appendChild(tdTime);
+
+            const tdSensor = document.createElement('td');
+            tdSensor.textContent = log.sensor_id;
+            tr.appendChild(tdSensor);
+
+            const tdStatus = document.createElement('td');
+            const spanBadge = document.createElement('span');
+            spanBadge.className = 'badge success';
+            spanBadge.textContent = 'Tercatat';
+            tdStatus.appendChild(spanBadge);
+            tr.appendChild(tdStatus);
+
             if (headerCount === 6) {
+                const tdPump = document.createElement('td');
+                const spanPump = document.createElement('span');
                 const pompaClass = log.pompa_status === 'ON' ? 'text-blue' : 'text-muted';
-                html += `
-                    <tr>
-                        <td class="text-muted">${log.time_diff}</td>
-                        <td>${log.sensor_id}</td>
-                        <td><span class="badge success">Tercatat</span></td>
-                        <td>
-                            <span class="fw-bold ${pompaClass}">
-                                ${log.pompa_status}
-                            </span>
-                        </td>
-                        <td>${log.cahaya ?? '--'} Lux</td>
-                        <td class="text-right">${log.kelembapan}% | ${log.suhu}°C</td>
-                    </tr>
-                `;
+                spanPump.className = 'fw-bold ' + pompaClass;
+                spanPump.textContent = log.pompa_status;
+                tdPump.appendChild(spanPump);
+                tr.appendChild(tdPump);
+
+                const tdLight = document.createElement('td');
+                tdLight.textContent = (log.cahaya ?? '--') + ' Lux';
+                tr.appendChild(tdLight);
+
+                const tdValues = document.createElement('td');
+                tdValues.className = 'text-right';
+                tdValues.textContent = log.kelembapan + '% | ' + log.suhu + '°C';
+                tr.appendChild(tdValues);
             } else if (isLDR) {
-                html += `
-                    <tr>
-                        <td class="text-muted">${log.time_diff}</td>
-                        <td>${log.sensor_id}</td>
-                        <td><span class="badge success">Tercatat</span></td>
-                        <td class="text-right">${log.cahaya ?? '--'} Lux</td>
-                    </tr>
-                `;
+                const tdLight = document.createElement('td');
+                tdLight.className = 'text-right';
+                tdLight.textContent = (log.cahaya ?? '--') + ' Lux';
+                tr.appendChild(tdLight);
             } else if (document.querySelector('th.text-right')?.innerText.includes('NILAI')) {
-                html += `
-                    <tr>
-                        <td class="text-muted">${log.time_diff}</td>
-                        <td>${log.sensor_id}</td>
-                        <td><span class="badge success">Tercatat</span></td>
-                        <td class="text-right">${log.kelembapan}% | ${log.suhu}°C</td>
-                    </tr>
-                `;
+                const tdValues = document.createElement('td');
+                tdValues.className = 'text-right';
+                tdValues.textContent = log.kelembapan + '% | ' + log.suhu + '°C';
+                tr.appendChild(tdValues);
             } else {
+                const tdPump = document.createElement('td');
+                const spanPump = document.createElement('span');
                 const pompaClass = log.pompa_status === 'ON' ? 'text-blue' : 'text-muted';
-                html += `
-                    <tr>
-                        <td class="text-muted">${log.time_diff}</td>
-                        <td>${log.sensor_id}</td>
-                        <td><span class="badge success">Tercatat</span></td>
-                        <td>
-                            <span class="fw-bold ${pompaClass}">
-                                ${log.pompa_status}
-                            </span>
-                        </td>
-                        <td class="text-right">${log.kelembapan}% | ${log.suhu}°C</td>
-                    </tr>
-                `;
+                spanPump.className = 'fw-bold ' + pompaClass;
+                spanPump.textContent = log.pompa_status;
+                tdPump.appendChild(spanPump);
+                tr.appendChild(tdPump);
+
+                const tdValues = document.createElement('td');
+                tdValues.className = 'text-right';
+                tdValues.textContent = log.kelembapan + '% | ' + log.suhu + '°C';
+                tr.appendChild(tdValues);
             }
+
+            tbody.appendChild(tr);
         });
-        
-        tbody.innerHTML = html;
     }
 
     function updateChart(riwayatGrafik) {
-        if (!window.chartArea) return;
-        if (!riwayatGrafik || riwayatGrafik.length === 0) return;
+        window.dataJamkot = riwayatGrafik;
 
-        // Check if chart data actually changed to avoid unnecessary redraws/flickering
+        if (!window.chartArea) {
+            if (riwayatGrafik && riwayatGrafik.length > 0) {
+                window.renderAllCharts();
+            }
+            return;
+        }
+
+        if (!riwayatGrafik || riwayatGrafik.length === 0) {
+            if (window.chartArea && typeof window.chartArea.destroy === 'function') {
+                try { window.chartArea.destroy(); } catch (e) { }
+            }
+            window.chartArea = null;
+            window.renderAllCharts();
+            return;
+        }
+
         const currentJson = JSON.stringify(riwayatGrafik);
         if (currentJson === lastChartDataJson) {
             return;
@@ -203,7 +225,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const suhuSeries = riwayatGrafik.map(item => item.suhu);
         const kelembapanSeries = riwayatGrafik.map(item => item.kelembapan);
 
-        // Update options and series in ONE atomic call to prevent double render cycles/flickering
         window.chartArea.updateOptions({
             xaxis: {
                 categories: waktuLabels
@@ -212,7 +233,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 { name: 'Kelembapan (%)', data: kelembapanSeries },
                 { name: 'Suhu (°C)', data: suhuSeries }
             ]
-        }, false, true); // redrawPaths = false, animate = true for smooth transitions
+        }, false, true);
     }
 });
 
@@ -223,41 +244,45 @@ function togglePumpOptimistic() {
     const btnText = document.getElementById('pump-btn-text');
     const stateLabel = document.getElementById('pump-state-label');
     const indicatorDot = document.getElementById('pump-indicator-dot');
-    
-    // 1. OPTIMISTIC UPDATE (Instant Feedback < 50ms)
+    const toggleBtn = document.getElementById('btn-toggle-pump');
+
     isPumpOn = !isPumpOn;
-    
+
     if (isPumpOn) {
         btnText.innerText = "MATIKAN";
         stateLabel.innerText = "ON";
         stateLabel.style.color = "#10b981";
         indicatorDot.classList.remove('offline');
         indicatorDot.classList.add('online');
+        if (toggleBtn) {
+            toggleBtn.classList.add('pump-active');
+        }
     } else {
         btnText.innerText = "NYALAKAN";
         stateLabel.innerText = "OFF";
         stateLabel.style.color = "#ededed";
         indicatorDot.classList.remove('online');
         indicatorDot.classList.add('offline');
+        if (toggleBtn) {
+            toggleBtn.classList.remove('pump-active');
+        }
     }
 
-    // 2. BACKGROUND REQUEST
     fetch('/panel/pump/toggle', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
         },
-        body: JSON.stringify({ status: isPumpOn ? 'ON' : 'AUTO' })
+        body: JSON.stringify({ status: isPumpOn ? 'ON' : 'OFF' })
     }).then(response => {
         if (!response.ok) throw new Error('Network response was not ok');
         return response.json();
     }).then(data => {
         if (data.status !== 'success') throw new Error(data.message || 'Error from server');
     }).catch(error => {
-        // 3. REVERT ON FAILURE
         console.error("Failed to toggle pump:", error);
         alert("Gagal menyimpan status kontrol manual pompa.");
-        window.location.reload(); // Revert ke state sebenarnya dari server
+        window.location.reload();
     });
 }

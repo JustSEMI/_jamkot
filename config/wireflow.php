@@ -25,5 +25,5 @@ return [
     | positioning CSS (no visual styles). 'none' skips CSS injection entirely.
     |
     */
-    'theme' => env('WIREFLOW_THEME', 'default'),  // 'default' | 'flux' | 'structural' | 'none'
+    'theme' => env('WIREFLOW_THEME', 'default'),
 ];

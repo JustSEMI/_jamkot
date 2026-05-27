@@ -1,189 +1,136 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- PREVENT FOUC & SETUP UI THEME -->
-    <script>
-        (function() {
-            const uiVersion = localStorage.getItem('jamkot-ui-version') || 'v1';
-            document.documentElement.setAttribute('data-ui-version', uiVersion);
-        })();
-    </script>
-    <title>3D VIEW | JAMKOT</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('css/panel.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/view3d.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/mobile.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/material3.css') }}">
-    @vite('resources/js/app.js')
-</head>
+@section('title', '3D Model View')
 
-<body>
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/view3d.css') }}">
+@endpush
 
-    <div class="panel-layout">
+@section('content')
+    <header class="content-header-flex">
+        <div>
+            <h1>3D MODEL VIEW</h1>
+            <p>Lihat dan analisis objek 3D secara interaktif dari berkas ekspor Tinkercad.</p>
+        </div>
 
-        <!-- NAVBAR MOBILE -->
-        <header class="mobile-top-nav">
-            <div class="mobile-logo">JAMKOT</div>
-            <button class="btn-toggle-sidebar" id="sidebar-toggle">
-                <i class="fa-solid fa-bars"></i>
-            </button>
-            <div class="mobile-top-actions">
-                @if(auth()->user()->canAccess('admin'))
-                    @if(Route::is('settings.index'))
-                    <a href="{{ route('panel') }}" class="btn-mobile-settings" title="Back to Panel">
-                        <i class="fa-solid fa-house"></i>
-                    </a>
-                    @else
-                    <a href="{{ route('settings.index') }}" class="btn-mobile-settings" title="Settings">
-                        <i class="fa-solid fa-gear"></i>
-                    </a>
-                    @endif
-                @endif
-                <form action="{{ route('logout') }}" method="POST" style="display: inline;">
-                    @csrf
-                    <button type="submit" class="btn-mobile-logout" title="Logout">
-                        <i class="fa-solid fa-right-from-bracket"></i>
+        <!-- JAM -->
+        <div class="datetime-widget">
+            <div id="realtime-clock" class="time-display">00:00:00</div>
+            <div id="realtime-date" class="date-display">Memuat...</div>
+        </div>
+    </header>
+
+    <!-- 3D VIEWER WORKSPACE -->
+    <div class="view3d-container">
+        
+        <!-- CANVAS AREA -->
+        <div class="canvas-wrapper">
+            <!-- LOADING OVERLAY -->
+            <div class="loader-overlay" id="loader-overlay">
+                <div class="spinner-modern"></div>
+                <div class="progress-text" id="progress-text">Memuat Model: 0%</div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" id="progress-bar-fill"></div>
+                </div>
+            </div>
+            
+            <canvas id="canvas3d"></canvas>
+        </div>
+
+        <!-- CONTROL PANEL SIDEBAR -->
+        <div class="control-sidebar">
+            
+            <!-- UTILITY CONTROLS -->
+            <div class="panel-card">
+                <h3 class="panel-card-title">Kontrol Viewport</h3>
+                <div class="control-grid">
+                    <button class="btn-control" id="btn-reset">
+                        Reset Kamera <i class="fa-solid fa-camera"></i>
                     </button>
-                </form>
-            </div>
-        </header>
-
-        <div class="sidebar-overlay" id="sidebar-overlay"></div>
-
-        @include('partials.sidebar')
-
-        <!-- MAIN-CONTENT -->
-        <main class="panel-content">
-
-            <header class="content-header-flex">
-                <div>
-                    <h1>3D MODEL VIEW</h1>
-                    <p>Lihat dan analisis objek 3D secara interaktif dari berkas ekspor Tinkercad.</p>
+                    <button class="btn-control" id="btn-rotate">
+                        Rotasi Otomatis <i class="fa-solid fa-arrows-spin"></i>
+                    </button>
+                    <button class="btn-control" id="btn-wireframe">
+                        Mode Wireframe <i class="fa-solid fa-border-none"></i>
+                    </button>
                 </div>
 
-                <!-- JAM -->
-                <div class="datetime-widget">
-                    <div id="realtime-clock" class="time-display">00:00:00</div>
-                    <div id="realtime-date" class="date-display">Memuat...</div>
+                <!-- SLIDER PENCALAHAN -->
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>Intensitas Cahaya</span>
+                        <span id="light-val">1.2x</span>
+                    </div>
+                    <input type="range" id="slider-light" class="slider-input" min="0.2" max="3" step="0.1" value="1.2">
                 </div>
-            </header>
-
-            <!-- 3D VIEWER WORKSPACE -->
-            <div class="view3d-container">
-                
-                <!-- CANVAS AREA -->
-                <div class="canvas-wrapper">
-                    <!-- LOADING OVERLAY -->
-                    <div class="loader-overlay" id="loader-overlay">
-                        <div class="spinner-modern"></div>
-                        <div class="progress-text" id="progress-text">Memuat Model: 0%</div>
-                        <div class="progress-bar-container">
-                            <div class="progress-bar-fill" id="progress-bar-fill"></div>
-                        </div>
-                    </div>
-                    
-                    <canvas id="canvas3d"></canvas>
-                </div>
-
-                <!-- CONTROL PANEL SIDEBAR -->
-                <div class="control-sidebar">
-                    
-                    <!-- UTILITY CONTROLS -->
-                    <div class="panel-card">
-                        <h3 class="panel-card-title">Kontrol Viewport</h3>
-                        <div class="control-grid">
-                            <button class="btn-control" id="btn-reset">
-                                Reset Kamera <i class="fa-solid fa-camera"></i>
-                            </button>
-                            <button class="btn-control" id="btn-rotate">
-                                Rotasi Otomatis <i class="fa-solid fa-arrows-spin"></i>
-                            </button>
-                            <button class="btn-control" id="btn-wireframe">
-                                Mode Wireframe <i class="fa-solid fa-border-none"></i>
-                            </button>
-                        </div>
-
-                        <!-- SLIDER PENCALAHAN -->
-                        <div class="slider-group">
-                            <div class="slider-label">
-                                <span>Intensitas Cahaya</span>
-                                <span id="light-val">1.2x</span>
-                            </div>
-                            <input type="range" id="slider-light" class="slider-input" min="0.2" max="3" step="0.1" value="1.2">
-                        </div>
-                    </div>
-
-                    <!-- INTERACTION HELP -->
-                    <div class="panel-card">
-                        <!-- Desktop Header -->
-                        <h3 class="panel-card-title desktop-only">Navigasi Mouse</h3>
-                        <div class="instruction-list desktop-only">
-                            <div class="instruction-item">
-                                <i class="fa-solid fa-mouse-pointer"></i>
-                                <span><strong>Klik & Seret (Kiri):</strong> Putar/Rotasi objek 3D secara bebas.</span>
-                            </div>
-                            <div class="instruction-item">
-                                <i class="fa-solid fa-computer-mouse"></i>
-                                <span><strong>Scroll Wheel:</strong> Perbesar (Zoom In) atau perkecil (Zoom Out).</span>
-                            </div>
-                            <div class="instruction-item">
-                                <i class="fa-solid fa-hand"></i>
-                                <span><strong>Klik & Seret (Kanan):</strong> Geser kamera (Panning) ke segala arah.</span>
-                            </div>
-                        </div>
-
-                        <!-- Mobile Header -->
-                        <h3 class="panel-card-title mobile-only">Navigasi Sentuh</h3>
-                        <div class="instruction-list mobile-only">
-                            <div class="instruction-item">
-                                <i class="fa-solid fa-fingerprint"></i>
-                                <span><strong>Satu Jari:</strong> Putar/Rotasi objek 3D secara bebas.</span>
-                            </div>
-                            <div class="instruction-item">
-                                <i class="fa-solid fa-up-down-left-right"></i>
-                                <span><strong>Cubit (Pinch):</strong> Perbesar (Zoom In) atau perkecil (Zoom Out).</span>
-                            </div>
-                            <div class="instruction-item">
-                                <i class="fa-solid fa-up-right-from-square"></i>
-                                <span><strong>Dua Jari:</strong> Geser kamera (Panning) ke segala arah.</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- OBJECT INFORMATION -->
-                    <div class="panel-card">
-                        <h3 class="panel-card-title">Informasi Model</h3>
-                        <table class="info-table">
-                            <tr>
-                                <td class="info-label">Nama Berkas</td>
-                                <td class="info-value">tinker.obj</td>
-                            </tr>
-                            <tr>
-                                <td class="info-label">Material (.mtl)</td>
-                                <td class="info-value">obj.mtl</td>
-                            </tr>
-                            <tr>
-                                <td class="info-label">Format File</td>
-                                <td class="info-value">Wavefront OBJ</td>
-                            </tr>
-                            <tr>
-                                <td class="info-label">Renderer Engine</td>
-                                <td class="info-value">Three.js WebGL</td>
-                            </tr>
-                        </table>
-                    </div>
-
-                </div>
-
             </div>
 
-        </main>
+            <!-- INTERACTION HELP -->
+            <div class="panel-card">
+                <!-- Desktop Header -->
+                <h3 class="panel-card-title desktop-only">Navigasi Mouse</h3>
+                <div class="instruction-list desktop-only">
+                    <div class="instruction-item">
+                        <i class="fa-solid fa-mouse-pointer"></i>
+                        <span><strong>Klik & Seret (Kiri):</strong> Putar/Rotasi objek 3D secara bebas.</span>
+                    </div>
+                    <div class="instruction-item">
+                        <i class="fa-solid fa-computer-mouse"></i>
+                        <span><strong>Scroll Wheel:</strong> Perbesar (Zoom In) atau perkecil (Zoom Out).</span>
+                    </div>
+                    <div class="instruction-item">
+                        <i class="fa-solid fa-hand"></i>
+                        <span><strong>Klik & Seret (Kanan):</strong> Geser kamera (Panning) ke segala arah.</span>
+                    </div>
+                </div>
+
+                <!-- Mobile Header -->
+                <h3 class="panel-card-title mobile-only">Navigasi Sentuh</h3>
+                <div class="instruction-list mobile-only">
+                    <div class="instruction-item">
+                        <i class="fa-solid fa-fingerprint"></i>
+                        <span><strong>Satu Jari:</strong> Putar/Rotasi objek 3D secara bebas.</span>
+                    </div>
+                    <div class="instruction-item">
+                        <i class="fa-solid fa-up-down-left-right"></i>
+                        <span><strong>Cubit (Pinch):</strong> Perbesar (Zoom In) atau perkecil (Zoom Out).</span>
+                    </div>
+                    <div class="instruction-item">
+                        <i class="fa-solid fa-up-right-from-square"></i>
+                        <span><strong>Dua Jari:</strong> Geser kamera (Panning) ke segala arah.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- OBJECT INFORMATION -->
+            <div class="panel-card">
+                <h3 class="panel-card-title">Informasi Model</h3>
+                <table class="info-table">
+                    <tr>
+                        <td class="info-label">Nama Berkas</td>
+                        <td class="info-value">tinker.obj</td>
+                    </tr>
+                    <tr>
+                        <td class="info-label">Material (.mtl)</td>
+                        <td class="info-value">obj.mtl</td>
+                    </tr>
+                    <tr>
+                        <td class="info-label">Format File</td>
+                        <td class="info-value">Wavefront OBJ</td>
+                    </tr>
+                    <tr>
+                        <td class="info-label">Renderer Engine</td>
+                        <td class="info-value">Three.js WebGL</td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+
     </div>
+@endsection
 
+@push('scripts')
     <!-- LOAD THREE.JS FROM CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/MTLLoader.js"></script>
@@ -192,7 +139,6 @@
 
     <!-- IN-PAGE CORE CLOCK SCRIPT -->
     <script src="{{ asset('js/clock.js') }}"></script>
-    <script src="{{ asset('js/sidebar.js') }}?v={{ time() }}"></script>
 
     <!-- THREE.JS ENGINE LOGIC -->
     <script>
@@ -226,7 +172,7 @@
             // Initialize Three.js Scene
             function init() {
                 scene = new THREE.Scene();
-                scene.background = null; // transparent background to let wrapper CSS gradient shine through
+                scene.background = null;
 
                 // Camera Setup
                 camera = new THREE.PerspectiveCamera(
@@ -293,8 +239,7 @@
             function loadModel() {
                 const mtlLoader = new THREE.MTLLoader();
                 
-                // Parse directories out of the path to resolve cross-origin asset lookups
-                const mtlBaseUrl = mtlPath.substring(0, mtlPath.lastIndexOf('/') + 1);
+                        const mtlBaseUrl = mtlPath.substring(0, mtlPath.lastIndexOf('/') + 1);
                 const mtlFileName = mtlPath.substring(mtlPath.lastIndexOf('/') + 1);
                 
                 const objBaseUrl = objPath.substring(0, objPath.lastIndexOf('/') + 1);
@@ -316,33 +261,28 @@
                             loadedObject = object;
                             scene.add(object);
 
-                            // Calculate optimal scale and center points of the object
-                            const box = new THREE.Box3().setFromObject(object);
+                                            const box = new THREE.Box3().setFromObject(object);
                             const size = box.getSize(new THREE.Vector3());
                             const center = box.getCenter(new THREE.Vector3());
 
-                            // Center the object to local 0,0,0 coordinate
-                            object.position.x = -center.x;
+                                            object.position.x = -center.x;
                             object.position.y = -center.y;
                             object.position.z = -center.z;
 
-                            // Calculate optimal camera distance based on object size and field of view
-                            const maxDim = Math.max(size.x, size.y, size.z);
+                                            const maxDim = Math.max(size.x, size.y, size.z);
                             const fov = camera.fov * (Math.PI / 180);
                             let cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2));
                             
-                            cameraZ *= 1.4; // zoom out slightly for perfect bounds margins
+                            cameraZ *= 1.4;
                             
-                            // Adjust default camera position
-                            defaultCameraPosition = { x: 0, y: maxDim * 0.1, z: cameraZ };
+                                            defaultCameraPosition = { x: 0, y: maxDim * 0.1, z: cameraZ };
                             camera.position.set(defaultCameraPosition.x, defaultCameraPosition.y, defaultCameraPosition.z);
                             
                             controls.target.set(0, 0, 0);
                             controls.maxDistance = cameraZ * 5;
                             controls.update();
 
-                            // Hide Loader Overlay
-                            setTimeout(() => {
+                                            setTimeout(() => {
                                 loaderOverlay.classList.add('fade-out');
                             }, 500);
                         },
@@ -380,8 +320,7 @@
                     controls.target.set(0, 0, 0);
                     controls.update();
                     
-                    // Flash effect
-                    btnReset.classList.add('active');
+                                btnReset.classList.add('active');
                     setTimeout(() => btnReset.classList.remove('active'), 200);
                 });
 
@@ -430,8 +369,7 @@
             function animate() {
                 requestAnimationFrame(animate);
 
-                // Object Auto-Rotation
-                if (autoRotate && loadedObject) {
+                    if (autoRotate && loadedObject) {
                     loadedObject.rotation.y += 0.005;
                 }
 
@@ -443,58 +381,4 @@
             init();
         });
     </script>
-    <!-- BOTTOM NAV FOR MOBILE (M3 Only) -->
-    <nav class="bottom-nav">
-        @if(auth()->user()->canAccess('panel'))
-        <a href="{{ route('panel') }}" class="bottom-nav-link {{ Route::is('panel') ? 'active' : '' }}">
-            <div class="bottom-nav-icon-wrapper">
-                <i class="fa-solid fa-gauge"></i>
-            </div>
-            <span>Panel</span>
-        </a>
-        @endif
-        @if(auth()->user()->canAccess('analisis'))
-        <a href="{{ route('analisis') }}" class="bottom-nav-link {{ Route::is('analisis') ? 'active' : '' }}">
-            <div class="bottom-nav-icon-wrapper">
-                <i class="fa-solid fa-chart-simple"></i>
-            </div>
-            <span>Analisis</span>
-        </a>
-        @endif
-        @if(auth()->user()->canAccess('schedule'))
-        <a href="{{ route('schedule') }}" class="bottom-nav-link {{ Route::is('schedule') ? 'active' : '' }}">
-            <div class="bottom-nav-icon-wrapper">
-                <i class="fa-solid fa-clock"></i>
-            </div>
-            <span>Schedule</span>
-        </a>
-        @endif
-        @if(auth()->user()->canAccess('admin'))
-        <a href="{{ route('admin.users') }}" class="bottom-nav-link {{ Route::is('admin.*') ? 'active' : '' }}">
-            <div class="bottom-nav-icon-wrapper">
-                <i class="fa-solid fa-users-gear"></i>
-            </div>
-            <span>Admin</span>
-        </a>
-        @else
-        <a href="{{ route('settings.index') }}" class="bottom-nav-link {{ Route::is('settings.*') ? 'active' : '' }}">
-            <div class="bottom-nav-icon-wrapper">
-                <i class="fa-solid fa-gear"></i>
-            </div>
-            <span>Settings</span>
-        </a>
-        @endif
-        @if(auth()->user()->canAccess('view3d'))
-        <a href="{{ route('view3d') }}" class="bottom-nav-link {{ Route::is('view3d') ? 'active' : '' }}">
-            <div class="bottom-nav-icon-wrapper">
-                <i class="fa-solid fa-cube"></i>
-            </div>
-            <span>3D View</span>
-        </a>
-        @endif
-
-    </nav>
-
-</body>
-
-</html>
+@endpush

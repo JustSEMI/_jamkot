@@ -1,4 +1,3 @@
-// public/js/chart.js
 
 document.addEventListener('DOMContentLoaded', function () {
     
@@ -33,7 +32,14 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!rawData || rawData.length === 0) {
             if (document.querySelector("#chart-jamkot")) {
                 document.querySelector("#chart-jamkot").innerHTML =
-                    `<div style='text-align: center; color: ${chartTextColors}; padding: 2rem 0; font-size: 0.875rem;'>Belum ada data sensor untuk menampilkan grafik.</div>`;
+                    "<div style='display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 250px; color: " + chartTextColors + "; font-size: 0.875rem;'>" +
+                    "<i class=\"fa-solid fa-chart-line\" style=\"font-size: 2rem; margin-bottom: 1rem; opacity: 0.5;\"></i>" +
+                    "<div>Belum ada data sensor untuk menampilkan grafik.</div>" +
+                    "</div>";
+                const skeleton = document.getElementById('chart-skeleton');
+                const chartDiv = document.getElementById('chart-jamkot');
+                if (skeleton) { skeleton.style.display = 'none'; }
+                if (chartDiv) { chartDiv.style.opacity = '1'; }
             }
         } else {
             const chartData = rawData;
@@ -46,7 +52,6 @@ document.addEventListener('DOMContentLoaded', function () {
             const kelembapanSeries = chartData.map(item => item.kelembapan);
             const warnaUtama = getComputedStyle(document.documentElement).getPropertyValue('--warna-utama').trim() || '#10b981';
 
-            // Choose chart series colors dynamically
             const seriesColors = isM3 ? ['#80dec5', '#ffb68f'] : ['#10b981', '#06b6d4'];
 
             var optionsArea = {
@@ -111,7 +116,6 @@ document.addEventListener('DOMContentLoaded', function () {
             if (document.querySelector("#chart-jamkot")) {
                 window.chartArea = new ApexCharts(document.querySelector("#chart-jamkot"), optionsArea);
                 window.chartArea.render().then(() => {
-                    // Hapus skeleton loader dan tampilkan grafik (Doherty Threshold)
                     const skeleton = document.getElementById('chart-skeleton');
                     const chartDiv = document.getElementById('chart-jamkot');
                     if (skeleton) skeleton.style.display = 'none';

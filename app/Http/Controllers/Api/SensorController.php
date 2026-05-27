@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\SensorLog;
+use Illuminate\Http\Request;
 
 class SensorController extends Controller
 {
@@ -16,34 +16,32 @@ class SensorController extends Controller
 
             return response()->json([
                 'status' => 'SUCCESS',
-                'pesan'  => 'DATA SENSOR BERHASIL DIAMBIL',
+                'pesan' => 'DATA SENSOR BERHASIL DIAMBIL',
                 'jumlah_data_ditampilkan' => $dataSensor->count(),
-                'data'   => $dataSensor
+                'data' => $dataSensor,
             ]);
         }
 
         // POST DATA SENSOR
         $request->validate([
-            'sensor_id'    => 'required|string',
-            'suhu'         => 'required|numeric',
-            'kelembapan'   => 'required|numeric',
-            'cahaya'       => 'required|numeric',
-            'pompa_status' => 'nullable|in:ON,OFF'
+            'sensor_id' => 'required|string',
+            'suhu' => 'required|numeric',
+            'kelembapan' => 'required|numeric',
+            'cahaya' => 'required|numeric',
+            'pompa_status' => 'nullable|in:ON,OFF',
         ]);
 
-        // SIMPAN KE DATABASE
         $log = SensorLog::create([
-            'sensor_id'    => $request->sensor_id,
-            'suhu'         => $request->suhu,
-            'kelembapan'   => $request->kelembapan,
-            'cahaya'       => $request->cahaya,
+            'sensor_id' => $request->sensor_id,
+            'suhu' => $request->suhu,
+            'kelembapan' => $request->kelembapan,
+            'cahaya' => $request->cahaya,
             'pompa_status' => $request->pompa_status ?? 'OFF',
         ]);
-        
-        // RESPONSE SUKSES
+
         return response()->json([
-            'status'  => 'SUCCESS',
-            'message' => 'OK'
+            'status' => 'SUCCESS',
+            'message' => 'OK',
         ], 201);
     }
 }

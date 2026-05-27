@@ -1,134 +1,77 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- PREVENT FOUC & SETUP UI THEME -->
-    <script>
-        (function() {
-            const uiVersion = localStorage.getItem('jamkot-ui-version') || 'v1';
-            document.documentElement.setAttribute('data-ui-version', uiVersion);
-        })();
-    </script>
-    <title>Settings | JAMKOT</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,0,0&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('css/panel.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/settings.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/mobile.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/material3.css') }}">
-    @vite('resources/js/app.js')
-</head>
+@section('title', 'Pengaturan')
 
-<body>
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/settings.css') }}">
+@endpush
 
-    <div class="panel-layout">
+@section('content')
+    <header class="content-header-flex">
+        <div>
+            <h1>PENGATURAN</h1>
+            <p>Manajemen data dan sistem JAMKOT.</p>
+        </div>
+    </header>
 
-        <!-- MOBILE NAV -->
-        <header class="mobile-top-nav">
-            <div class="mobile-logo">JAMKOT</div>
-            <button class="btn-toggle-sidebar" id="sidebar-toggle">
-                <i class="fa-solid fa-bars"></i>
-            </button>
-            <div class="mobile-top-actions">
-                @if(auth()->user()->canAccess('admin'))
-                    @if(Route::is('settings.index'))
-                    <a href="{{ route('panel') }}" class="btn-mobile-settings" title="Back to Panel">
-                        <i class="fa-solid fa-house"></i>
-                    </a>
-                    @else
-                    <a href="{{ route('settings.index') }}" class="btn-mobile-settings" title="Settings">
-                        <i class="fa-solid fa-gear"></i>
-                    </a>
-                    @endif
-                @endif
-                <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+    <div class="settings-container">
+        <div class="glow-card settings-card">
+            <h2 class="section-title" style="margin: 0 0 0.5rem 0; color: #ededed;">Manajemen Data Sensor</h2>
+            <p class="text-muted" style="margin-bottom: 2rem;">Kontrol riwayat pembacaan sensor pada sistem database MariaDB Anda.</p>
+
+            <div class="danger-zone">
+                <div class="danger-header">
+                    <span class="danger-icon material-symbols-rounded">warning</span>
+                    <h3>Zona Berbahaya</h3>
+                </div>
+                <p>Tindakan ini akan menghapus permanen seluruh riwayat suhu, kelembapan, dan status pompa dari database. Aksi ini tidak dapat dibatalkan.</p>
+
+                <form id="resetForm" action="{{ route('settings.reset') }}" method="POST">
                     @csrf
-                    <button type="submit" class="btn-mobile-logout" title="Logout">
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                    </button>
+                    <button type="button" class="btn-danger" onclick="bukaModal()">Reset Semua Data Sensor</button>
                 </form>
             </div>
-        </header>
+        </div>
 
-        <div class="sidebar-overlay" id="sidebar-overlay"></div>
-
-        @include('partials.sidebar')
-
-        <!-- KONTEN UTAMA -->
-        <main class="panel-content">
-            <header class="content-header-flex">
-                <div>
-                    <h1>PENGATURAN</h1>
-                    <p>Manajemen data dan sistem JAMKOT.</p>
-                </div>
-            </header>
-
-            <div class="settings-container">
-                <div class="glow-card settings-card">
-                    <h2 class="section-title" style="margin: 0 0 0.5rem 0; color: #ededed;">Manajemen Data Sensor</h2>
-                    <p class="text-muted" style="margin-bottom: 2rem;">Kontrol riwayat pembacaan sensor pada sistem
-                        database MariaDB Anda.</p>
-
-                    <div class="danger-zone">
-                        <div class="danger-header">
-                            <span class="danger-icon material-symbols-rounded">warning</span>
-                            <h3>Zona Berbahaya</h3>
-                        </div>
-                        <p>Tindakan ini akan menghapus permanen seluruh riwayat suhu, kelembapan, dan status pompa dari
-                            database. Aksi ini tidak dapat dibatalkan.</p>
-
-                        <form id="resetForm" action="{{ route('settings.reset') }}" method="POST">
-                            @csrf
-                            <button type="button" class="btn-danger" onclick="bukaModal()">Reset Semua Data
-                                Sensor</button>
-                        </form>
-
-                        <!-- MODAL DIHAPUS DARI SINI DAN DIPINDAHKAN KE BAWAH AGAR TIDAK TERKENA BLUR -->
+        <!-- PILIHAN DESAIN ANTARMUKA -->
+        <div class="glow-card settings-card" style="margin-top: 2rem;">
+            <h2 class="section-title" style="margin: 0 0 0.5rem 0; color: #ededed;">Desain Antarmuka (UI Version)</h2>
+            <p class="text-muted" style="margin-bottom: 2rem;">Pilih gaya visual antarmuka sistem JAMKOT yang paling cocok dengan preferensi Anda.</p>
+            
+            <div class="ui-version-selector-grid">
+                <!-- Card UI V2 (Minimalist Dark) -->
+                <div class="ui-version-card" id="ui-card-v2" onclick="setUiVersion('v2')">
+                    <div class="ui-preview-icon glow-v2">
+                        <i class="fa-solid fa-moon"></i>
+                    </div>
+                    <div class="ui-version-info">
+                        <h3>UI V2: Minimalist Dark</h3>
+                        <p>Desain gelap yang elegan, bersih, minimalis, dan berfokus pada kejelasan informasi dengan pendaran cahaya minimal.</p>
+                    </div>
+                    <div class="ui-select-indicator">
+                        <i class="fa-solid fa-circle-check"></i>
                     </div>
                 </div>
 
-                <!-- PILIHAN DESAIN ANTARMUKA -->
-                <div class="glow-card settings-card" style="margin-top: 2rem;">
-                    <h2 class="section-title" style="margin: 0 0 0.5rem 0; color: #ededed;">Desain Antarmuka (UI Version)</h2>
-                    <p class="text-muted" style="margin-bottom: 2rem;">Pilih gaya visual antarmuka sistem JAMKOT yang paling cocok dengan preferensi Anda.</p>
-                    
-                    <div class="ui-version-selector-grid">
-                        <!-- Card UI V2 (Neon Glow Dark) -->
-                        <div class="ui-version-card" id="ui-card-v2" onclick="setUiVersion('v2')">
-                            <div class="ui-preview-icon glow-v2">
-                                <i class="fa-solid fa-wand-magic-sparkles"></i>
-                            </div>
-                            <div class="ui-version-info">
-                                <h3>UI V2: Neon Glow Dark</h3>
-                                <p>Tema default gelap dengan pendaran neon futuristik yang modern.</p>
-                            </div>
-                            <div class="ui-select-indicator">
-                                <i class="fa-solid fa-circle-check"></i>
-                            </div>
-                        </div>
-
-                        <!-- Card UI V1 (Material 3 Expressive) -->
-                        <div class="ui-version-card" id="ui-card-v1" onclick="setUiVersion('v1')">
-                            <div class="ui-preview-icon m3-v1">
-                                <i class="fa-solid fa-palette"></i>
-                            </div>
-                            <div class="ui-version-info">
-                                <h3>UI V1: Material 3 Expressive</h3>
-                                <p>Desain premium berbasis Google Material Design 3 dengan lekukan ekspresif, warna tonal pastel, dan tata letak dinamis.</p>
-                            </div>
-                            <div class="ui-select-indicator">
-                                <i class="fa-solid fa-circle-check"></i>
-                            </div>
-                        </div>
+                <!-- Card UI V1 (Material 3 Expressive) -->
+                <div class="ui-version-card" id="ui-card-v1" onclick="setUiVersion('v1')">
+                    <div class="ui-preview-icon m3-v1">
+                        <i class="fa-solid fa-palette"></i>
+                    </div>
+                    <div class="ui-version-info">
+                        <h3>UI V1: Material 3 Expressive</h3>
+                        <p>Desain premium berbasis Google Material Design 3 dengan lekukan ekspresif, warna tonal pastel, dan tata letak dinamis.</p>
+                    </div>
+                    <div class="ui-select-indicator">
+                        <i class="fa-solid fa-circle-check"></i>
                     </div>
                 </div>
             </div>
-
-        </main>
+        </div>
     </div>
+@endsection
 
+@section('modals')
     <!-- MODAL -->
     <div id="modalReset" class="modal-overlay">
         <div class="modal-box">
@@ -155,29 +98,9 @@
             </div>
         </div>
     </div>
+@endsection
 
-    <!-- TOAST NOTIFICATION -->
-    @if(session('sukses'))
-        <div id="toast-modern" class="toast-wrapper">
-            <div class="toast-progress"></div>
-            <div class="toast-body">
-                <div class="toast-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                </div>
-                <div class="toast-text">
-                    <h4>Success</h4>
-                    <p>{{ session('sukses') }}</p>
-                </div>s
-                <button class="toast-close" onclick="tutupToastModern()">×</button>
-            </div>
-        </div>
-        <script src="{{ asset('js/toast.js') }}"></script>
-    @endif
-    <script src="{{ asset('js/sidebar.js') }}"></script>
-    <!-- MODAL SCRIPTS -->
+@push('scripts')
     <script>
         function bukaModal() {
             document.getElementById('modalReset').classList.add('active');
@@ -202,7 +125,6 @@
             document.getElementById('resetForm').submit();
         }
 
-        // Close nav dropdown when clicking outside
         window.addEventListener('click', function(e) {
             const dropdown = document.getElementById('nav-dropdown-sensor');
             if (dropdown && !dropdown.contains(e.target)) {
@@ -217,7 +139,6 @@
             const overlay = document.getElementById('page-transition-overlay');
             const panelContent = document.querySelector('.panel-content');
             
-            // 1. Smoothly fade out the page content and reveal the blurred transition overlay
             if (panelContent) {
                 panelContent.classList.remove('loaded');
             }
@@ -225,16 +146,13 @@
                 overlay.classList.remove('hidden');
             }
             
-            // 2. Wait for exit animations to finish, then hot-swap variables instantly
             setTimeout(() => {
                 localStorage.setItem('jamkot-ui-version', version);
                 document.documentElement.setAttribute('data-ui-version', version);
                 updateUiCards(version);
                 
-                // Dispatch custom event to let chart.js dynamically repaint graphs on-the-fly
                 window.dispatchEvent(new CustomEvent('ui-theme-changed', { detail: { version } }));
                 
-                // 3. Keep the gorgeous Liquid Blob spinning for a brief moment, then fade back in
                 setTimeout(() => {
                     if (panelContent) {
                         panelContent.classList.add('loaded');
@@ -242,7 +160,7 @@
                     if (overlay) {
                         overlay.classList.add('hidden');
                     }
-                }, 400); // Perfect timing for satisfying organic liquid visual feedback
+    }, 400);
             }, 300);
         }
 
@@ -266,8 +184,4 @@
             updateUiCards(currentUi);
         });
     </script>
-    @include('partials.bottom-nav')
-
-</body>
-
-</html>
+@endpush

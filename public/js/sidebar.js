@@ -1,4 +1,3 @@
-// public/js/sidebar.js
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- SIDEBAR TOGGLE LOGIC ---
@@ -31,7 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
             path = url;
         }
 
-        // Clean path (normalize trailing slash)
         if (path.endsWith('/') && path.length > 1) {
             path = path.slice(0, -1);
         }
@@ -534,7 +532,6 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
         }
 
-        // Generic fallback skeleton
         return `
             <div class="skeleton-header">
                 <div class="skeleton-bone skeleton-title"></div>
@@ -577,11 +574,9 @@ document.addEventListener('DOMContentLoaded', () => {
             panelContent.insertBefore(skeletonContainer, panelContent.firstChild);
         }
         
-        // Inject layout-specific content
         skeletonContainer.innerHTML = getSkeletonTemplateForPath(urlPath);
     };
 
-    // Proactively inject skeleton on load
     injectSkeletonLoader();
 
     // 2. Create the blurred loading overlay dynamically (starts hidden, used only for settings theme switch)
@@ -599,20 +594,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (panelContent) {
             panelContent.classList.add('loaded');
         }
-        // Smoothly fade out the blurred overlay (if it was active)
         transitionOverlay.classList.add('hidden');
     };
 
     if (document.readyState === 'complete') {
         completeEntrance();
     } else {
-        window.addEventListener('load', completeEntrance);
-        // Fallback in case window load takes too long
-        setTimeout(() => {
-            if (transitionOverlay && !transitionOverlay.classList.contains('hidden')) {
-                completeEntrance();
-            }
-        }, 1200);
+        const forceLoadTimeout = setTimeout(completeEntrance, 1200);
+        window.addEventListener('load', () => {
+            clearTimeout(forceLoadTimeout);
+            completeEntrance();
+        });
     }
 
     // 4. Link Click Interception (Page Exit Transition)
@@ -620,10 +612,8 @@ document.addEventListener('DOMContentLoaded', () => {
     allLinks.forEach(link => {
         const href = link.getAttribute('href');
         
-        // Only intercept valid internal links
         if (!href) return;
         
-        // Skip external links, hashes, logout actions, and CSV/file downloads
         const isInternal = href.startsWith('/') || href.startsWith(window.location.origin);
         const isHash = href.startsWith('#');
         const isJavascript = href.startsWith('javascript:');
@@ -632,26 +622,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (isInternal && !isHash && !isJavascript && !isLogout && !isDownload) {
             link.addEventListener('click', (e) => {
-                // If opening in new tab or holding special keys, let browser handle normally
                 if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
 
                 e.preventDefault();
                 const targetUrl = link.href;
 
-                // Close sidebar on mobile
                 if (sidebar) {
                     sidebar.classList.remove('show');
                 }
 
-                // Dynamically update the skeleton layout inside the panel content to match the clicked destination
                 injectSkeletonLoader(targetUrl);
 
-                // Show the skeleton loader inside the panel content by removing "loaded" class
                 if (panelContent) {
                     panelContent.classList.remove('loaded');
                 }
 
-                // Wait for the exit animation (220ms matches CSS transition) then navigate
                 setTimeout(() => {
                     window.location.href = targetUrl;
                 }, 220);

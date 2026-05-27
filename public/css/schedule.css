@@ -1,4 +1,4 @@
-/* public/css/schedule.css */
+
 
 /* --- GLOBAL STYLES --- */
 ::-webkit-scrollbar {
@@ -340,4 +340,60 @@ body {
 @keyframes progressShrink {
     from { width: 100%; }
     to { width: 0%; }
+}
+
+/* ========================================================
+   UI V2 OVERHAUL: MINIMALIST DARK (MINIM GLOW & ULTRA CLEAN)
+   ======================================================= */
+
+html[data-ui-version="v2"] .schedule-card {
+    background: #121212 !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+}
+
+html[data-ui-version="v2"] .schedule-card:hover {
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+    transform: translateY(-2px) !important;
+}
+
+html[data-ui-version="v2"] .status-dot.pagi,
+html[data-ui-version="v2"] .status-dot.siang,
+html[data-ui-version="v2"] .status-dot.sore,
+html[data-ui-version="v2"] .status-dot.backup {
+    box-shadow: none !important;
+}
+
+html[data-ui-version="v2"] .input-time-modern:focus {
+    border-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+html[data-ui-version="v2"] .smart-backup-input-wrapper:focus-within {
+    border-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+html[data-ui-version="v2"] .btn-save {
+    background: #ffffff !important;
+    color: #0a0a0a !important;
+    border: 1px solid #ffffff !important;
+    box-shadow: none !important;
+    transition: all 0.2s ease !important;
+}
+
+html[data-ui-version="v2"] .btn-save:hover {
+    background: #e5e5e5 !important;
+    border-color: #e5e5e5 !important;
+    transform: translateY(-1px) !important;
+    opacity: 1 !important;
+}
+
+html[data-ui-version="v2"] .toast-wrapper {
+    background: #111111 !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+}
+
+html[data-ui-version="v2"] .toast-icon {
+    box-shadow: none !important;
 }

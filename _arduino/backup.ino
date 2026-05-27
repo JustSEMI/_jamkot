@@ -3,13 +3,13 @@
 #include <WiFi.h>
 
 // CONNECT TO YOUR WIFI
-const char *ssid = "YOUR_SSID"; // GANTI DENGAN SSID DAN PASSWORD WIFI ANDA
+const char *ssid = "YOUR_SSID";
 const char *password =
-    "YOUR_PASSWORD"; // GANTI DENGAN SSID DAN PASSWORD WIFI ANDA
+    "YOUR_PASSWORD";
 
 // REST API
 const char *laravelEndpoint =
-    "REST_API_ENDPOINT"; // GANTI DENGAN URL BACKEND LARAVEL ANDA
+    "REST_API_ENDPOINT";
 
 // PIN DEFINITIONS
 #define DHTPIN 4
@@ -28,17 +28,14 @@ void setup() {
   Serial.begin(115200);
   Serial.println("\n JAMKOT READY ");
 
-  // SETUP RELAY
   pinMode(RELAY_KIPAS, OUTPUT);
   pinMode(RELAY_POMPA, OUTPUT);
-  digitalWrite(RELAY_KIPAS, HIGH); // FAN OFF
-  digitalWrite(RELAY_POMPA, HIGH); // PUMP OFF
+  digitalWrite(RELAY_KIPAS, HIGH);
+  digitalWrite(RELAY_POMPA, HIGH);
 
-  // SETUP SENSOR
   dht.begin();
   pinMode(LDR_PIN, INPUT);
 
-  // WIFI CONNECTION
   WiFi.begin(ssid, password);
   Serial.print("Konek ke WiFi.");
   while (WiFi.status() != WL_CONNECTED) {
@@ -51,30 +48,26 @@ void setup() {
 }
 
 void loop() {
-  delay(60000); // 1 MINUTE INTERVAL
+  delay(60000);
 
-  // READ SENSOR DATA
   float h = dht.readHumidity();
   float t = dht.readTemperature();
-  int ldrRaw = analogRead(LDR_PIN); // THRESHOLD 0 - 4095
+  int ldrRaw = analogRead(LDR_PIN);
 
   if (isnan(h) || isnan(t)) {
     Serial.println("[ERROR] CANT READ DHT SENSOR!");
     return;
   }
 
-  int persentaseCahaya = (ldrRaw / 4095.0) * 100; // LOG SENSOR DATA
-  // int persentaseCahaya = 100 - ((ldrRaw / 4095.0) * 100);
+  int persentaseCahaya = (ldrRaw / 4095.0) * 100;
 
   Serial.println("====================================");
   Serial.printf("Suhu: %.1f°C | Kelembapan: %.1f%% | Cahaya: %d\n", t, h,
                 ldrValue);
 
-  // RELAY CONTROL LOGIC
   String statusPompa = "OFF";
   String statusKipas = "OFF";
 
-  // FAN LOGIC
   if (t > BATAS_SUHU_PANAS) {
     digitalWrite(RELAY_KIPAS, LOW);
     statusKipas = "ON";
@@ -83,7 +76,6 @@ void loop() {
     digitalWrite(RELAY_KIPAS, HIGH);
   }
 
-  // PUMP LOGIC
   if (h < BATAS_KELEMBAPAN_KERING) {
     digitalWrite(RELAY_POMPA, LOW);
     statusPompa = "ON";
@@ -92,13 +84,11 @@ void loop() {
     digitalWrite(RELAY_POMPA, HIGH);
   }
 
-  // SEND DATA TO LARAVEL BACKEND
   if (WiFi.status() == WL_CONNECTED) {
     HTTPClient http;
     http.begin(laravelEndpoint);
     http.addHeader("Content-Type", "application/json");
 
-    // JSON PAYLOAD
     String jsonPayload = "{";
     jsonPayload += "\"suhu\":" + String(t) + ",";
     jsonPayload += "\"kelembapan\":" + String(h) + ",";
@@ -108,7 +98,6 @@ void loop() {
 
     Serial.println("SEND PAYLOAD: " + jsonPayload);
 
-    // POST REQUEST
     int httpResponseCode = http.POST(jsonPayload);
 
     if (httpResponseCode > 0) {
