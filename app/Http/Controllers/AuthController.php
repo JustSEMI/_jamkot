@@ -59,7 +59,14 @@ class AuthController extends Controller
             'password' => ['required'],
         ]);
 
-        if (Auth::attempt($credentials)) {
+        $remember = $request->boolean('remember');
+
+        if ($remember) {
+            // Set remember cookie lifetime to 30 days (30 * 24 * 60 = 43200 minutes)
+            Auth::guard('web')->setRememberDuration(43200);
+        }
+
+        if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
 
             $redirectTo = Auth::user()->isAdmin() ? route('panel') : route('dashboard');
