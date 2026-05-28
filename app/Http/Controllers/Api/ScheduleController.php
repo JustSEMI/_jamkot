@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ScheduleResource;
 use App\Models\Schedule;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class ScheduleController extends Controller
 {
-    public function getSchedule(Request $request)
+    /**
+     * Get watering schedule.
+     */
+    public function getSchedule(): JsonResponse
     {
         $jadwal = Schedule::first();
 
@@ -23,19 +27,14 @@ class ScheduleController extends Controller
         return response()->json([
             'status' => 'SUCCESS',
             'pesan' => 'Jadwal penyiraman berhasil diambil.',
-            'data' => [
-                'pagi_mulai' => $jadwal->pagi_mulai,
-                'pagi_selesai' => $jadwal->pagi_selesai,
-                'siang_mulai' => $jadwal->siang_mulai,
-                'siang_selesai' => $jadwal->siang_selesai,
-                'sore_mulai' => $jadwal->sore_mulai,
-                'sore_selesai' => $jadwal->sore_selesai,
-                'batas_kelembapan' => $jadwal->batas_kelembapan,
-            ],
+            'data' => new ScheduleResource($jadwal),
         ]);
     }
 
-    public function getPumpStatus(Request $request)
+    /**
+     * Get current pump status.
+     */
+    public function getPumpStatus(): JsonResponse
     {
         $jadwal = Schedule::first();
 

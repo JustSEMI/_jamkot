@@ -1,9 +1,9 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', 'Schedules')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/schedule.css') }}">
+<link rel="stylesheet" href="{{ asset('css/pages/schedule.css') }}">
 <style>
     /* --- MATERIAL 3 EXPRESSIVE OVERRIDES FOR SCHEDULE PAGE --- */
     html[data-ui-version="v1"] .schedule-card {

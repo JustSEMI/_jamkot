@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateUserPermissionsRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class AdminController extends Controller
 {
-    /** Tampilkan daftar semua user beserta permission mereka. */
+    /**
+     * Display a listing of all users and their permissions.
+     */
     public function index(): View
     {
         $users = User::orderBy('username')->get();
@@ -20,27 +23,22 @@ class AdminController extends Controller
         return view('admin.users', compact('users', 'totalPengguna', 'totalAdmin', 'totalUserBiasa'));
     }
 
-    /** Tampilkan form edit akses user. */
+    /**
+     * Display the specified user access form.
+     */
     public function edit(User $user): View
     {
         return view('admin.edit', compact('user'));
     }
 
-    /** Update role dan permission user. */
-    public function update(Request $request, User $user): RedirectResponse
+    /**
+     * Update the specified user role and permissions.
+     */
+    public function update(UpdateUserRequest $request, User $user): RedirectResponse
     {
         if ($user->id === auth()->id() && $request->input('role') === 'user') {
             return back()->with('error', 'Anda tidak dapat menghapus akses Admin pada akun Anda sendiri.');
         }
-
-        $validated = $request->validate([
-            'role' => ['required', 'in:admin,user'],
-            'can_panel' => ['nullable', 'boolean'],
-            'can_analisis' => ['nullable', 'boolean'],
-            'can_schedule' => ['nullable', 'boolean'],
-            'can_view3d' => ['nullable', 'boolean'],
-            'can_settings' => ['nullable', 'boolean'],
-        ]);
 
         $role = $request->input('role');
         $isRoleAdmin = $role === 'admin';
@@ -58,21 +56,14 @@ class AdminController extends Controller
         return redirect()->route('admin.users')->with('sukses', "Akses untuk {$user->username} berhasil diperbarui.");
     }
 
-    /** Update permission untuk satu user. */
-    public function updatePermissions(Request $request, User $user): RedirectResponse
+    /**
+     * Update specific permissions for a non-admin user.
+     */
+    public function updatePermissions(UpdateUserPermissionsRequest $request, User $user): RedirectResponse
     {
         if ($user->role === 'admin') {
             return back()->with('error', 'Tidak bisa mengubah permission admin.');
         }
-
-        $validated = $request->validate([
-            'can_panel' => ['nullable', 'boolean'],
-            'can_analisis' => ['nullable', 'boolean'],
-            'can_schedule' => ['nullable', 'boolean'],
-            'can_view3d' => ['nullable', 'boolean'],
-            'can_settings' => ['nullable', 'boolean'],
-            'can_admin' => ['nullable', 'boolean'],
-        ]);
 
         $user->update([
             'can_panel' => $request->boolean('can_panel'),
@@ -86,16 +77,18 @@ class AdminController extends Controller
         return back()->with('sukses', "Permission untuk {$user->username} berhasil diperbarui.");
     }
 
-    /** Hapus user dari sistem. */
+    /**
+     * Remove the specified user from storage.
+     */
     public function destroy(User $user): RedirectResponse
     {
-        if ($user->role === 'admin' || $user->id === auth()->id()) {
-            return back()->with('error', 'Tidak bisa menghapus akun admin atau akun sendiri.');
+        if ($user->id === auth()->id()) {
+            return back()->with('error', 'Anda tidak bisa menghapus akun Anda sendiri.');
         }
 
         $username = $user->username;
         $user->delete();
 
-        return back()->with('sukses', "User {$username} berhasil dihapus.");
+        return redirect()->route('admin.users')->with('sukses', "User {$username} berhasil dihapus.");
     }
 }

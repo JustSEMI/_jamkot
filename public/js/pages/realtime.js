@@ -282,7 +282,11 @@ function togglePumpOptimistic() {
         if (data.status !== 'success') throw new Error(data.message || 'Error from server');
     }).catch(error => {
         console.error("Failed to toggle pump:", error);
-        alert("Gagal menyimpan status kontrol manual pompa.");
-        window.location.reload();
+        JKModal.alert({
+            type: 'error',
+            title: 'Gagal Toggle Pompa',
+            message: 'Gagal menyimpan status kontrol manual pompa. Halaman akan dimuat ulang.',
+            onOk: function () { window.location.reload(); }
+        });
     });
 }

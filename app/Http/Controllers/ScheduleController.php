@@ -2,29 +2,40 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreScheduleRequest;
 use App\Models\Schedule;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class ScheduleController extends Controller
 {
-    public function index()
+    /**
+     * Display watering schedules.
+     */
+    public function index(): View
     {
-        $schedule = Schedule::first() ?? new Schedule();
-        return view('schedule', compact('schedule'));
+        $schedule = Schedule::first() ?? new Schedule;
+
+        return view('schedule.index', compact('schedule'));
     }
 
-    public function store(Request $request)
+    /**
+     * Store or update watering schedules.
+     */
+    public function store(StoreScheduleRequest $request): RedirectResponse
     {
+        $validated = $request->validated();
+
         Schedule::updateOrCreate(
             ['id' => 1],
             [
-                'pagi_mulai' => $request->jadwal_pagi_mulai,
-                'pagi_selesai' => $request->jadwal_pagi_selesai,
-                'siang_mulai' => $request->jadwal_siang_mulai,
-                'siang_selesai' => $request->jadwal_siang_selesai,
-                'sore_mulai' => $request->jadwal_sore_mulai,
-                'sore_selesai' => $request->jadwal_sore_selesai,
-                'batas_kelembapan' => $request->batas_kelembapan,
+                'pagi_mulai' => $validated['jadwal_pagi_mulai'],
+                'pagi_selesai' => $validated['jadwal_pagi_selesai'],
+                'siang_mulai' => $validated['jadwal_siang_mulai'],
+                'siang_selesai' => $validated['jadwal_siang_selesai'],
+                'sore_mulai' => $validated['jadwal_sore_mulai'],
+                'sore_selesai' => $validated['jadwal_sore_selesai'],
+                'batas_kelembapan' => $validated['batas_kelembapan'],
             ]
         );
 

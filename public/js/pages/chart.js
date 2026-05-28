@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 ],
                 chart: {
                     height: 300,
-                    type: 'area',
+                    type: 'line',
                     toolbar: { show: false },
                     background: 'transparent',
                     fontFamily: 'Outfit, Inter, sans-serif',
@@ -83,6 +83,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 colors: seriesColors,
                 dataLabels: { enabled: false },
                 stroke: { curve: 'smooth', width: 3 },
+                markers: {
+                    size: 4,
+                    strokeWidth: 2,
+                    hover: {
+                        size: 6
+                    }
+                },
                 xaxis: {
                     categories: waktuLabels,
                     labels: { style: { colors: chartTextColors, fontFamily: 'Outfit, sans-serif' } },
@@ -96,15 +103,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     borderColor: chartGridBorder,
                     strokeDashArray: 4,
                     yaxis: { lines: { show: true } }
-                },
-                fill: {
-                    type: 'gradient',
-                    gradient: {
-                        shadeIntensity: 1,
-                        opacityFrom: 0.35,
-                        opacityTo: 0.05,
-                        stops: [0, 100]
-                    }
                 },
                 legend: { 
                     position: 'top', 

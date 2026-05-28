@@ -4,11 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Schedule;
 use App\Models\SensorLog;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class PanelController extends Controller
 {
-    public function index()
+    /**
+     * Display the main panel dashboard.
+     */
+    public function index(): View
     {
         $latest = SensorLog::latest()->first();
         $riwayatTabel = SensorLog::latest()->take(5)->get();
@@ -22,7 +28,7 @@ class PanelController extends Controller
             $persentaseTarget = 100;
         }
 
-        return view('panel', [
+        return view('panel.index', [
             'latest' => $latest,
             'riwayatTabel' => $riwayatTabel,
             'riwayatGrafik' => $riwayatGrafik,
@@ -31,7 +37,10 @@ class PanelController extends Controller
         ]);
     }
 
-    public function ldr()
+    /**
+     * Display light sensor (LDR) page.
+     */
+    public function ldr(): View
     {
         $latest = SensorLog::latest()->first();
         $riwayatTabel = SensorLog::latest()->take(5)->get();
@@ -44,7 +53,10 @@ class PanelController extends Controller
         ]);
     }
 
-    public function dht22()
+    /**
+     * Display DHT22 sensor (temperature & humidity) page.
+     */
+    public function dht22(): View
     {
         $latest = SensorLog::latest()->first();
         $riwayatTabel = SensorLog::latest()->take(5)->get();
@@ -60,7 +72,10 @@ class PanelController extends Controller
         ]);
     }
 
-    public function realtimeData()
+    /**
+     * Fetch realtime sensor data.
+     */
+    public function realtimeData(): JsonResponse
     {
         $allRecent = SensorLog::latest()->take(20)->get();
 
@@ -89,7 +104,7 @@ class PanelController extends Controller
                 'kelembapan' => number_format($latest->kelembapan ?? 0, 1),
                 'suhu_raw' => $latest->suhu ?? 0,
                 'kelembapan_raw' => $latest->kelembapan ?? 0,
-                'is_online' => $latest ? true : false,
+                'is_online' => (bool) $latest,
                 'pompa_status' => $latest->pompa_status ?? 'OFF',
             ],
             'riwayatTabel' => $riwayatTabel,
@@ -101,7 +116,10 @@ class PanelController extends Controller
             ->header('Expires', '0');
     }
 
-    public function togglePump(Request $request)
+    /**
+     * Toggle manual pump status.
+     */
+    public function togglePump(Request $request): JsonResponse
     {
         $jadwal = Schedule::first();
         if (! $jadwal) {
@@ -119,7 +137,10 @@ class PanelController extends Controller
         return response()->json(['status' => 'success', 'pump_status' => $jadwal->manual_pump_status]);
     }
 
-    public function analisis(Request $request)
+    /**
+     * Display sensor log analysis page.
+     */
+    public function analisis(Request $request): View
     {
         $date = $request->get('date');
         $limit = $request->get('limit', 10);
@@ -140,10 +161,13 @@ class PanelController extends Controller
         }
         $logs = $query->latest()->take($limit)->get();
 
-        return view('analisis', compact('stats', 'logs', 'date', 'limit'));
+        return view('analisis.index', compact('stats', 'logs', 'date', 'limit'));
     }
 
-    public function exportCsv(Request $request)
+    /**
+     * Export sensor logs to CSV format.
+     */
+    public function exportCsv(Request $request): StreamedResponse
     {
         $date = $request->get('date');
         $fileName = 'Laporan_Sensor_JAMKOT_'.($date ? $date : date('Y-m-d')).'.csv';
@@ -188,7 +212,10 @@ class PanelController extends Controller
         return response()->stream($callback, 200, $headers);
     }
 
-    public function exportPdf(Request $request)
+    /**
+     * Export sensor logs to PDF printable view.
+     */
+    public function exportPdf(Request $request): View
     {
         $date = $request->get('date');
         $query = SensorLog::query();
@@ -202,12 +229,18 @@ class PanelController extends Controller
         return view('exports.pdf', compact('logs'));
     }
 
-    public function view3d()
+    /**
+     * Display 3D view page.
+     */
+    public function view3d(): View
     {
-        return view('view3d');
+        return view('view3d.index');
     }
 
-    public function flowchart()
+    /**
+     * Display flowchart page.
+     */
+    public function flowchart(): View
     {
         return view('flowchart');
     }

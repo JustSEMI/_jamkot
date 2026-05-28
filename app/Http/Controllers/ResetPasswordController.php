@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class ResetPasswordController extends Controller
@@ -23,15 +23,17 @@ class ResetPasswordController extends Controller
 
         if ($user) {
             session(['reset_email' => $user->email]);
+
             return redirect()->route('password.reset');
         }
+
         return back()->withErrors(['email' => 'Email tidak terdaftar di sistem KOTAKU.'])->onlyInput('email');
     }
 
     // PASSOWORD RESET FORM
     public function showResetForm()
     {
-        if (!session()->has('reset_email')) {
+        if (! session()->has('reset_email')) {
             return redirect()->route('password.request');
         }
 
@@ -42,14 +44,14 @@ class ResetPasswordController extends Controller
     public function updatePassword(Request $request)
     {
         $request->validate([
-            'password' => 'required|min:8'
+            'password' => 'required|min:8',
         ]);
         $email = session('reset_email');
         $user = User::where('email', $email)->first();
 
         if ($user) {
             $user->update([
-                'password' => Hash::make($request->password)
+                'password' => Hash::make($request->password),
             ]);
             session()->forget('reset_email');
 

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', 'Kelola User')
 
@@ -413,5 +413,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('js/clock.js') }}"></script>
+    <script src="{{ asset('js/utils/clock.js') }}"></script>
 @endpush

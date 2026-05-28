@@ -1,7 +1,5 @@
 {
-    "agents": [
-        "gemini"
-    ],
+    "agents": [],
     "cloud": false,
     "guidelines": true,
     "mcp": true,

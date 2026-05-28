@@ -9,7 +9,7 @@
     <!-- PREVENT FOUC & SETUP UI THEME -->
     <script>
         (function() {
-            const uiVersion = localStorage.getItem('jamkot-ui-version') || 'v1';
+            const uiVersion = localStorage.getItem('jamkot-ui-version') || 'v2';
             document.documentElement.setAttribute('data-ui-version', uiVersion);
         })();
     </script>
@@ -22,8 +22,8 @@
     
     <!-- Global CSS -->
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/mobile.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/material3.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/pages/mobile.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/themes/material3.css') }}">
     
     <!-- Page Specific Styles -->
     @stack('styles')

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', 'SENSOR DHT22')
 
@@ -22,8 +22,8 @@
         <div class="glow-card sensor-meter-card sensor-meter-temperature" id="card-suhu" style="--meter-angle: {{ min(max(($latest->suhu ?? 0) / 40, 0), 1) * 180 }}deg;">
             <div class="card-title">SUHU RUANG</div>
             <div class="status-dot status-suhu {{ $latest ? 'online' : 'offline' }}"></div>
-            <div class="card-value" id="val-suhu">{{ number_format($latest->suhu ?? 0, 1) }}°C</div>
-            <div class="card-desc">Target: 22°C - 28°C</div>
+            <div class="card-value" id="val-suhu">{{ number_format($latest->suhu ?? 0, 1) }}Â°C</div>
+            <div class="card-desc">Target: 22Â°C - 28Â°C</div>
         </div>
 
         <div class="glow-card sensor-meter-card sensor-meter-humidity" id="card-kelembapan" style="--meter-angle: {{ min(max(($latest->kelembapan ?? 0) / 100, 0), 1) * 180 }}deg;">
@@ -112,7 +112,7 @@
                             <td class="text-muted">{{ $log->created_at->diffForHumans() }}</td>
                             <td>{{ $log->sensor_id }}</td>
                             <td><span class="badge success">Tercatat</span></td>
-                            <td class="text-right">{{ $log->kelembapan }}% | {{ $log->suhu }}°C</td>
+                            <td class="text-right">{{ $log->kelembapan }}% | {{ $log->suhu }}Â°C</td>
                         </tr>
                     @empty
                         <tr>
@@ -126,13 +126,13 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('js/clock.js') }}"></script>
+    <script src="{{ asset('js/utils/clock.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script>
         window.dataJamkot = @json($riwayatGrafik);
         window.currentSuhu = {{ $latest->suhu ?? 0 }};
         window.currentKelembapan = {{ $latest->kelembapan ?? 0 }};
     </script>
-    <script src="{{ asset('js/chart.js') }}?v={{ time() }}"></script>
-    <script src="{{ asset('js/realtime.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/pages/chart.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/pages/realtime.js') }}?v={{ time() }}"></script>
 @endpush

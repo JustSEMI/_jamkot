@@ -2,14 +2,17 @@
 #include <DHT.h>
 #include <HTTPClient.h>
 #include <WiFi.h>
+#include <WiFiClientSecure.h>
 #include <time.h>
 
 const char *ssid = "Maison";
 const char *password = "SANGATLUXU";
 
-const char *laravelEndpointData = "http://localhost:8000/api/sensor/data";
-const char *laravelEndpointSchedule = "http://localhost:8000/api/schedule";
-const char *laravelEndpointPumpStatus = "http://localhost:8000/api/pump/status";
+const char *laravelEndpointData = "https://jamkot.sfht.space/api/sensor/data";
+const char *laravelEndpointSchedule = "https://jamkot.sfht.space/api/schedule";
+const char *laravelEndpointPumpStatus = "https://jamkot.sfht.space/api/pump/status";
+
+WiFiClientSecure secureClient;
 
 const long gmtOffset_sec = 7 * 3600;
 const int daylightOffset_sec = 0;
@@ -21,6 +24,16 @@ DHT dht(DHTPIN, DHTTYPE);
 #define LDR_PIN 34
 #define RELAY_KIPAS 26
 #define RELAY_POMPA 27
+
+// Konfigurasi jenis relay (Ganti ke true jika relay menyala saat diberi sinyal HIGH, ganti ke false jika menyala saat LOW)
+const bool RELAY_KIPAS_ACTIVE_HIGH = false;
+const bool RELAY_POMPA_ACTIVE_HIGH = false;
+
+// Kalibrasi Otomatis & Karakteristik LDR (Sistem menyesuaikan secara dinamis)
+int ldrAdcDark = 4095;                 // Nilai ADC saat tergelap (menyesuaikan dinamis)
+int ldrAdcBright = 3700;               // Nilai ADC saat ruangan normal (menyesuaikan dinamis jika mendapat cahaya lebih terang)
+const float LDR_CURVE_EXPONENT = 0.45; // Mengangkat sensitivitas cahaya di kondisi ruangan biasa/redup
+int currentRawLDR = 0;
 
 unsigned long lastScheduleUpdate = 0;
 const unsigned long scheduleUpdateInterval = 3600000;
@@ -55,14 +68,13 @@ int timeToMinutes(String timeStr) {
 // Mengambil data jadwal penyiraman dari server
 void fetchScheduleFromWeb() {
   if (WiFi.status() == WL_CONNECTED) {
-    Serial.println("\n[API GET] Meminta data jadwal dari server...");
+    Serial.println("[HTTP] Fetching watering schedule from server...");
     HTTPClient http;
-    http.begin(laravelEndpointSchedule);
+    http.begin(secureClient, laravelEndpointSchedule);
 
     int httpResponseCode = http.GET();
     if (httpResponseCode == 200) {
       String payload = http.getString();
-      Serial.println(">> [SUKSES] Jadwal diterima: " + payload);
 
       DynamicJsonDocument doc(1024);
       deserializeJson(doc, payload);
@@ -76,16 +88,18 @@ void fetchScheduleFromWeb() {
         sore_selesai = timeToMinutes(data["sore_selesai"].as<String>());
         if (data.containsKey("batas_kelembapan"))
           batasKelembapanKering = data["batas_kelembapan"].as<float>();
-        Serial.println(
-            ">> [INFO] Variabel jadwal berhasil diperbarui di memori ESP32.");
+        
+        Serial.printf("       -> Pagi  : %s - %s\n", data["pagi_mulai"].as<const char*>(), data["pagi_selesai"].as<const char*>());
+        Serial.printf("       -> Siang : %s - %s\n", data["siang_mulai"].as<const char*>(), data["siang_selesai"].as<const char*>());
+        Serial.printf("       -> Sore  : %s - %s\n", data["sore_mulai"].as<const char*>(), data["sore_selesai"].as<const char*>());
+        Serial.printf("       -> Limit Kelembapan: %.1f%%\n", batasKelembapanKering);
       }
     } else {
-      Serial.printf(">> [ERROR] Gagal mengambil jadwal. HTTP Code: %d\n",
-                    httpResponseCode);
+      Serial.printf("[HTTP] Fetch FAILED. Code: %d\n", httpResponseCode);
     }
     http.end();
   } else {
-    Serial.println("\n[ERROR] WiFi Terputus! Tidak bisa sinkron jadwal.");
+    Serial.println("[HTTP] Fetch FAILED (WiFi Disconnected)");
   }
 }
 
@@ -93,7 +107,7 @@ void fetchScheduleFromWeb() {
 void fetchPumpStatusFromWeb() {
   if (WiFi.status() == WL_CONNECTED) {
     HTTPClient http;
-    http.begin(laravelEndpointPumpStatus);
+    http.begin(secureClient, laravelEndpointPumpStatus);
     int httpResponseCode = http.GET();
 
     if (httpResponseCode == 200) {
@@ -105,12 +119,10 @@ void fetchPumpStatusFromWeb() {
 
       if (newStatus != manualPumpStatus) {
         manualPumpStatus = newStatus;
-        Serial.println("\n[PERINGATAN!] >>> Status Pompa berubah menjadi: " +
-                       manualPumpStatus + " <<<");
+        Serial.printf("\n[PUMP] Web status changed -> %s\n", manualPumpStatus.c_str());
       }
     } else {
-      Serial.printf("\n[ERROR] Gagal cek status pompa manual. HTTP Code: %d\n",
-                    httpResponseCode);
+      // Tidak log error di sini agar tidak membanjiri Serial Monitor setiap detik
     }
     http.end();
   }
@@ -119,9 +131,8 @@ void fetchPumpStatusFromWeb() {
 // Mengirim data sensor ke server
 void sendDataToWeb(String statusPompa) {
   if (WiFi.status() == WL_CONNECTED) {
-    Serial.println("\n[API POST] Menyiapkan pengiriman data ke server...");
     HTTPClient http;
-    http.begin(laravelEndpointData);
+    http.begin(secureClient, laravelEndpointData);
     http.addHeader("Content-Type", "application/json");
 
     String jsonPayload = "{";
@@ -132,68 +143,82 @@ void sendDataToWeb(String statusPompa) {
     jsonPayload += "\"pompa_status\":\"" + statusPompa + "\"";
     jsonPayload += "}";
 
-    Serial.println(">> Payload JSON yang dikirim: " + jsonPayload);
-
     int httpResponseCode = http.POST(jsonPayload);
 
     if (httpResponseCode > 0) {
-      Serial.printf(">> [SUKSES] Server menerima data. HTTP Code: %d\n",
-                    httpResponseCode);
-      String response = http.getString();
-      Serial.println(">> Respon dari Laravel: " + response);
+      Serial.printf("  -> Response: Success (Code: %d)\n", httpResponseCode);
     } else {
-      Serial.printf(">> [GAGAL] Error ngirim HTTP POST: %s\n",
-                    http.errorToString(httpResponseCode).c_str());
+      Serial.printf("  -> Response: FAILED (%s)\n", http.errorToString(httpResponseCode).c_str());
     }
     http.end();
   } else {
-    Serial.println("\n[ERROR] WiFi Terputus! Data gagal dikirim.");
+    Serial.println("  -> Response: FAILED (WiFi Disconnected)");
   }
 }
 
 // Inisialisasi perangkat keras dan koneksi sistem
 void setup() {
   Serial.begin(115200);
-  Serial.println("\n=========================================");
-  Serial.println("🔥 MEMULAI SISTEM JAMKOT REAL-TIME 🔥");
-  Serial.println("=========================================");
+  delay(500); // Jeda pendek agar inisialisasi serial port stabil
+  Serial.println("\n--------------------------------------------------");
+  Serial.println("JAMUR AUTOMATION MONITORING & KONTROL OVER TELEMETRI");
+  Serial.println("--------------------------------------------------");
 
   pinMode(RELAY_KIPAS, OUTPUT);
   pinMode(RELAY_POMPA, OUTPUT);
-  digitalWrite(RELAY_KIPAS, HIGH);
-  digitalWrite(RELAY_POMPA, HIGH);
+  digitalWrite(RELAY_KIPAS, RELAY_KIPAS_ACTIVE_HIGH ? LOW : HIGH); // Matikan kipas saat startup (HIGH untuk Active-Low)
+  digitalWrite(RELAY_POMPA, RELAY_POMPA_ACTIVE_HIGH ? LOW : HIGH); // Matikan pompa saat startup (HIGH untuk Active-Low)
+
+  secureClient.setInsecure(); // Konfigurasi global secureClient agar mengabaikan verifikasi SSL certificate
 
   dht.begin();
   pinMode(LDR_PIN, INPUT);
 
-  Serial.print("Menghubungkan ke WiFi: ");
-  Serial.print(ssid);
+  Serial.printf("[WIFI] Connecting to '%s'...", ssid);
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
   }
 
-  Serial.println("\n[SUKSES] Terhubung ke Jaringan!");
-  Serial.print(">> IP Address ESP32: ");
+  Serial.println("\n[WIFI] Connected!");
+  Serial.print("       IP Address: ");
   Serial.println(WiFi.localIP());
-  Serial.println("-----------------------------------------");
 
-  Serial.print("Sinkronisasi waktu NTP...");
+  Serial.print("[TIME] NTP Sync...");
   configTime(gmtOffset_sec, daylightOffset_sec, "pool.ntp.org");
   struct tm timeinfo;
   while (!getLocalTime(&timeinfo, 5000)) {
-    Serial.println("Gagal NTP, mencoba lagi...");
+    Serial.print(".");
   }
-  Serial.println(" [SUKSES]");
+  Serial.println(" Success!");
 
   fetchScheduleFromWeb();
 
-  currentH = dht.readHumidity();
-  currentT = dht.readTemperature();
-  currentCahaya = (analogRead(LDR_PIN) / 4095.0) * 100;
+  // Ambil data sensor awal (diberikan jeda 1 detik agar DHT siap)
+  delay(1000);
+  float h = dht.readHumidity();
+  float t = dht.readTemperature();
+  if (!isnan(h) && !isnan(t)) {
+    currentH = h;
+    currentT = t;
+  }
+  currentRawLDR = analogRead(LDR_PIN);
+  // Lindungi batas pembacaan ADC ESP32
+  if (currentRawLDR < 100) { currentRawLDR = 100; }
+  if (currentRawLDR > 4095) { currentRawLDR = 4095; }
+  
+  // Auto-kalibrasi dinamis awal
+  if (currentRawLDR < ldrAdcBright) { ldrAdcBright = currentRawLDR; }
+  if (currentRawLDR > ldrAdcDark) { ldrAdcDark = currentRawLDR; }
+  if (ldrAdcDark - ldrAdcBright < 300) { ldrAdcDark = ldrAdcBright + 300; }
 
-  Serial.println("\n[SISTEM] JAMKOT SIAP TEMPUR!");
+  float normLDR = (float)(ldrAdcDark - currentRawLDR) / (ldrAdcDark - ldrAdcBright);
+  normLDR = constrain(normLDR, 0.0, 1.0);
+  currentCahaya = (int)(pow(normLDR, LDR_CURVE_EXPONENT) * 100.0);
+
+  Serial.println("\n[SYS ] JAMKOT System Ready.");
+  Serial.println("--------------------------------------------------");
 }
 
 // Loop utama sistem
@@ -211,28 +236,27 @@ void loop() {
   }
 
   struct tm timeinfo;
-  int currentMinutes = -1;
-  if (getLocalTime(&timeinfo, 10)) {
-    currentMinutes = (timeinfo.tm_hour * 60) + timeinfo.tm_min;
-  }
+  getLocalTime(&timeinfo, 10);
 
   String actualPumpStatus = "OFF";
 
+  // Kontrol Kipas berdasarkan Suhu
   if (currentT > batasSuhuPanas) {
-    digitalWrite(RELAY_KIPAS, LOW);
+    digitalWrite(RELAY_KIPAS, RELAY_KIPAS_ACTIVE_HIGH ? HIGH : LOW);
   } else {
-    digitalWrite(RELAY_KIPAS, HIGH);
+    digitalWrite(RELAY_KIPAS, RELAY_KIPAS_ACTIVE_HIGH ? LOW : HIGH);
   }
 
+  // Kontrol Pompa berdasarkan Status Manual Web
   if (manualPumpStatus == "ON") {
-    digitalWrite(RELAY_POMPA, LOW);
+    digitalWrite(RELAY_POMPA, RELAY_POMPA_ACTIVE_HIGH ? HIGH : LOW);
     actualPumpStatus = "ON";
   } else {
-    digitalWrite(RELAY_POMPA, HIGH);
+    digitalWrite(RELAY_POMPA, RELAY_POMPA_ACTIVE_HIGH ? LOW : HIGH);
     actualPumpStatus = "OFF";
   }
 
-  if (currentMillis - lastSensorRead >= sensorReadInterval) {
+  if (lastSensorRead == 0 || currentMillis - lastSensorRead >= sensorReadInterval) {
     lastSensorRead = currentMillis;
 
     float h = dht.readHumidity();
@@ -240,19 +264,35 @@ void loop() {
     if (!isnan(h) && !isnan(t)) {
       currentH = h;
       currentT = t;
-      currentCahaya = (analogRead(LDR_PIN) / 4095.0) * 100;
     }
+    currentRawLDR = analogRead(LDR_PIN);
+    // Lindungi batas pembacaan ADC ESP32
+    if (currentRawLDR < 100) { currentRawLDR = 100; }
+    if (currentRawLDR > 4095) { currentRawLDR = 4095; }
 
-    Serial.println("\n=========================================");
-    Serial.printf("[SENSOR LOG] Waktu: %02d:%02d\n", timeinfo.tm_hour,
-                  timeinfo.tm_min);
-    Serial.printf("Suhu: %.1f°C | Kelembapan: %.1f%% | Cahaya: %d%%\n",
-                  currentT, currentH, currentCahaya);
-    Serial.printf("Mode Manual Web: %s | Status Asli Pompa: %s\n",
-                  manualPumpStatus.c_str(), actualPumpStatus.c_str());
-    Serial.println("=========================================");
+    // Auto-kalibrasi dinamis (belajar batas gelap dan terang secara real-time)
+    if (currentRawLDR < ldrAdcBright) { ldrAdcBright = currentRawLDR; }
+    if (currentRawLDR > ldrAdcDark) { ldrAdcDark = currentRawLDR; }
+    if (ldrAdcDark - ldrAdcBright < 300) { ldrAdcDark = ldrAdcBright + 300; }
 
+    float normLDR = (float)(ldrAdcDark - currentRawLDR) / (ldrAdcDark - ldrAdcBright);
+    normLDR = constrain(normLDR, 0.0, 1.0);
+    int targetCahaya = (int)(pow(normLDR, LDR_CURVE_EXPONENT) * 100.0);
+    // Filter rata-rata bergerak eksponensial (Exponential Smoothing) agar transisi mulus dan stabil
+    currentCahaya = (currentCahaya * 0.7) + (targetCahaya * 0.3);
+
+    String actualKipasStatus = (currentT > batasSuhuPanas) ? "NYALA" : "MATI";
+
+    Serial.printf("\n>>> TELEMETRY REPORT [%02d:%02d]\n", timeinfo.tm_hour, timeinfo.tm_min);
+    Serial.printf("  Suhu       : %.1f C  (Batas: %.1f C)\n", currentT, batasSuhuPanas);
+    Serial.printf("  Kelembapan : %.1f %%  (Batas: %.1f %%)\n", currentH, batasKelembapanKering);
+    Serial.printf("  Cahaya     : %d %%  (Raw ADC: %d, Rentang: %d - %d)\n", currentCahaya, currentRawLDR, ldrAdcBright, ldrAdcDark);
+    Serial.printf("  Kipas Fan  : %s\n", actualKipasStatus.c_str());
+    Serial.printf("  Pompa Web  : %s  |  Pompa Fisik : %s\n", manualPumpStatus.c_str(), actualPumpStatus.c_str());
+    Serial.println("  --------------------------------------------------");
+    Serial.println("  [DATA] Uploading telemetry to server...");
     sendDataToWeb(actualPumpStatus);
+    Serial.println(">>> END REPORT\n");
   }
 
   delay(50);

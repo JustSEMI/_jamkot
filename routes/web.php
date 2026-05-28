@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PanelController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\SettingsController;
@@ -60,6 +61,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/settings', [SettingsController::class, 'index'])->middleware('permission:settings')->name('settings.index');
     Route::post('/settings/reset', [SettingsController::class, 'resetData'])->middleware('permission:settings')->name('settings.reset');
     Route::get('/view3d', [PanelController::class, 'view3d'])->middleware('permission:view3d')->name('view3d');
+
+    // PROFILE MANAGEMENT
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });

@@ -1,9 +1,9 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', 'Pengaturan')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/settings.css') }}">
+<link rel="stylesheet" href="{{ asset('css/pages/settings.css') }}">
 @endpush
 
 @section('content')
@@ -39,20 +39,6 @@
             <p class="text-muted" style="margin-bottom: 2rem;">Pilih gaya visual antarmuka sistem JAMKOT yang paling cocok dengan preferensi Anda.</p>
             
             <div class="ui-version-selector-grid">
-                <!-- Card UI V2 (Minimalist Dark) -->
-                <div class="ui-version-card" id="ui-card-v2" onclick="setUiVersion('v2')">
-                    <div class="ui-preview-icon glow-v2">
-                        <i class="fa-solid fa-moon"></i>
-                    </div>
-                    <div class="ui-version-info">
-                        <h3>UI V2: Minimalist Dark</h3>
-                        <p>Desain gelap yang elegan, bersih, minimalis, dan berfokus pada kejelasan informasi dengan pendaran cahaya minimal.</p>
-                    </div>
-                    <div class="ui-select-indicator">
-                        <i class="fa-solid fa-circle-check"></i>
-                    </div>
-                </div>
-
                 <!-- Card UI V1 (Material 3 Expressive) -->
                 <div class="ui-version-card" id="ui-card-v1" onclick="setUiVersion('v1')">
                     <div class="ui-preview-icon m3-v1">
@@ -61,6 +47,20 @@
                     <div class="ui-version-info">
                         <h3>UI V1: Material 3 Expressive</h3>
                         <p>Desain premium berbasis Google Material Design 3 dengan lekukan ekspresif, warna tonal pastel, dan tata letak dinamis.</p>
+                    </div>
+                    <div class="ui-select-indicator">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                </div>
+
+                <!-- Card UI V2 (Minimalist Dark) -->
+                <div class="ui-version-card" id="ui-card-v2" onclick="setUiVersion('v2')">
+                    <div class="ui-preview-icon glow-v2">
+                        <i class="fa-solid fa-moon"></i>
+                    </div>
+                    <div class="ui-version-info">
+                        <h3>UI V2: Minimalist Dark</h3>
+                        <p>Desain gelap yang elegan, bersih, minimalis, dan berfokus pada kejelasan informasi dengan pendaran cahaya minimal.</p>
                     </div>
                     <div class="ui-select-indicator">
                         <i class="fa-solid fa-circle-check"></i>
@@ -79,7 +79,7 @@
                 <i class="fa-solid fa-trash-can"></i>
             </div>
             <h3 class="modal-title">Reset Semua Data Sensor?</h3>
-            <p class="modal-subtitle">Tindakan ini akan menghapus permanen seluruh record sensor — suhu, kelembapan, intensitas cahaya, dan status pompa.</p>
+            <p class="modal-subtitle">Tindakan ini akan menghapus permanen seluruh record sensor â€” suhu, kelembapan, intensitas cahaya, dan status pompa.</p>
             
             <div class="modal-badges">
                 <span class="modal-badge"><i class="fa-solid fa-chart-line"></i> Grafik akan kosong</span>
@@ -180,7 +180,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            const currentUi = localStorage.getItem('jamkot-ui-version') || 'v1';
+            const currentUi = localStorage.getItem('jamkot-ui-version') || 'v2';
             updateUiCards(currentUi);
         });
     </script>

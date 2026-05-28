@@ -17,5 +17,6 @@ class Schedule extends Model
         'sore_mulai',
         'sore_selesai',
         'batas_kelembapan',
+        'manual_pump_status',
     ];
 }

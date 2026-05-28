@@ -1,9 +1,9 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', '3D Model View')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/view3d.css') }}">
+<link rel="stylesheet" href="{{ asset('css/pages/view3d.css') }}">
 @endpush
 
 @section('content')
@@ -138,7 +138,7 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 
     <!-- IN-PAGE CORE CLOCK SCRIPT -->
-    <script src="{{ asset('js/clock.js') }}"></script>
+    <script src="{{ asset('js/utils/clock.js') }}"></script>
 
     <!-- THREE.JS ENGINE LOGIC -->
     <script>

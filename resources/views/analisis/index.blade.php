@@ -1,9 +1,9 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', 'Analisis Data')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/analisis.css') }}">
+<link rel="stylesheet" href="{{ asset('css/pages/analisis.css') }}">
 <style>
     /* --- Tabel Responsif --- */
     .table-responsive {
@@ -276,7 +276,7 @@
     <div class="summary-grid">
         <div class="glow-card stat-card meter-card meter-card-temperature" style="--meter-angle: {{ min(max(($stats['avg_suhu'] ?? 0) / 40, 0), 1) * 180 }}deg;">
             <div class="card-title">RATA-RATA SUHU</div>
-            <div class="card-value">{{ number_format($stats['avg_suhu'], 1) }}°C</div>
+            <div class="card-value">{{ number_format($stats['avg_suhu'], 1) }}Â°C</div>
             <div class="card-desc">Dari seluruh rekaman data</div>
         </div>
 
@@ -306,7 +306,7 @@
             <div class="record-grid">
                 <div class="record-item">
                     <span>Suhu</span>
-                    <strong>{{ is_null($stats['max_suhu']) ? '--' : $stats['max_suhu'] . '°C' }}</strong>
+                    <strong>{{ is_null($stats['max_suhu']) ? '--' : $stats['max_suhu'] . 'Â°C' }}</strong>
                 </div>
                 <div class="record-item">
                     <span>Kelembapan</span>
@@ -323,7 +323,7 @@
             <div class="record-grid">
                 <div class="record-item">
                     <span>Suhu</span>
-                    <strong>{{ is_null($stats['min_suhu']) ? '--' : $stats['min_suhu'] . '°C' }}</strong>
+                    <strong>{{ is_null($stats['min_suhu']) ? '--' : $stats['min_suhu'] . 'Â°C' }}</strong>
                 </div>
                 <div class="record-item">
                     <span>Kelembapan</span>
@@ -407,7 +407,7 @@
                                 </span>
                             </td>
                             <td>{{ $log->cahaya ?? '--' }} Lux</td>
-                            <td class="text-right fw-bold" style="letter-spacing: 0.05em;">{{ $log->kelembapan }}% | {{ $log->suhu }}°C</td>
+                            <td class="text-right fw-bold" style="letter-spacing: 0.05em;">{{ $log->kelembapan }}% | {{ $log->suhu }}Â°C</td>
                          </tr>
                      @empty
                          <tr>

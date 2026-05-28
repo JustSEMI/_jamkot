@@ -2,20 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\SensorLog;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class SettingsController extends Controller
 {
-    // Fungsi buat nampilin halaman Setting
-    public function index()
+    /**
+     * Display settings page.
+     */
+    public function index(): View
     {
-        return view('settings');
+        return view('settings.index');
     }
 
-    public function resetData()
+    /**
+     * Reset/Truncate sensor logs.
+     */
+    public function resetData(): RedirectResponse
     {
-        SensorLog::truncate(); 
+        SensorLog::truncate();
+
         return back()->with('sukses', 'DATA BERHASIL DIHAPUS!');
     }
 }

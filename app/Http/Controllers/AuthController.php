@@ -2,33 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\View\View;
 
 class AuthController extends Controller
 {
-    public function register()
+    /**
+     * Show registration form.
+     */
+    public function register(): View
     {
         return view('auth.register');
     }
 
-    // REGISTER PAGE
-    public function store(Request $request)
+    /**
+     * Store a newly registered user.
+     */
+    public function store(RegisterRequest $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'username' => 'required|unique:user,username|max:50',
-            'email' => 'required|email|unique:user,email|max:100',
-            'password' => 'required|min:5|confirmed',
-        ], [
-            'username.unique' => 'Username ini sudah dipakai, cari yang lain cik!',
-            'email.unique' => 'Email ini sudah terdaftar.',
-            'password.confirmed' => 'Konfirmasi password nggak cocok.',
-            'password.min' => 'Password minimal 5 karakter.',
-        ]);
+        $validated = $request->validated();
 
-        $user = User::create([
+        User::create([
             'username' => $validated['username'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
@@ -42,23 +42,23 @@ class AuthController extends Controller
             'can_admin' => false,
         ]);
 
-        return view('auth.login')->with('success', 'Registrasi berhasil! Silakan login dengan akun baru Anda.');
+        return redirect()->route('login')->with('success', 'Registrasi berhasil! Silakan login dengan akun baru Anda.');
     }
 
-    // LOGIN PAGE
-    public function showLoginForm()
+    /**
+     * Show login form.
+     */
+    public function showLoginForm(): View
     {
         return view('auth.login');
     }
 
-    // LOGIN
-    public function authenticate(Request $request)
+    /**
+     * Handle authentication attempt.
+     */
+    public function authenticate(LoginRequest $request): RedirectResponse
     {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
-
+        $credentials = $request->validated();
         $remember = $request->boolean('remember');
 
         if ($remember) {
@@ -79,8 +79,10 @@ class AuthController extends Controller
         ])->onlyInput('email');
     }
 
-    // LOGOUT
-    public function logout(Request $request)
+    /**
+     * Log the user out.
+     */
+    public function logout(Request $request): RedirectResponse
     {
         Auth::logout();
         $request->session()->invalidate();

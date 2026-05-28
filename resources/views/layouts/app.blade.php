@@ -9,7 +9,7 @@
     <!-- PREVENT FOUC & SETUP UI THEME -->
     <script>
         (function() {
-            const uiVersion = localStorage.getItem('jamkot-ui-version') || 'v1';
+            const uiVersion = localStorage.getItem('jamkot-ui-version') || 'v2';
             document.documentElement.setAttribute('data-ui-version', uiVersion);
         })();
     </script>
@@ -21,9 +21,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
     
     <!-- Global CSS -->
-    <link rel="stylesheet" href="{{ asset('css/panel.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/mobile.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/material3.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/pages/panel.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/pages/mobile.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/themes/material3.css') }}">
     
     <!-- Page Specific Styles -->
     @stack('styles')
@@ -66,17 +66,37 @@
 
         @include('partials.sidebar')
 
-        <!-- KONTEN UTAMA -->
-        <main class="panel-content">
-            <!-- Global Error Alerts -->
-            @if(session('error'))
-                <div style="background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; color: #f87171; font-size: 0.875rem;">
-                    <i class="fa-solid fa-circle-exclamation" style="margin-right: 0.5rem;"></i>{{ session('error') }}
-                </div>
-            @endif
+        <div class="main-layout-container" style="display: flex; flex-direction: column; flex: 1; height: 100vh; overflow: hidden;">
+            @include('partials.navbar')
 
-            @yield('content')
-        </main>
+            <!-- KONTEN UTAMA -->
+            <main class="panel-content">
+                <!-- Global Error Alerts -->
+                @if(session('error'))
+                    <div style="background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; color: #f87171; font-size: 0.875rem;">
+                        <i class="fa-solid fa-circle-exclamation" style="margin-right: 0.5rem;"></i>{{ session('error') }}
+                    </div>
+                @endif
+
+                @yield('content')
+            </main>
+        </div>
+    </div>
+
+    <!-- Global Custom Modal Overlay -->
+    <div class="jk-modal-overlay" id="jk-modal-overlay">
+        <div class="jk-modal-box" id="jk-modal-box">
+            <div class="jk-modal-icon danger" id="jk-modal-icon">
+                <i class="fa-solid fa-triangle-exclamation" id="jk-modal-icon-i"></i>
+            </div>
+            <div class="jk-modal-title" id="jk-modal-title">Konfirmasi</div>
+            <div class="jk-modal-message" id="jk-modal-message">Apakah Anda yakin?</div>
+            <div class="jk-modal-divider"></div>
+            <div class="jk-modal-actions" id="jk-modal-actions">
+                <button class="jk-modal-btn jk-modal-btn-cancel" id="jk-modal-btn-cancel">Batal</button>
+                <button class="jk-modal-btn jk-modal-btn-confirm" id="jk-modal-btn-confirm">Ya, Lanjutkan</button>
+            </div>
+        </div>
     </div>
 
     <!-- Modals -->
@@ -99,10 +119,11 @@
                 <button class="toast-close" onclick="tutupToastModern()">×</button>
             </div>
         </div>
-        <script src="{{ asset('js/toast.js') }}"></script>
+        <script src="{{ asset('js/core/toast.js') }}"></script>
     @endif
 
-    <script src="{{ asset('js/sidebar.js') }}"></script>
+    <script src="{{ asset('js/core/modal.js') }}"></script>
+    <script src="{{ asset('js/core/sidebar.js') }}"></script>
     
     <!-- Page Specific Scripts -->
     @stack('scripts')

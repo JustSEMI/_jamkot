@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', 'Sensor Cahaya')
 
@@ -116,7 +116,7 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('js/clock.js') }}"></script>
+    <script src="{{ asset('js/utils/clock.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -153,7 +153,7 @@
                 }],
                 chart: {
                     height: 300,
-                    type: 'area',
+                    type: 'line',
                     toolbar: { show: false },
                     background: 'transparent',
                     fontFamily: 'Outfit, Inter, sans-serif'
@@ -161,6 +161,13 @@
                 colors: ['#fbbf24'],
                 dataLabels: { enabled: false },
                 stroke: { curve: 'smooth', width: 3 },
+                markers: {
+                    size: 4,
+                    strokeWidth: 2,
+                    hover: {
+                        size: 6
+                    }
+                },
                 xaxis: {
                     categories: waktuLabels,
                     labels: { style: { colors: chartTextColors } },
@@ -173,15 +180,6 @@
                 grid: {
                     borderColor: chartGridBorder,
                     strokeDashArray: 4
-                },
-                fill: {
-                    type: 'gradient',
-                    gradient: {
-                        shadeIntensity: 1,
-                        opacityFrom: 0.35,
-                        opacityTo: 0.05,
-                        stops: [0, 100]
-                    }
                 },
                 legend: {
                     labels: { colors: isM3 ? '#e1e3e1' : '#ededed' }
@@ -197,5 +195,5 @@
             });
         });
     </script>
-    <script src="{{ asset('js/realtime.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/pages/realtime.js') }}?v={{ time() }}"></script>
 @endpush

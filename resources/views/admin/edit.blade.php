@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', 'Edit Akses User')
 
@@ -554,10 +554,10 @@
                     @else
                         <span class="text-muted" style="font-size: 0.75rem; display: block; margin-top: 1rem;">ID Pengguna: #{{ $user->id }}</span>
                         
-                        <form action="{{ route('admin.users.destroy', $user) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus user ini secara permanen?');" style="margin-top: 1.5rem; width: 100%;">
+                        <form action="{{ route('admin.users.destroy', $user) }}" method="POST" id="form-hapus-user" style="margin-top: 1.5rem; width: 100%;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: #ef4444; width: 100%; padding: 0.65rem 1rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                            <button type="button" onclick="konfirmasiHapusUser()" style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: #ef4444; width: 100%; padding: 0.65rem 1rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;">
                                 <i class="fa-solid fa-trash-can"></i> Hapus Akun
                             </button>
                         </form>
@@ -689,7 +689,7 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('js/clock.js') }}"></script>
+    <script src="{{ asset('js/utils/clock.js') }}"></script>
     <script>
         function selectRole(role) {
             document.getElementById('input-role').value = role;
@@ -710,6 +710,19 @@
                 permSection.style.display = 'block';
                 adminBanner.style.display = 'none';
             }
+        }
+
+        function konfirmasiHapusUser() {
+            JKModal.confirm({
+                type: 'danger',
+                title: 'Hapus Akun Pengguna',
+                message: 'Apakah Anda yakin ingin menghapus user "{{ $user->username }}" secara permanen? Tindakan ini tidak dapat dibatalkan.',
+                confirmText: 'Ya, Hapus Permanen',
+                cancelText: 'Batal',
+                onConfirm: function () {
+                    document.getElementById('form-hapus-user').submit();
+                }
+            });
         }
     </script>
 @endpush

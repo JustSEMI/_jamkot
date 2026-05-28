@@ -82,8 +82,9 @@ html[data-ui-version="v1"] .panel-content {
 
 /* --- SIDEBAR MENU (PIXEL FLOATING PILLS) --- */
 html[data-ui-version="v1"] .sidebar {
-    background-color: var(--m3-surface-container-low) !important;
-    border-right: 1px solid var(--m3-outline-variant) !important;
+    background: linear-gradient(180deg, var(--m3-surface-container-low) 0%, var(--m3-surface-container) 100%) !important;
+    border-right: none !important;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.25) !important;
     padding: 2.25rem 1.15rem !important;
     width: 260px;
     display: flex !important;
@@ -802,18 +803,6 @@ html[data-ui-version="v1"] .dashboard-footer {
     display: none !important;
 }
 
-.nav-link i,
-.btn-logout-sidebar i {
-    display: none !important;
-}
-
-html[data-ui-version="v1"] .nav-link i {
-    display: inline-flex !important;
-}
-
-html[data-ui-version="v1"] .btn-logout-sidebar i {
-    display: inline-flex !important;
-}
 
 html[data-ui-version="v1"] .bottom-nav {
     display: none !important;

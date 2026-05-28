@@ -42,13 +42,16 @@
         @endif
 
         <!-- Data Sensor (Collapsible) -->
-        <div class="nav-dropdown {{ Request::is('sensor/*') ? 'active' : '' }}">
+        @php
+            $isSensorActive = Request::is('sensor/*');
+        @endphp
+        <div class="nav-dropdown {{ $isSensorActive ? 'active expanded' : '' }}">
             <div class="dropdown-header">
                 <i class="fa-solid fa-cubes"></i>
                 <span>Data Sensor</span>
-                <i class="fa-solid fa-chevron-down arrow"></i>
+                <i class="fa-solid fa-chevron-down arrow" style="{{ $isSensorActive ? 'transform: rotate(180deg);' : '' }}"></i>
             </div>
-            <div class="dropdown-content">
+            <div class="dropdown-content" style="{{ $isSensorActive ? 'max-height: 100px;' : '' }}">
                 <a href="{{ route('sensor.ldr') }}" class="sub-link {{ Route::is('sensor.ldr') ? 'active' : '' }}">
                     <i class="fa-solid fa-sun"></i>
                     <span>Sensor 1 — LDR</span>
@@ -93,17 +96,6 @@
         </a>
         @endif
     </nav>
-
-    <!-- Footer (Logout) -->
-    <div class="sidebar-footer">
-        <form action="{{ route('logout') }}" method="POST">
-            @csrf
-            <button type="submit" class="btn-logout-sidebar" title="Logout">
-                <i class="fa-solid fa-right-from-bracket"></i>
-                <span>Logout</span>
-            </button>
-        </form>
-    </div>
 </aside>
 
 <script>
@@ -129,7 +121,21 @@
         }
 
         if (dropdown.classList.contains('active') || {{ Request::is('sensor/*') ? 'true' : 'false' }}) {
+            // Disable transition temporarily to prevent initial load animation/flicker
+            const prevContentTransition = content.style.transition;
+            const prevArrowTransition = arrow.style.transition;
+            content.style.transition = 'none';
+            arrow.style.transition = 'none';
+            
             expand();
+            
+            // Force layout reflow
+            content.offsetHeight;
+            arrow.offsetHeight;
+            
+            // Restore transition
+            content.style.transition = prevContentTransition;
+            arrow.style.transition = prevArrowTransition;
         }
 
         header.addEventListener('click', function() {
