@@ -8,14 +8,14 @@ Dokumen ini menjelaskan alur kerja (*End-to-End*) fitur Kontrol Pompa Manual bes
 
 ## 1. Penyimpanan Status (Database)
 
-Kita membutuhkan tempat untuk menyimpan instruksi yang ditekan oleh pengguna di Web agar bisa dibaca oleh ESP32. Kolom `manual_pump_status` bertipe ENUM (`AUTO`, `ON`, `OFF`) ditambahkan pada tabel `schedules`.
+Kita membutuhkan tempat untuk menyimpan instruksi yang ditekan oleh pengguna di Web agar bisa dibaca oleh ESP32. Kolom `manual_pump_status` bertipe ENUM (`ON`, `OFF`) dengan default `OFF` disimpan pada tabel `schedules`. Ketika status bernilai `ON`, pompa dipaksa menyala secara manual. Ketika status bernilai `OFF`, pompa beroperasi secara otomatis mengikuti jadwal dan kelembapan.
 
-**File:** `database/migrations/..._add_manual_pump_status_to_schedules_table.php`
+**File:** `database/migrations/..._change_default_of_manual_pump_status_in_schedules_table.php`
 ```php
 public function up(): void
 {
     Schema::table('schedules', function (Blueprint $table) {
-        $table->enum('manual_pump_status', ['AUTO', 'ON', 'OFF'])->default('AUTO');
+        $table->enum('manual_pump_status', ['ON', 'OFF'])->default('OFF')->change();
     });
 }
 ```
@@ -73,7 +73,7 @@ function togglePumpOptimistic() {
             'Content-Type': 'application/json',
             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
         },
-        body: JSON.stringify({ status: isPumpOn ? 'ON' : 'AUTO' })
+        body: JSON.stringify({ status: isPumpOn ? 'ON' : 'OFF' })
     }).catch(error => {
         alert("Gagal menghubungi server.");
         window.location.reload(); // Revert ke state sebenarnya jika gagal
@@ -124,27 +124,24 @@ void loop() {
 ```
 
 ### B. Hierarki Keputusan (Aktuator)
-Setiap saat, ESP32 memutuskan apakah relai dinyalakan berdasarkan urutan prioritas yang ketat.
+Setiap saat, ESP32 memutuskan apakah relai dinyalakan berdasarkan status manual pompa.
 ```cpp
-  // PRIORITAS TERTINGGI: Perintah Manual dari Web
+  // PRIORITAS TERTINGGI: Perintah Manual ON dari Web (Manual Override)
   if (manualPumpStatus == "ON") {
-    digitalWrite(RELAY_POMPA, LOW); 
+    digitalWrite(RELAY_POMPA, RELAY_POMPA_ACTIVE_HIGH ? HIGH : LOW);
     actualPumpStatus = "ON";
   } 
-  else if (manualPumpStatus == "OFF") {
-    digitalWrite(RELAY_POMPA, HIGH);
-    actualPumpStatus = "OFF";
-  } 
-  // PRIORITAS STANDAR: Mode Otomatis
+  // PRIORITAS STANDAR: Mode Otomatis (manualPumpStatus == "OFF")
   else {
-    bool isScheduleActive = ... // (Cek rentang jam)
+    bool isScheduleActive = checkScheduleActive(); // Cek rentang jam
+    bool humidityLow = (currentH > 0.0 && currentH < batasKelembapanKering);
 
-    // Menyala JIKA sedang masuk jadwal ATAU kelembapan sangat kering
-    if (isScheduleActive || currentH < batasKelembapanKering) {
-      digitalWrite(RELAY_POMPA, LOW); 
+    // Menyala JIKA sedang masuk jadwal ATAU kelembapan di bawah batas target
+    if (isScheduleActive || humidityLow) {
+      digitalWrite(RELAY_POMPA, RELAY_POMPA_ACTIVE_HIGH ? HIGH : LOW);
       actualPumpStatus = "ON";
     } else {
-      digitalWrite(RELAY_POMPA, HIGH);
+      digitalWrite(RELAY_POMPA, RELAY_POMPA_ACTIVE_HIGH ? LOW : HIGH);
       actualPumpStatus = "OFF";
     }
   }

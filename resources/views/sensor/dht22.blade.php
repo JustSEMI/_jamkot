@@ -1,12 +1,24 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', 'SENSOR DHT22')
+
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/pages/device.css') }}">
+@endpush
 
 @section('content')
     <header class="content-header-flex">
         <div>
-            <h1>SENSOR DHT22</h1>
-            <p>Rincian data suhu dan kelembapan secara real-time.</p>
+            <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+                <h1 style="margin: 0;">SENSOR DHT22</h1>
+                <div class="device-live-badge" id="sensor-dht-badge" style="padding: 0.35rem 0.75rem; font-size: 0.75rem; border-radius: 6px;">
+                    <span class="device-status-dot {{ $device && $device->dht_connected ? 'online' : 'offline' }}" id="sensor-dht-dot"></span>
+                    <span id="sensor-dht-text" style="{{ $device && $device->dht_connected ? 'color: #34d399;' : 'color: #f87171;' }}">
+                        {{ $device ? ($device->dht_connected ? 'Terhubung' : 'Tidak Terhubung') : 'Memuat...' }}
+                    </span>
+                </div>
+            </div>
+            <p style="margin-top: 0.5rem;">Rincian data suhu dan kelembapan secara real-time.</p>
         </div>
 
         <!-- Jam -->
@@ -22,8 +34,8 @@
         <div class="glow-card sensor-meter-card sensor-meter-temperature" id="card-suhu" style="--meter-angle: {{ min(max(($latest->suhu ?? 0) / 40, 0), 1) * 180 }}deg;">
             <div class="card-title">SUHU RUANG</div>
             <div class="status-dot status-suhu {{ $latest ? 'online' : 'offline' }}"></div>
-            <div class="card-value" id="val-suhu">{{ number_format($latest->suhu ?? 0, 1) }}Â°C</div>
-            <div class="card-desc">Target: 22Â°C - 28Â°C</div>
+            <div class="card-value" id="val-suhu">{{ number_format($latest->suhu ?? 0, 1) }}°C</div>
+            <div class="card-desc">Target: 22°C - 28°C</div>
         </div>
 
         <div class="glow-card sensor-meter-card sensor-meter-humidity" id="card-kelembapan" style="--meter-angle: {{ min(max(($latest->kelembapan ?? 0) / 100, 0), 1) * 180 }}deg;">
@@ -92,8 +104,39 @@
 
     <!-- Log Sensor -->
     <div class="glow-card table-wrapper" id="panel-log-card" style="margin-top: 2rem;">
-        <div class="table-header">
-            <h3 class="section-title" style="margin: 0;">Log Sensor Terakhir</h3>
+        <div class="table-header" style="border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding-bottom: 1rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <div>
+                <h3 class="section-title" style="margin: 0;">Log Sensor Terakhir</h3>
+                @if($date)
+                    <span class="badge info" style="background: rgba(16, 185, 129, 0.1); color: var(--warna-utama, #10b981); border: 1px solid rgba(16, 185, 129, 0.2); margin-top: 0.5rem; display: inline-block;">
+                        Data: {{ \Carbon\Carbon::parse($date)->format('d M Y') }}
+                    </span>
+                @endif
+            </div>
+
+            <!-- Filter Form inline -->
+            <form action="{{ route('sensor.dht22') }}" method="GET" class="filter-form" style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin: 0;">
+                <div class="filter-group" style="display: flex; align-items: center; gap: 0.5rem; flex-direction: row;">
+                    <label style="font-size: 0.75rem; color: #9ca3af; margin: 0; white-space: nowrap;">TANGGAL:</label>
+                    <input type="date" name="date" value="{{ $date }}" class="filter-input" style="padding: 0.4rem 0.75rem; min-width: auto; font-size: 0.8rem; border-radius: 0.5rem;">
+                </div>
+                <div class="filter-group" style="display: flex; align-items: center; gap: 0.5rem; flex-direction: row;">
+                    <label style="font-size: 0.75rem; color: #9ca3af; margin: 0; white-space: nowrap;">LIMIT:</label>
+                    <select name="limit" class="filter-input" style="padding: 0.4rem 0.75rem; min-width: auto; font-size: 0.8rem; border-radius: 0.5rem;">
+                        <option value="5" {{ $limit == 5 ? 'selected' : '' }}>5</option>
+                        <option value="10" {{ $limit == 10 ? 'selected' : '' }}>10</option>
+                        <option value="20" {{ $limit == 20 ? 'selected' : '' }}>20</option>
+                        <option value="50" {{ $limit == 50 ? 'selected' : '' }}>50</option>
+                        <option value="100" {{ $limit == 100 ? 'selected' : '' }}>100</option>
+                    </select>
+                </div>
+                <div class="filter-actions" style="display: flex; gap: 0.5rem; align-items: center;">
+                    <button type="submit" class="btn-filter" style="padding: 0.4rem 1rem; font-size: 0.8rem; border-radius: 0.5rem; font-weight: 600;">Filter</button>
+                    @if($date || $limit != 5)
+                        <a href="{{ route('sensor.dht22') }}" class="btn-reset" style="font-size: 0.8rem; padding: 0.4rem 0.5rem;">Reset</a>
+                    @endif
+                </div>
+            </form>
         </div>
 
         <div class="table-responsive">
@@ -109,10 +152,13 @@
                 <tbody id="table-body-log">
                     @forelse($riwayatTabel as $log)
                         <tr>
-                            <td class="text-muted">{{ $log->created_at->diffForHumans() }}</td>
+                            <td class="text-muted">
+                                <span style="color: #ededed;">{{ $log->created_at->format('H:i:s') }}</span> 
+                                <small style="font-size: 0.7rem; margin-left: 0.5rem; opacity: 0.6;">{{ $log->created_at->diffForHumans() }}</small>
+                            </td>
                             <td>{{ $log->sensor_id }}</td>
                             <td><span class="badge success">Tercatat</span></td>
-                            <td class="text-right">{{ $log->kelembapan }}% | {{ $log->suhu }}Â°C</td>
+                            <td class="text-right">{{ $log->kelembapan }}% | {{ $log->suhu }}°C</td>
                         </tr>
                     @empty
                         <tr>

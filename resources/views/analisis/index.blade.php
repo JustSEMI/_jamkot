@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', 'Analisis Data')
 
@@ -276,7 +276,7 @@
     <div class="summary-grid">
         <div class="glow-card stat-card meter-card meter-card-temperature" style="--meter-angle: {{ min(max(($stats['avg_suhu'] ?? 0) / 40, 0), 1) * 180 }}deg;">
             <div class="card-title">RATA-RATA SUHU</div>
-            <div class="card-value">{{ number_format($stats['avg_suhu'], 1) }}Â°C</div>
+            <div class="card-value">{{ number_format($stats['avg_suhu'], 1) }}°C</div>
             <div class="card-desc">Dari seluruh rekaman data</div>
         </div>
 
@@ -306,7 +306,7 @@
             <div class="record-grid">
                 <div class="record-item">
                     <span>Suhu</span>
-                    <strong>{{ is_null($stats['max_suhu']) ? '--' : $stats['max_suhu'] . 'Â°C' }}</strong>
+                    <strong>{{ is_null($stats['max_suhu']) ? '--' : $stats['max_suhu'] . '°C' }}</strong>
                 </div>
                 <div class="record-item">
                     <span>Kelembapan</span>
@@ -323,7 +323,7 @@
             <div class="record-grid">
                 <div class="record-item">
                     <span>Suhu</span>
-                    <strong>{{ is_null($stats['min_suhu']) ? '--' : $stats['min_suhu'] . 'Â°C' }}</strong>
+                    <strong>{{ is_null($stats['min_suhu']) ? '--' : $stats['min_suhu'] . '°C' }}</strong>
                 </div>
                 <div class="record-item">
                     <span>Kelembapan</span>
@@ -333,33 +333,9 @@
         </div>
     </div>
 
-    <!-- FILTER & HISTORI LOG -->
-    <div class="glow-card filter-card" style="margin-top: 2rem; padding: 1.75rem;">
-        <form action="{{ route('analisis') }}" method="GET" class="filter-form">
-            <div class="filter-group">
-                <label>Filter Tanggal</label>
-                <input type="date" name="date" value="{{ $date }}" class="filter-input">
-            </div>
-            <div class="filter-group">
-                <label>Jumlah Data</label>
-                <select name="limit" class="filter-input">
-                    <option value="10" {{ $limit == 10 ? 'selected' : '' }}>10 Data</option>
-                    <option value="20" {{ $limit == 20 ? 'selected' : '' }}>20 Data</option>
-                    <option value="50" {{ $limit == 50 ? 'selected' : '' }}>50 Data</option>
-                    <option value="100" {{ $limit == 100 ? 'selected' : '' }}>100 Data</option>
-                </select>
-            </div>
-            <div class="filter-actions">
-                <button type="submit" class="btn-filter">Tampilkan Data</button>
-                @if($date || $limit != 10)
-                    <a href="{{ route('analisis') }}" class="btn-reset">Reset</a>
-                @endif
-            </div>
-        </form>
-    </div>
-
-    <div class="glow-card table-wrapper" style="margin-top: 1.5rem; margin-bottom: 3rem;">
-        <div class="table-header">
+    <!-- HISTORI LOG -->
+    <div class="glow-card table-wrapper" style="margin-top: 2rem; margin-bottom: 3rem;">
+        <div class="table-header" style="border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding-bottom: 1rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
             <div>
                 <h3 class="section-title" style="margin: 0;">Histori Log Sensor</h3>
                 @if($date)
@@ -368,6 +344,30 @@
                     </span>
                 @endif
             </div>
+
+            <!-- Filter Form inline -->
+            <form action="{{ route('analisis') }}" method="GET" class="filter-form" style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin: 0;">
+                <div class="filter-group" style="display: flex; align-items: center; gap: 0.5rem; flex-direction: row;">
+                    <label style="font-size: 0.75rem; color: #9ca3af; margin: 0; white-space: nowrap;">TANGGAL:</label>
+                    <input type="date" name="date" value="{{ $date }}" class="filter-input" style="padding: 0.4rem 0.75rem; min-width: auto; font-size: 0.8rem; border-radius: 0.5rem;">
+                </div>
+                <div class="filter-group" style="display: flex; align-items: center; gap: 0.5rem; flex-direction: row;">
+                    <label style="font-size: 0.75rem; color: #9ca3af; margin: 0; white-space: nowrap;">LIMIT:</label>
+                    <select name="limit" class="filter-input" style="padding: 0.4rem 0.75rem; min-width: auto; font-size: 0.8rem; border-radius: 0.5rem;">
+                        <option value="10" {{ $limit == 10 ? 'selected' : '' }}>10</option>
+                        <option value="20" {{ $limit == 20 ? 'selected' : '' }}>20</option>
+                        <option value="50" {{ $limit == 50 ? 'selected' : '' }}>50</option>
+                        <option value="100" {{ $limit == 100 ? 'selected' : '' }}>100</option>
+                    </select>
+                </div>
+                <div class="filter-actions" style="display: flex; gap: 0.5rem; align-items: center;">
+                    <button type="submit" class="btn-filter" style="padding: 0.4rem 1rem; font-size: 0.8rem; border-radius: 0.5rem; font-weight: 600;">Filter</button>
+                    @if($date || $limit != 10)
+                        <a href="{{ route('analisis') }}" class="btn-reset" style="font-size: 0.8rem; padding: 0.4rem 0.5rem;">Reset</a>
+                    @endif
+                </div>
+            </form>
+
             <div class="export-actions">
                 <a href="{{ route('analisis.export.csv', ['date' => $date]) }}" class="btn-export csv" title="Unduh CSV">
                     <i class="fa-solid fa-file-csv"></i>
@@ -407,7 +407,7 @@
                                 </span>
                             </td>
                             <td>{{ $log->cahaya ?? '--' }} Lux</td>
-                            <td class="text-right fw-bold" style="letter-spacing: 0.05em;">{{ $log->kelembapan }}% | {{ $log->suhu }}Â°C</td>
+                            <td class="text-right fw-bold" style="letter-spacing: 0.05em;">{{ $log->kelembapan }}% | {{ $log->suhu }}°C</td>
                          </tr>
                      @empty
                          <tr>

@@ -1,12 +1,24 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', 'Sensor Cahaya')
+
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/pages/device.css') }}">
+@endpush
 
 @section('content')
     <header class="content-header-flex">
         <div>
-            <h1>SENSOR CAHAYA (LDR)</h1>
-            <p>Rincian data intensitas cahaya lingkungan secara real-time.</p>
+            <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+                <h1 style="margin: 0;">SENSOR CAHAYA (LDR)</h1>
+                <div class="device-live-badge" id="sensor-ldr-badge" style="padding: 0.35rem 0.75rem; font-size: 0.75rem; border-radius: 6px;">
+                    <span class="device-status-dot {{ $device && $device->ldr_connected ? 'online' : 'offline' }}" id="sensor-ldr-dot"></span>
+                    <span id="sensor-ldr-text" style="{{ $device && $device->ldr_connected ? 'color: #34d399;' : 'color: #f87171;' }}">
+                        {{ $device ? ($device->ldr_connected ? 'Terhubung' : 'Tidak Terhubung') : 'Memuat...' }}
+                    </span>
+                </div>
+            </div>
+            <p style="margin-top: 0.5rem;">Rincian data intensitas cahaya lingkungan secara real-time.</p>
         </div>
 
         <!-- Jam -->
@@ -82,8 +94,39 @@
 
     <!-- Log Sensor -->
     <div class="glow-card table-wrapper" id="panel-log-card" style="margin-top: 2rem;">
-        <div class="table-header">
-            <h3 class="section-title" style="margin: 0;">Log Sensor Terakhir</h3>
+        <div class="table-header" style="border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding-bottom: 1rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <div>
+                <h3 class="section-title" style="margin: 0;">Log Sensor Terakhir</h3>
+                @if($date)
+                    <span class="badge info" style="background: rgba(16, 185, 129, 0.1); color: var(--warna-utama, #10b981); border: 1px solid rgba(16, 185, 129, 0.2); margin-top: 0.5rem; display: inline-block;">
+                        Data: {{ \Carbon\Carbon::parse($date)->format('d M Y') }}
+                    </span>
+                @endif
+            </div>
+
+            <!-- Filter Form inline -->
+            <form action="{{ route('sensor.ldr') }}" method="GET" class="filter-form" style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin: 0;">
+                <div class="filter-group" style="display: flex; align-items: center; gap: 0.5rem; flex-direction: row;">
+                    <label style="font-size: 0.75rem; color: #9ca3af; margin: 0; white-space: nowrap;">TANGGAL:</label>
+                    <input type="date" name="date" value="{{ $date }}" class="filter-input" style="padding: 0.4rem 0.75rem; min-width: auto; font-size: 0.8rem; border-radius: 0.5rem;">
+                </div>
+                <div class="filter-group" style="display: flex; align-items: center; gap: 0.5rem; flex-direction: row;">
+                    <label style="font-size: 0.75rem; color: #9ca3af; margin: 0; white-space: nowrap;">LIMIT:</label>
+                    <select name="limit" class="filter-input" style="padding: 0.4rem 0.75rem; min-width: auto; font-size: 0.8rem; border-radius: 0.5rem;">
+                        <option value="5" {{ $limit == 5 ? 'selected' : '' }}>5</option>
+                        <option value="10" {{ $limit == 10 ? 'selected' : '' }}>10</option>
+                        <option value="20" {{ $limit == 20 ? 'selected' : '' }}>20</option>
+                        <option value="50" {{ $limit == 50 ? 'selected' : '' }}>50</option>
+                        <option value="100" {{ $limit == 100 ? 'selected' : '' }}>100</option>
+                    </select>
+                </div>
+                <div class="filter-actions" style="display: flex; gap: 0.5rem; align-items: center;">
+                    <button type="submit" class="btn-filter" style="padding: 0.4rem 1rem; font-size: 0.8rem; border-radius: 0.5rem; font-weight: 600;">Filter</button>
+                    @if($date || $limit != 5)
+                        <a href="{{ route('sensor.ldr') }}" class="btn-reset" style="font-size: 0.8rem; padding: 0.4rem 0.5rem;">Reset</a>
+                    @endif
+                </div>
+            </form>
         </div>
 
         <div class="table-responsive">
@@ -99,7 +142,10 @@
                 <tbody id="table-body-log">
                     @forelse($riwayatTabel as $log)
                         <tr>
-                            <td class="text-muted">{{ $log->created_at->diffForHumans() }}</td>
+                            <td class="text-muted">
+                                <span style="color: #ededed;">{{ $log->created_at->format('H:i:s') }}</span> 
+                                <small style="font-size: 0.7rem; margin-left: 0.5rem; opacity: 0.6;">{{ $log->created_at->diffForHumans() }}</small>
+                            </td>
                             <td>{{ $log->sensor_id }}</td>
                             <td><span class="badge success">Tercatat</span></td>
                             <td class="text-right">{{ $log->cahaya }} Lux</td>

@@ -15,10 +15,19 @@ class PanelController extends Controller
     /**
      * Display the main panel dashboard.
      */
-    public function index(): View
+    public function index(Request $request): View
     {
         $latest = SensorLog::latest()->first();
-        $riwayatTabel = SensorLog::latest()->take(5)->get();
+
+        $date = $request->get('date');
+        $limit = $request->get('limit', 5);
+
+        $query = SensorLog::query();
+        if ($date) {
+            $query->whereDate('created_at', $date);
+        }
+
+        $riwayatTabel = $query->latest()->take($limit)->get();
         $riwayatGrafik = SensorLog::latest()->take(20)->get()->reverse()->values();
 
         $targetKelembapan = 85;
@@ -35,33 +44,58 @@ class PanelController extends Controller
             'riwayatGrafik' => $riwayatGrafik,
             'persentaseTarget' => $persentaseTarget,
             'targetKelembapan' => $targetKelembapan,
+            'date' => $date,
+            'limit' => $limit,
         ]);
     }
 
     /**
      * Display light sensor (LDR) page.
      */
-    public function ldr(): View
+    public function ldr(Request $request): View
     {
         $latest = SensorLog::latest()->first();
-        $riwayatTabel = SensorLog::latest()->take(5)->get();
+
+        $date = $request->get('date');
+        $limit = $request->get('limit', 5);
+
+        $query = SensorLog::query();
+        if ($date) {
+            $query->whereDate('created_at', $date);
+        }
+
+        $riwayatTabel = $query->latest()->take($limit)->get();
         $riwayatGrafik = SensorLog::latest()->take(20)->get()->reverse()->values();
+        $device = DeviceStatus::latest('last_seen_at')->first();
 
         return view('sensor.ldr', [
             'latest' => $latest,
             'riwayatTabel' => $riwayatTabel,
             'riwayatGrafik' => $riwayatGrafik,
+            'device' => $device,
+            'date' => $date,
+            'limit' => $limit,
         ]);
     }
 
     /**
      * Display DHT22 sensor (temperature & humidity) page.
      */
-    public function dht22(): View
+    public function dht22(Request $request): View
     {
         $latest = SensorLog::latest()->first();
-        $riwayatTabel = SensorLog::latest()->take(5)->get();
+
+        $date = $request->get('date');
+        $limit = $request->get('limit', 5);
+
+        $query = SensorLog::query();
+        if ($date) {
+            $query->whereDate('created_at', $date);
+        }
+
+        $riwayatTabel = $query->latest()->take($limit)->get();
         $riwayatGrafik = SensorLog::latest()->take(20)->get()->reverse()->values();
+        $device = DeviceStatus::latest('last_seen_at')->first();
 
         $targetKelembapan = 85;
 
@@ -70,6 +104,9 @@ class PanelController extends Controller
             'riwayatTabel' => $riwayatTabel,
             'riwayatGrafik' => $riwayatGrafik,
             'targetKelembapan' => $targetKelembapan,
+            'device' => $device,
+            'date' => $date,
+            'limit' => $limit,
         ]);
     }
 
@@ -87,6 +124,7 @@ class PanelController extends Controller
         $riwayatTabel = $riwayatTabelRaw->map(function ($log) {
             return [
                 'time_diff' => $log->created_at->diffForHumans(),
+                'time_formatted' => $log->created_at->format('H:i:s'),
                 'sensor_id' => $log->sensor_id,
                 'pompa_status' => $log->pompa_status,
                 'kelembapan' => $log->kelembapan,

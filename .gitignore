@@ -34,4 +34,4 @@ Homestead.json
 Homestead.yaml
 GEMINI.md
 GEMINI.txt
-/_arduino/log/
+.pio/

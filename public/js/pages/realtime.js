@@ -12,8 +12,15 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => response.json())
             .then(data => {
                 updateCards(data.latest, data.targetKelembapan, data.manual_pump_status);
-                updateTable(data.riwayatTabel);
-                updateChart(data.riwayatGrafik);
+                
+                // Only update table and chart dynamically if NO date or custom limit filter is active in the URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const isFiltered = (urlParams.has('date') && urlParams.get('date') !== '') || urlParams.has('limit');
+                
+                if (!isFiltered) {
+                    updateTable(data.riwayatTabel);
+                    updateChart(data.riwayatGrafik);
+                }
             })
             .catch(error => console.error('Error fetching realtime data:', error));
     }
@@ -132,7 +139,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const tdTime = document.createElement('td');
             tdTime.className = 'text-muted';
-            tdTime.textContent = log.time_diff;
+            
+            const spanTime = document.createElement('span');
+            spanTime.style.color = '#ededed';
+            spanTime.textContent = log.time_formatted;
+            
+            const smallDiff = document.createElement('small');
+            smallDiff.style.fontSize = '0.7rem';
+            smallDiff.style.marginLeft = '0.5rem';
+            smallDiff.style.opacity = '0.6';
+            smallDiff.textContent = log.time_diff;
+            
+            tdTime.appendChild(spanTime);
+            tdTime.appendChild(document.createTextNode(' '));
+            tdTime.appendChild(smallDiff);
             tr.appendChild(tdTime);
 
             const tdSensor = document.createElement('td');
@@ -251,6 +271,38 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function updatePanelDeviceShortcut(data) {
+        // Update DHT22 sensor connection badge if present
+        const dhtDot = document.getElementById('sensor-dht-dot');
+        const dhtText = document.getElementById('sensor-dht-text');
+        if (dhtDot && dhtText) {
+            if (data.found) {
+                const connected = data.dht_connected;
+                dhtDot.className = 'device-status-dot ' + (connected ? 'online' : 'offline');
+                dhtText.textContent = connected ? 'Terhubung' : 'Tidak Terhubung';
+                dhtText.style.color = connected ? '#34d399' : '#f87171';
+            } else {
+                dhtDot.className = 'device-status-dot offline';
+                dhtText.textContent = 'Tidak Terhubung';
+                dhtText.style.color = '#f87171';
+            }
+        }
+
+        // Update LDR sensor connection badge if present
+        const ldrDot = document.getElementById('sensor-ldr-dot');
+        const ldrText = document.getElementById('sensor-ldr-text');
+        if (ldrDot && ldrText) {
+            if (data.found) {
+                const connected = data.ldr_connected;
+                ldrDot.className = 'device-status-dot ' + (connected ? 'online' : 'offline');
+                ldrText.textContent = connected ? 'Terhubung' : 'Tidak Terhubung';
+                ldrText.style.color = connected ? '#34d399' : '#f87171';
+            } else {
+                ldrDot.className = 'device-status-dot offline';
+                ldrText.textContent = 'Tidak Terhubung';
+                ldrText.style.color = '#f87171';
+            }
+        }
+
         const dot    = document.getElementById('panel-device-dot');
         const badge  = document.getElementById('panel-device-badge');
         const detail = document.getElementById('panel-device-detail');
@@ -281,6 +333,22 @@ document.addEventListener('DOMContentLoaded', function () {
         const badge = document.getElementById('panel-device-badge');
         if (dot)   dot.className = 'device-status-dot offline';
         if (badge) { badge.className = 'device-status-badge offline'; badge.textContent = 'Offline'; }
+
+        const dhtDot = document.getElementById('sensor-dht-dot');
+        const dhtText = document.getElementById('sensor-dht-text');
+        if (dhtDot && dhtText) {
+            dhtDot.className = 'device-status-dot offline';
+            dhtText.textContent = 'Tidak Terhubung';
+            dhtText.style.color = '#f87171';
+        }
+
+        const ldrDot = document.getElementById('sensor-ldr-dot');
+        const ldrText = document.getElementById('sensor-ldr-text');
+        if (ldrDot && ldrText) {
+            ldrDot.className = 'device-status-dot offline';
+            ldrText.textContent = 'Tidak Terhubung';
+            ldrText.style.color = '#f87171';
+        }
     }
 });
 

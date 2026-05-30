@@ -20,6 +20,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,0,0&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
     
+    <!-- Flatpickr (Custom Datepicker) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    
     <!-- Global CSS -->
     <link rel="stylesheet" href="{{ asset('css/pages/panel.css') }}">
     <link rel="stylesheet" href="{{ asset('css/pages/mobile.css') }}">
@@ -124,6 +128,7 @@
 
     <script src="{{ asset('js/core/modal.js') }}"></script>
     <script src="{{ asset('js/core/sidebar.js') }}"></script>
+    <script src="{{ asset('js/core/dropdown.js') }}"></script>
     
     <!-- Page Specific Scripts -->
     @stack('scripts')

@@ -82,33 +82,6 @@
             </div>
         </div>
 
-        {{-- DHT22 --}}
-        <div class="device-stat-card">
-            <div class="device-stat-card-icon {{ $device?->dht_connected ? 'connected' : 'disconnected' }}" id="icon-dht">
-                <i class="fa-solid fa-temperature-half"></i>
-            </div>
-            <div class="device-stat-card-body">
-                <div class="device-stat-card-label">Sensor DHT22</div>
-                <div class="device-stat-card-value {{ $device?->dht_connected ? 'text-green' : 'text-red' }}" id="stat-dht">
-                    {{ $device ? ($device->dht_connected ? 'Terhubung' : 'Tidak Terhubung') : '—' }}
-                </div>
-                <div class="device-stat-card-sub">Suhu & Kelembapan</div>
-            </div>
-        </div>
-
-        {{-- LDR --}}
-        <div class="device-stat-card">
-            <div class="device-stat-card-icon {{ $device?->ldr_connected ? 'connected' : 'disconnected' }}" id="icon-ldr">
-                <i class="fa-solid fa-sun"></i>
-            </div>
-            <div class="device-stat-card-body">
-                <div class="device-stat-card-label">Sensor LDR</div>
-                <div class="device-stat-card-value {{ $device?->ldr_connected ? 'text-green' : 'text-red' }}" id="stat-ldr">
-                    {{ $device ? ($device->ldr_connected ? 'Terhubung' : 'Tidak Terhubung') : '—' }}
-                </div>
-                <div class="device-stat-card-sub">Intensitas Cahaya</div>
-            </div>
-        </div>
 
         {{-- RSSI --}}
         <div class="device-stat-card">

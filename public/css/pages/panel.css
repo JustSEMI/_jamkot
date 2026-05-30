@@ -1,4 +1,11 @@
-
+:root {
+    --warna-utama: #10b981;
+    --warna-latar: #0a0a0a;
+    --warna-kartu: #161616;
+    --warna-border: #262626;
+    --warna-teks: #ededed;
+    --warna-teks-muted: #9ca3af;
+}
 
 /* --- GLOBAL STYLES --- */
 @property --meter-angle {
@@ -887,7 +894,7 @@ body {
 .data-table th,
 .data-table td {
     padding: 1rem;
-    text-align: center;
+    text-align: left;
     font-size: 0.875rem;
 }
 
@@ -1042,9 +1049,7 @@ body {
     }
 }
 
-/* ========================================================
-   UI V2 OVERHAUL: MINIMALIST DARK (MINIM GLOW & ULTRA CLEAN)
-   ======================================================== */
+/* UI V2 OVERHAUL: MINIMALIST DARK (MINIM GLOW & ULTRA CLEAN) */
 
 html[data-ui-version="v2"] .glow-card {
     background: #121212 !important;
@@ -1384,10 +1389,8 @@ html[data-ui-version="v2"] .panel-content {
         display: none !important;
     }
 }
-/* =============================================
-   CUSTOM MODAL / POPUP SYSTEM
-   ============================================= */
 
+/* CUSTOM MODAL / POPUP SYSTEM */
 .jk-modal-overlay {
     position: fixed;
     inset: 0;
@@ -1535,10 +1538,8 @@ html[data-ui-version="v1"] .jk-modal-box {
     background: linear-gradient(160deg, #1a2220 0%, #161e1c 100%);
     border-color: rgba(255, 255, 255, 0.05);
 }
-/* =============================================
-   DEVICE STATUS BAR (Monitoring ESP32)
-   ============================================= */
 
+/* DEVICE STATUS BAR (Monitoring ESP32) */
 .device-status-bar {
     background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
     border: 1px solid rgba(255, 255, 255, 0.07);
@@ -1702,3 +1703,471 @@ html[data-ui-version="v1"] .jk-modal-box {
     font-size: 0.78rem;
     color: #6b7280;
 }
+
+/* Mobile responsive for device shortcut card */
+@media (max-width: 768px) {
+    .device-shortcut-card {
+        padding: 0.85rem 1.15rem;
+    }
+}
+@media (max-width: 600px) {
+    .device-shortcut-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+        padding: 1rem 1.15rem;
+    }
+    .device-shortcut-left {
+        width: 100%;
+        justify-content: flex-start;
+    }
+    .device-shortcut-right {
+        width: 100%;
+        justify-content: space-between;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        padding-top: 0.65rem;
+        font-size: 0.72rem;
+    }
+}
+
+/* --- Filter Form Styles (Global) --- */
+.filter-form {
+    display: flex;
+    align-items: flex-end;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.filter-group label {
+    font-size: 0.7rem;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+}
+
+.filter-input {
+    background: #111;
+    border: 1px solid #262626;
+    color: #ededed;
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    font-family: inherit;
+    font-size: 0.875rem;
+    outline: none;
+    transition: all 0.3s ease;
+    min-width: 180px;
+}
+
+.filter-input:focus {
+    border-color: var(--warna-utama, #10b981);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.filter-actions {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.btn-filter {
+    background: var(--warna-utama, #10b981);
+    color: #050505;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.875rem;
+}
+
+.btn-filter:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.25);
+}
+
+.btn-reset {
+    text-decoration: none;
+    color: #9ca3af;
+    font-size: 0.875rem;
+    padding: 0.75rem 1rem;
+    transition: color 0.2s;
+}
+
+.btn-reset:hover {
+    color: #ef4444;
+}
+
+@media (max-width: 600px) {
+    .filter-form {
+        flex-direction: column;
+        align-items: stretch !important;
+        gap: 1rem !important;
+    }
+    .filter-group {
+        width: 100% !important;
+        align-items: flex-start !important;
+    }
+    .filter-input {
+        width: 100% !important;
+        text-align: left !important;
+    }
+    .filter-actions {
+        width: 100% !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        margin-top: 0.5rem !important;
+    }
+    .btn-filter {
+        width: 100% !important;
+    }
+}
+
+/* Material 3 theme variants */
+html[data-ui-version="v1"] .filter-card {
+    background: var(--m3-surface-container) !important;
+    border-radius: 28px !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+html[data-ui-version="v1"] .filter-group label {
+    color: var(--m3-on-surface-variant) !important;
+    font-family: var(--m3-font) !important;
+}
+
+html[data-ui-version="v1"] .filter-input {
+    background: var(--m3-surface-container-high) !important;
+    border: 1px solid var(--m3-outline-variant) !important;
+    color: var(--m3-on-surface) !important;
+    border-radius: 16px !important;
+}
+
+html[data-ui-version="v1"] .btn-filter {
+    background: var(--m3-primary) !important;
+    color: var(--m3-on-primary) !important;
+    border-radius: 100px !important;
+    font-family: var(--m3-font) !important;
+}
+
+html[data-ui-version="v1"] .btn-reset {
+    font-family: var(--m3-font) !important;
+}
+
+/* --- CUSTOM SELECT DROPDOWN --- */
+.custom-select-container {
+    position: relative;
+    display: inline-block;
+}
+
+.custom-select-btn {
+    background: #111;
+    border: 1px solid #262626;
+    color: #ededed;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-family: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    min-width: 75px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    user-select: none;
+}
+
+.custom-select-btn:focus, .custom-select-container.open .custom-select-btn {
+    border-color: var(--warna-utama, #10b981);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.custom-select-arrow {
+    font-size: 0.7rem;
+    color: #9ca3af;
+    transition: transform 0.2s ease;
+}
+
+.custom-select-container.open .custom-select-arrow {
+    transform: rotate(180deg);
+}
+
+.custom-select-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    min-width: 100%;
+    background: #161616;
+    border: 1px solid #262626;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: none;
+    padding: 4px;
+    box-sizing: border-box;
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.custom-select-container.open .custom-select-dropdown {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.custom-select-option {
+    padding: 0.5rem 1rem;
+    border-radius: 0.35rem;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    color: #a3a3a3;
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+.custom-select-option:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+}
+
+.custom-select-option.selected {
+    background: rgba(16, 185, 129, 0.12);
+    color: var(--warna-utama, #10b981);
+    font-weight: 600;
+}
+
+/* Material 3 Support */
+html[data-ui-version="v1"] .custom-select-btn {
+    background: var(--m3-surface-container-high) !important;
+    border: 1px solid var(--m3-outline-variant) !important;
+    color: var(--m3-on-surface) !important;
+    border-radius: 12px !important;
+}
+
+html[data-ui-version="v1"] .custom-select-dropdown {
+    background: var(--m3-surface-container-high) !important;
+    border: 1px solid var(--m3-outline-variant) !important;
+    border-radius: 12px !important;
+}
+
+html[data-ui-version="v1"] .custom-select-option.selected {
+    background: var(--m3-secondary-container) !important;
+    color: var(--m3-on-secondary-container) !important;
+}
+
+/* --- CUSTOM FLATPICKR CALENDAR THEME --- */
+.flatpickr-calendar {
+    background: #161616 !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.7) !important;
+    font-family: inherit !important;
+    margin-top: 8px !important; /* Spacing between input and calendar */
+}
+
+/* Hide the arrow markers for a cleaner floating UI card */
+.flatpickr-calendar.arrowUp:after,
+.flatpickr-calendar.arrowUp:before,
+.flatpickr-calendar.arrowDown:after,
+.flatpickr-calendar.arrowDown:before {
+    display: none !important;
+}
+
+.flatpickr-months .flatpickr-month {
+    background: transparent !important;
+    color: #ededed !important;
+}
+
+.flatpickr-current-month {
+    color: #ededed !important;
+}
+
+.flatpickr-current-month .numInputWrapper span.arrowUp:after {
+    border-bottom-color: #ededed !important;
+}
+
+.flatpickr-current-month .numInputWrapper span.arrowDown:after {
+    border-top-color: #ededed !important;
+}
+
+.flatpickr-current-month input.cur-year {
+    color: inherit !important;
+}
+
+.flatpickr-months .flatpickr-prev-month, 
+.flatpickr-months .flatpickr-next-month {
+    color: #9ca3af !important;
+    fill: #9ca3af !important;
+}
+
+.flatpickr-months .flatpickr-prev-month:hover, 
+.flatpickr-months .flatpickr-next-month:hover {
+    color: var(--warna-utama, #10b981) !important;
+    fill: var(--warna-utama, #10b981) !important;
+}
+
+span.flatpickr-weekday {
+    color: #9ca3af !important;
+    font-weight: 600 !important;
+}
+
+.flatpickr-day {
+    color: #e5e7eb !important;
+    border-radius: 8px !important;
+    transition: all 0.15s ease !important;
+}
+
+.flatpickr-day:hover, 
+.flatpickr-day:focus {
+    background: rgba(16, 185, 129, 0.15) !important;
+    color: var(--warna-utama, #10b981) !important;
+    border-color: transparent !important;
+}
+
+.flatpickr-day.selected, 
+.flatpickr-day.selected:hover, 
+.flatpickr-day.selected:focus {
+    background: var(--warna-utama, #10b981) !important;
+    color: #050505 !important;
+    font-weight: 700 !important;
+    border-color: var(--warna-utama, #10b981) !important;
+}
+
+.flatpickr-day.today {
+    border-color: rgba(16, 185, 129, 0.5) !important;
+}
+
+.flatpickr-day.today:hover {
+    background: rgba(16, 185, 129, 0.15) !important;
+    color: var(--warna-utama, #10b981) !important;
+}
+
+.flatpickr-day.prevMonthDay, 
+.flatpickr-day.nextMonthDay {
+    color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.flatpickr-day.prevMonthDay:hover, 
+.flatpickr-day.nextMonthDay:hover {
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: #fff !important;
+}
+
+.flatpickr-day.flatpickr-disabled, 
+.flatpickr-day.flatpickr-disabled:hover {
+    color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Match layout styling for the date input button */
+.flatpickr-input-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Material 3 Support for Flatpickr */
+html[data-ui-version="v1"] .flatpickr-calendar {
+    background: var(--m3-surface-container-high) !important;
+    border: 1px solid var(--m3-outline-variant) !important;
+    border-radius: 28px !important;
+}
+
+html[data-ui-version="v1"] .flatpickr-day.selected {
+    background: var(--m3-primary) !important;
+    color: var(--m3-on-primary) !important;
+    border-color: var(--m3-primary) !important;
+}
+
+/* Ensure Flatpickr altInput has identical styling */
+input.flatpickr-input.filter-input {
+    background: #111 !important;
+    border: 1px solid #262626 !important;
+    color: #ededed !important;
+    padding: 0.5rem 1rem !important;
+    font-size: 0.85rem !important;
+    border-radius: 0.5rem !important;
+    outline: none !important;
+    cursor: pointer !important;
+    min-width: auto !important;
+    box-sizing: border-box !important;
+}
+
+input.flatpickr-input.filter-input:focus {
+    border-color: var(--warna-utama, #10b981) !important;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1) !important;
+}
+
+html[data-ui-version="v1"] input.flatpickr-input.filter-input {
+    background: var(--m3-surface-container-high) !important;
+    border: 1px solid var(--m3-outline-variant) !important;
+    color: var(--m3-on-surface) !important;
+    border-radius: 12px !important;
+}
+
+.flatpickr-wrapper {
+    display: inline-flex !important;
+    align-items: center;
+}
+
+/* Redesign spacing for filter form inside table header */
+.table-header .filter-form {
+    gap: 1.5rem !important;
+}
+
+.table-header .filter-group {
+    gap: 0.75rem !important;
+}
+
+.table-header .filter-actions {
+    gap: 0.75rem !important;
+}
+
+.table-header .btn-filter {
+    padding: 0.5rem 1.25rem !important;
+    font-size: 0.85rem !important;
+    border-radius: 0.5rem !important;
+    line-height: normal !important;
+}
+
+.table-header .btn-reset {
+    font-size: 0.85rem !important;
+    padding: 0.5rem 0.75rem !important;
+}
+
+/* Styling for Flatpickr native Month Select dropdown to prevent white-on-white text */
+.flatpickr-monthDropdown-months {
+    background: #161616 !important;
+    color: #ededed !important;
+    border: none !important;
+    outline: none !important;
+    font-weight: 600 !important;
+    padding: 2px 6px !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+    transition: background 0.2s !important;
+}
+
+.flatpickr-monthDropdown-months:hover,
+.flatpickr-monthDropdown-months:focus {
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.flatpickr-monthDropdown-months option {
+    background-color: #161616 !important;
+    color: #ededed !important;
+    padding: 4px 8px !important;
+}
+
+
+
+
