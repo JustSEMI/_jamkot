@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DeviceStatus;
 use App\Models\Schedule;
 use App\Models\SensorLog;
 use Illuminate\Http\JsonResponse;
@@ -114,6 +115,40 @@ class PanelController extends Controller
         ])->header('Cache-Control', 'no-cache, no-store, must-revalidate')
             ->header('Pragma', 'no-cache')
             ->header('Expires', '0');
+    }
+
+    /**
+     * Fetch device status for the panel widget (polled every 30s).
+     */
+    public function deviceStatus(): JsonResponse
+    {
+        $device = DeviceStatus::latest('last_seen_at')->first();
+
+        if (! $device) {
+            return response()->json([
+                'found' => false,
+                'is_online' => false,
+            ]);
+        }
+
+        $isOnline = $device->isOnline();
+
+        return response()->json([
+            'found' => true,
+            'device_id' => $device->device_id,
+            'is_online' => $isOnline,
+            'status_label' => $isOnline ? 'Online' : 'Offline',
+            'uptime_formatted' => $device->formattedUptime(),
+            'uptime_seconds' => $device->uptime_seconds,
+            'dht_connected' => $device->dht_connected,
+            'ldr_connected' => $device->ldr_connected,
+            'free_heap_kb' => $device->freeHeapKb(),
+            'rssi' => $device->rssi,
+            'esp_temp' => $device->esp_temp,
+            'esp_temp_formatted' => $device->esp_temp !== null ? number_format($device->esp_temp, 1).'°C' : '—',
+            'ip_address' => $device->ip_address,
+            'last_seen_at' => $device->last_seen_at?->diffForHumans(),
+        ])->header('Cache-Control', 'no-cache, no-store, must-revalidate');
     }
 
     /**

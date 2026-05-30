@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', 'Panel Utama')
 
@@ -71,8 +71,21 @@
         </div>
     </header>
 
+    <!-- SHORTCUT: Status Perangkat -->
+    <a href="{{ route('device') }}" class="device-shortcut-card" id="device-shortcut">
+        <div class="device-shortcut-left">
+            <span class="device-status-dot offline" id="panel-device-dot"></span>
+            <span class="device-shortcut-label">Status Perangkat</span>
+            <span class="device-status-badge offline" id="panel-device-badge">Memuat...</span>
+        </div>
+        <div class="device-shortcut-right">
+            <span id="panel-device-detail">—</span>
+            <i class="fa-solid fa-chevron-right" style="font-size:0.7rem; color:#4b5563;"></i>
+        </div>
+    </a>
+
     <!-- SECTION 1: KONDISI LINGKUNGAN (Law of Proximity) -->
-    <h3 class="section-title" style="margin-top: 1rem; margin-bottom: 1rem; font-size: 1.1rem; color: #9ca3af;">Indikator Lingkungan</h3>
+    <h3 class="section-title" style="margin-top: 1rem; margin-bottom: 1rem; font-size: 1.1rem; color: #9ca3af;">Indikator Sensor</h3>
     <div class="summary-grid" style="margin-bottom: 2rem;">
         <div class="glow-card" id="card-cahaya">
             <div class="card-title-wrapper">
@@ -100,7 +113,7 @@
     </div>
 
     <!-- SECTION 2: KONTROL AKTUATOR (Law of Proximity & Doherty Threshold) -->
-    <h3 class="section-title" style="margin-bottom: 1rem; font-size: 1.1rem; color: #9ca3af;">Kontrol Aktuator</h3>
+    <h3 class="section-title" style="margin-bottom: 1rem; font-size: 1.1rem; color: #9ca3af;">Kontrol Pompa</h3>
     <div class="summary-grid" style="margin-bottom: 2.5rem; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
         <div class="glow-card actuator-card" style="display: flex; justify-content: space-between; align-items: center; background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.2); padding: 1.5rem;">
             <div>
@@ -120,7 +133,7 @@
 
     <!-- Grafik -->
     <div class="glow-card chart-wrapper" style="position: relative; min-height: 350px;">
-        <h3 class="section-title">Tren Suhu & Kelembapan</h3>
+        <h3 class="section-title">Grafik Suhu & Kelembapan</h3>
         
         <!-- Skeleton Loader UI -->
         <div id="chart-skeleton" style="position: absolute; top: 60px; left: 1.5rem; right: 1.5rem; bottom: 1.5rem; z-index: 10; overflow: hidden; background: rgba(255,255,255,0.01); border-radius: 8px;">

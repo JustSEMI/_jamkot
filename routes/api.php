@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\DeviceController;
 use App\Http\Controllers\Api\ScheduleController;
 use App\Http\Controllers\Api\SensorController;
 use Illuminate\Http\Request;
@@ -13,3 +14,4 @@ Route::get('/sensor/data', [SensorController::class, 'index']);
 Route::post('/sensor/data', [SensorController::class, 'store']);
 Route::get('/schedule', [ScheduleController::class, 'getSchedule']);
 Route::get('/pump/status', [ScheduleController::class, 'getPumpStatus']);
+Route::post('/device/status', [DeviceController::class, 'heartbeat']);

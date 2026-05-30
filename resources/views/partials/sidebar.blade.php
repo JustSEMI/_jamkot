@@ -25,15 +25,36 @@
 
     <!-- Navigation -->
     <nav class="sidebar-nav">
-        <!-- Panel -->
+        {{-- Panel --}}
         @if(auth()->user()->canAccess('panel'))
         <a href="{{ route('panel') }}" class="nav-link {{ Route::is('panel') ? 'active' : '' }}">
             <i class="fa-solid fa-gauge"></i>
             <span>Panel</span>
         </a>
+
+        {{-- Device Status --}}
+        <a href="{{ route('device') }}" class="nav-link {{ Route::is('device*') ? 'active' : '' }}">
+            <svg viewBox="0 0 64 64" width="20" height="20" xmlns="http://www.w3.org/2000/svg" style="fill: none; stroke: currentColor; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; width: 20px; height: 20px; flex-shrink: 0;">
+                <!-- Antenna/PCB trace -->
+                <path d="M 24 8 L 40 8 L 40 14 L 36 14 L 36 11 L 28 11 L 28 14 L 24 14 Z" />
+                <!-- Chip body -->
+                <rect x="20" y="16" width="24" height="28" rx="2" />
+                <!-- Pins Left -->
+                <line x1="14" y1="22" x2="20" y2="22" />
+                <line x1="14" y1="28" x2="20" y2="28" />
+                <line x1="14" y1="34" x2="20" y2="34" />
+                <line x1="14" y1="40" x2="20" y2="40" />
+                <!-- Pins Right -->
+                <line x1="44" y1="22" x2="50" y2="22" />
+                <line x1="44" y1="28" x2="50" y2="28" />
+                <line x1="44" y1="34" x2="50" y2="34" />
+                <line x1="44" y1="40" x2="50" y2="40" />
+            </svg>
+            <span>Status Perangkat</span>
+        </a>
         @endif
-        
-        <!-- Analisis -->
+
+        {{-- Analisis --}}
         @if(auth()->user()->canAccess('analisis'))
         <a href="{{ route('analisis') }}" class="nav-link {{ Route::is('analisis') ? 'active' : '' }}">
             <i class="fa-solid fa-chart-simple"></i>

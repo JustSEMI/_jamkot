@@ -11,6 +11,7 @@ const char *password = "SANGATLUXU";
 const char *laravelEndpointData = "https://jamkot.sfht.space/api/sensor/data";
 const char *laravelEndpointSchedule = "https://jamkot.sfht.space/api/schedule";
 const char *laravelEndpointPumpStatus = "https://jamkot.sfht.space/api/pump/status";
+const char *laravelEndpointHeartbeat = "https://jamkot.sfht.space/api/device/status";
 
 WiFiClientSecure secureClient;
 
@@ -43,6 +44,9 @@ const unsigned long pumpStatusUpdateInterval = 1000;
 
 unsigned long lastSensorRead = 0;
 const unsigned long sensorReadInterval = 15000;
+
+unsigned long lastHeartbeat = 0;
+const unsigned long heartbeatInterval = 60000; // Heartbeat setiap 1 menit
 
 float batasSuhuPanas = 30.0;
 float batasKelembapanKering = 78.0;
@@ -156,6 +160,61 @@ void sendDataToWeb(String statusPompa) {
   }
 }
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+uint8_t temprature_sens_read();
+#ifdef __cplusplus
+}
+#endif
+
+float readESP32Temp() {
+  #if defined(ESP32)
+    uint8_t raw = temprature_sens_read();
+    return (raw - 32) / 1.8;
+  #else
+    return 0.0;
+  #endif
+}
+
+void sendHeartbeat() {
+  if (WiFi.status() == WL_CONNECTED) {
+    HTTPClient http;
+    http.begin(secureClient, laravelEndpointHeartbeat);
+    http.addHeader("Content-Type", "application/json");
+
+    float h = dht.readHumidity();
+    float t = dht.readTemperature();
+    bool dhtOk = !isnan(h) && !isnan(t);
+    
+    int ldrRaw = analogRead(LDR_PIN);
+    bool ldrOk = (ldrRaw > 50 && ldrRaw < 4050);
+
+    float espTemp = readESP32Temp();
+
+    DynamicJsonDocument doc(256);
+    doc["device_id"]      = "ESP32-JAMKOT";
+    doc["ip_address"]     = WiFi.localIP().toString();
+    doc["uptime_seconds"] = millis() / 1000;
+    doc["dht_connected"]  = dhtOk;
+    doc["ldr_connected"]  = ldrOk;
+    doc["free_heap"]      = ESP.getFreeHeap();
+    doc["rssi"]           = WiFi.RSSI();
+    doc["esp_temp"]       = espTemp;
+
+    String jsonPayload;
+    serializeJson(doc, jsonPayload);
+
+    int httpResponseCode = http.POST(jsonPayload);
+    if (httpResponseCode > 0) {
+      Serial.printf("[HEARTBEAT] Sent. Temp: %.1f C, RSSI: %d dBm, Code: %d\n", espTemp, WiFi.RSSI(), httpResponseCode);
+    } else {
+      Serial.printf("[HEARTBEAT] Send FAILED (%s)\n", http.errorToString(httpResponseCode).c_str());
+    }
+    http.end();
+  }
+}
+
 // Inisialisasi perangkat keras dan koneksi sistem
 void setup() {
   Serial.begin(115200);
@@ -219,6 +278,7 @@ void setup() {
 
   Serial.println("\n[SYS ] JAMKOT System Ready.");
   Serial.println("--------------------------------------------------");
+  sendHeartbeat();
 }
 
 // Loop utama sistem
@@ -233,6 +293,11 @@ void loop() {
   if (currentMillis - lastPumpStatusUpdate >= pumpStatusUpdateInterval) {
     lastPumpStatusUpdate = currentMillis;
     fetchPumpStatusFromWeb();
+  }
+
+  if (lastHeartbeat == 0 || currentMillis - lastHeartbeat >= heartbeatInterval) {
+    lastHeartbeat = currentMillis;
+    sendHeartbeat();
   }
 
   struct tm timeinfo;

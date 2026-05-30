@@ -235,6 +235,53 @@ document.addEventListener('DOMContentLoaded', function () {
             ]
         }, false, true);
     }
+
+    // ----------------------------------------
+    // Device Status
+    // ----------------------------------------
+
+    fetchDeviceStatus();
+    setInterval(fetchDeviceStatus, 30000);
+
+    function fetchDeviceStatus() {
+        fetch('/panel/device/status?t=' + new Date().getTime())
+            .then(r => r.json())
+            .then(updatePanelDeviceShortcut)
+            .catch(() => setPanelDeviceOffline());
+    }
+
+    function updatePanelDeviceShortcut(data) {
+        const dot    = document.getElementById('panel-device-dot');
+        const badge  = document.getElementById('panel-device-badge');
+        const detail = document.getElementById('panel-device-detail');
+
+        if (!dot) return;
+
+        if (!data.found) {
+            setPanelDeviceOffline();
+            if (detail) detail.textContent = 'Belum ada data';
+            return;
+        }
+
+        dot.className   = 'device-status-dot ' + (data.is_online ? 'online' : 'offline');
+        badge.className = 'device-status-badge ' + (data.is_online ? 'online' : 'offline');
+        badge.textContent = data.status_label;
+
+        if (detail) {
+            const parts = [];
+            if (data.uptime_formatted) parts.push('Uptime: ' + data.uptime_formatted);
+            if (data.rssi) parts.push('WiFi: ' + data.rssi + ' dBm');
+            if (data.esp_temp !== null && data.esp_temp !== undefined) parts.push('Suhu ESP: ' + data.esp_temp_formatted);
+            detail.textContent = parts.join('  •  ') || '—';
+        }
+    }
+
+    function setPanelDeviceOffline() {
+        const dot   = document.getElementById('panel-device-dot');
+        const badge = document.getElementById('panel-device-badge');
+        if (dot)   dot.className = 'device-status-dot offline';
+        if (badge) { badge.className = 'device-status-badge offline'; badge.textContent = 'Offline'; }
+    }
 });
 
 // Doherty Threshold: Optimistic UI for Pump Toggle

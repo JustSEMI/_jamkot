@@ -79,11 +79,19 @@ class AdminController extends Controller
 
     /**
      * Remove the specified user from storage.
+     *
+     * Rules:
+     * - Admin cannot delete their own account.
+     * - Admin cannot delete another admin's account.
      */
     public function destroy(User $user): RedirectResponse
     {
         if ($user->id === auth()->id()) {
             return back()->with('error', 'Anda tidak bisa menghapus akun Anda sendiri.');
+        }
+
+        if ($user->role === 'admin') {
+            return back()->with('error', 'Sesama admin tidak bisa saling menghapus akun.');
         }
 
         $username = $user->username;

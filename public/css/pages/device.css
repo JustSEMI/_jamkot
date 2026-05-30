@@ -1,0 +1,242 @@
+/* =============================================
+   DEVICE STATUS PAGE — device.css
+   ============================================= */
+
+/* Header live badge */
+.device-live-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 100px;
+    padding: 0.5rem 1rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #9ca3af;
+}
+
+/* Hero card */
+.device-hero-card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 1.75rem 2rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+.device-hero-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+}
+.device-hero-left {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+.device-hero-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+}
+.device-hero-icon.online {
+    background: rgba(16, 185, 129, 0.12);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    box-shadow: 0 4px 20px rgba(16, 185, 129, 0.12);
+}
+.device-hero-icon.offline {
+    background: rgba(239, 68, 68, 0.1);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.15);
+}
+.device-hero-icon:not(.online):not(.offline) {
+    background: rgba(255,255,255,0.05);
+    color: #6b7280;
+    border: 1px solid rgba(255,255,255,0.08);
+}
+.device-hero-id {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #f3f4f6;
+    letter-spacing: 0.02em;
+    margin-bottom: 0.3rem;
+}
+.device-hero-ip {
+    font-size: 0.8rem;
+    color: #6b7280;
+}
+
+/* Big status badge */
+.device-big-badge {
+    font-size: 0.78rem;
+    font-weight: 800;
+    padding: 0.45rem 1.1rem;
+    border-radius: 100px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+.device-big-badge.online {
+    background: rgba(16, 185, 129, 0.12);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.08);
+}
+.device-big-badge.offline {
+    background: rgba(239, 68, 68, 0.1);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.18);
+}
+
+/* Stat grid */
+.device-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+.device-stat-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 16px;
+    padding: 1.35rem 1.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    transition: border-color 0.2s ease;
+}
+.device-stat-card:hover {
+    border-color: rgba(255, 255, 255, 0.12);
+}
+.device-stat-card-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+.device-stat-card-icon.connected {
+    background: rgba(16, 185, 129, 0.1);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.18);
+}
+.device-stat-card-icon.disconnected {
+    background: rgba(239, 68, 68, 0.08);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.15);
+}
+.device-stat-card-icon.uptime {
+    background: rgba(99, 102, 241, 0.1);
+    color: #818cf8;
+    border: 1px solid rgba(99, 102, 241, 0.18);
+}
+.device-stat-card-icon.wifi {
+    background: rgba(6, 182, 212, 0.1);
+    color: #22d3ee;
+    border: 1px solid rgba(6, 182, 212, 0.18);
+}
+.device-stat-card-icon.memory {
+    background: rgba(245, 158, 11, 0.1);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.18);
+}
+.device-stat-card-icon.time {
+    background: rgba(255, 255, 255, 0.05);
+    color: #9ca3af;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.device-stat-card-icon.temp-chip {
+    background: rgba(244, 63, 94, 0.1);
+    color: #fb7185;
+    border: 1px solid rgba(244, 63, 94, 0.18);
+}
+.device-stat-card-body {
+    flex: 1;
+    min-width: 0;
+}
+.device-stat-card-label {
+    font-size: 0.7rem;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+}
+.device-stat-card-value {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #e5e7eb;
+    margin-bottom: 0.25rem;
+    line-height: 1.2;
+}
+.device-stat-card-value.text-green { color: #34d399; }
+.device-stat-card-value.text-red   { color: #f87171; }
+
+.device-stat-card-sub {
+    font-size: 0.72rem;
+    color: #4b5563;
+}
+
+/* Info footer */
+.device-info-footer {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 0.85rem 1.25rem;
+    font-size: 0.78rem;
+    color: #4b5563;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 2rem;
+}
+.device-info-footer i { color: #374151; }
+.device-info-footer strong { color: #6b7280; }
+
+/* Status dot reuse (from panel.css) */
+.device-status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+}
+.device-status-dot.online {
+    background: #10b981;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+    animation: device-pulse 2s ease-in-out infinite;
+}
+.device-status-dot.offline {
+    background: #ef4444;
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.15);
+}
+@keyframes device-pulse {
+    0%, 100% { box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2); }
+    50%       { box-shadow: 0 0 0 5px rgba(16, 185, 129, 0.05); }
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .device-hero-card { flex-direction: column; align-items: flex-start; }
+    .device-stat-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 400px) {
+    .device-stat-grid { grid-template-columns: 1fr; }
+}

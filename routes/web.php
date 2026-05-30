@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\PanelController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResetPasswordController;
@@ -45,7 +46,12 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/panel', [PanelController::class, 'index'])->middleware('permission:panel')->name('panel');
     Route::get('/panel/data/realtime', [PanelController::class, 'realtimeData'])->middleware('permission:panel')->name('panel.data.realtime');
+    Route::get('/panel/device/status', [PanelController::class, 'deviceStatus'])->middleware('permission:panel')->name('panel.device.status');
     Route::post('/panel/pump/toggle', [PanelController::class, 'togglePump'])->middleware('permission:panel')->name('panel.pump.toggle');
+
+    // Device Status page
+    Route::get('/device', [DeviceController::class, 'index'])->middleware('permission:panel')->name('device');
+    Route::get('/device/status', [DeviceController::class, 'status'])->middleware('permission:panel')->name('device.status');
 
     // SENSOR ROUTES
     Route::get('/sensor/ldr', [PanelController::class, 'ldr'])->middleware('permission:panel')->name('sensor.ldr');

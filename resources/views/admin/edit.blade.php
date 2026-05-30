@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', 'Edit Akses User')
 
@@ -551,9 +551,15 @@
                 <div class="profile-meta" style="width: 100%;">
                     @if($user->id === auth()->id())
                         <span class="self-account-badge">Akun Anda sendiri</span>
+                    @elseif($user->role === 'admin')
+                        <span class="text-muted" style="font-size: 0.75rem; display: block; margin-top: 1rem;">ID Pengguna: #{{ $user->id }}</span>
+                        <div style="margin-top: 1.5rem; background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.18); border-radius: 8px; padding: 0.65rem 1rem; display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: #fbbf24;">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            <span>Sesama admin tidak dapat dihapus</span>
+                        </div>
                     @else
                         <span class="text-muted" style="font-size: 0.75rem; display: block; margin-top: 1rem;">ID Pengguna: #{{ $user->id }}</span>
-                        
+
                         <form action="{{ route('admin.users.destroy', $user) }}" method="POST" id="form-hapus-user" style="margin-top: 1.5rem; width: 100%;">
                             @csrf
                             @method('DELETE')
