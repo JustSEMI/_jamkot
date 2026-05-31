@@ -25,9 +25,9 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     
     <!-- Global CSS -->
-    <link rel="stylesheet" href="{{ asset('css/pages/panel.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/pages/mobile.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/themes/material3.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/pages/panel.css') }}?v={{ filemtime(public_path('css/pages/panel.css')) }}">
+    <link rel="stylesheet" href="{{ asset('css/pages/mobile.css') }}?v={{ filemtime(public_path('css/pages/mobile.css')) }}">
+    <link rel="stylesheet" href="{{ asset('css/themes/material3.css') }}?v={{ filemtime(public_path('css/themes/material3.css')) }}">
     
     <!-- Page Specific Styles -->
     @stack('styles')

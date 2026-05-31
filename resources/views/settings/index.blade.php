@@ -1,9 +1,9 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', 'Pengaturan')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/pages/settings.css') }}">
+<link rel="stylesheet" href="{{ asset('css/pages/settings.css') }}?v={{ filemtime(public_path('css/pages/settings.css')) }}">
 @endpush
 
 @section('content')

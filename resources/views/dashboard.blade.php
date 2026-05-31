@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -14,10 +14,10 @@
     <title>Dashboard | JAMKOT</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('css/pages/dashboard.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/panel.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/mobile.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/material3.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/pages/dashboard.css') }}?v={{ filemtime(public_path('css/pages/dashboard.css')) }}">
+    <link rel="stylesheet" href="{{ asset('css/pages/panel.css') }}?v={{ filemtime(public_path('css/pages/panel.css')) }}">
+    <link rel="stylesheet" href="{{ asset('css/pages/mobile.css') }}?v={{ filemtime(public_path('css/pages/mobile.css')) }}">
+    <link rel="stylesheet" href="{{ asset('css/themes/material3.css') }}?v={{ filemtime(public_path('css/themes/material3.css')) }}">
     @vite('resources/js/app.js')
     <style>
         /* --- GLOBAL THEME ADAPTATION --- */

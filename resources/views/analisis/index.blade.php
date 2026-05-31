@@ -3,7 +3,7 @@
 @section('title', 'Analisis Data')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/pages/analisis.css') }}">
+<link rel="stylesheet" href="{{ asset('css/pages/analisis.css') }}?v={{ filemtime(public_path('css/pages/analisis.css')) }}">
 <style>
     /* --- Tabel Responsif --- */
     .table-responsive {

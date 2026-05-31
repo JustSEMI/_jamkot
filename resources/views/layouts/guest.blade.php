@@ -21,9 +21,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
     
     <!-- Global CSS -->
-    <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/pages/mobile.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/themes/material3.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/auth.css') }}?v={{ filemtime(public_path('css/auth.css')) }}">
+    <link rel="stylesheet" href="{{ asset('css/pages/mobile.css') }}?v={{ filemtime(public_path('css/pages/mobile.css')) }}">
+    <link rel="stylesheet" href="{{ asset('css/themes/material3.css') }}?v={{ filemtime(public_path('css/themes/material3.css')) }}">
     
     <!-- Page Specific Styles -->
     @stack('styles')

@@ -3,7 +3,7 @@
 @section('title', 'Status Perangkat')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/pages/device.css') }}">
+<link rel="stylesheet" href="{{ asset('css/pages/device.css') }}?v={{ filemtime(public_path('css/pages/device.css')) }}">
 @endpush
 
 @section('content')

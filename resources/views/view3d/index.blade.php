@@ -1,9 +1,9 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', '3D Model View')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/pages/view3d.css') }}">
+<link rel="stylesheet" href="{{ asset('css/pages/view3d.css') }}?v={{ filemtime(public_path('css/pages/view3d.css')) }}">
 @endpush
 
 @section('content')
