@@ -1049,17 +1049,18 @@ body {
     }
 }
 
-/* UI V2 OVERHAUL: MINIMALIST DARK (MINIM GLOW & ULTRA CLEAN) */
+/* UI V2 OVERHAUL: MINIMALIST DARK */
 
 html[data-ui-version="v2"] .glow-card {
-    background: #121212 !important;
-    border: 1px solid rgba(255, 255, 255, 0.05) !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+    background: linear-gradient(135deg, #121212 0%, #0c0c0c 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.015) !important;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5) !important;
 }
 
 html[data-ui-version="v2"] .glow-card:hover {
-    border-color: rgba(255, 255, 255, 0.12) !important;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+    background: linear-gradient(135deg, #161616 0%, #101010 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.03) !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6) !important;
     transform: translateY(-2px) !important;
 }
 
@@ -1082,12 +1083,25 @@ html[data-ui-version="v2"] .status-dot.offline {
 html[data-ui-version="v2"] .nav-link.active {
     color: #10b981 !important;
     background-color: rgba(16, 185, 129, 0.05) !important;
-    border: 1px solid rgba(16, 185, 129, 0.15) !important;
+    border: 1px solid rgba(16, 185, 129, 0.12) !important;
 }
 
 html[data-ui-version="v2"] .actuator-card {
-    background: #121212 !important;
-    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    background: linear-gradient(135deg, #121212 0%, #0c0c0c 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.015) !important;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5) !important;
+}
+
+html[data-ui-version="v2"] .device-shortcut-card {
+    background: linear-gradient(90deg, #121212 0%, #0c0c0c 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.015) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+}
+
+html[data-ui-version="v2"] .device-shortcut-card:hover {
+    background: linear-gradient(90deg, #161616 0%, #101010 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.03) !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5) !important;
 }
 
 html[data-ui-version="v2"] #btn-toggle-pump {

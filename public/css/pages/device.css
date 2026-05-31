@@ -18,17 +18,29 @@
 
 /* Hero card */
 .device-hero-card {
-    background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
+    background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 20px;
     padding: 1.75rem 2rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1.5rem;
     position: relative;
     overflow: hidden;
+    backdrop-filter: blur(12px);
+    transition: all 0.5s ease;
+}
+.device-hero-card.online {
+    border-color: rgba(16, 185, 129, 0.25);
+    background: radial-gradient(circle at 90% 50%, rgba(16, 185, 129, 0.08) 0%, rgba(255,255,255,0.01) 100%),
+                linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+    box-shadow: 0 15px 35px -10px rgba(16, 185, 129, 0.15);
+}
+.device-hero-card.offline {
+    border-color: rgba(239, 68, 68, 0.15);
+    background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
 }
 .device-hero-card::before {
     content: '';
@@ -59,6 +71,13 @@
     border: 1px solid rgba(16, 185, 129, 0.2);
     box-shadow: 0 4px 20px rgba(16, 185, 129, 0.12);
 }
+.device-hero-icon.online svg {
+    animation: svg-pulse 2.5s infinite ease-in-out;
+}
+@keyframes svg-pulse {
+    0%, 100% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(16,185,129,0.3)); }
+    50% { transform: scale(1.06); filter: drop-shadow(0 0 10px rgba(16,185,129,0.6)); }
+}
 .device-hero-icon.offline {
     background: rgba(239, 68, 68, 0.1);
     color: #f87171;
@@ -70,15 +89,15 @@
     border: 1px solid rgba(255,255,255,0.08);
 }
 .device-hero-id {
-    font-size: 1.25rem;
+    font-size: 1.35rem;
     font-weight: 800;
     color: #f3f4f6;
     letter-spacing: 0.02em;
     margin-bottom: 0.3rem;
 }
 .device-hero-ip {
-    font-size: 0.8rem;
-    color: #6b7280;
+    font-size: 0.85rem;
+    color: #9ca3af;
 }
 
 /* Big status badge */
@@ -97,42 +116,79 @@
     box-shadow: 0 0 20px rgba(16, 185, 129, 0.08);
 }
 .device-big-badge.offline {
-    background: rgba(239, 68, 68, 0.1);
+    background: rgba(239, 68, 68, 0.08);
     color: #f87171;
-    border: 1px solid rgba(239, 68, 68, 0.18);
+    border: 1px solid rgba(239, 68, 68, 0.12);
 }
 
 /* Stat grid */
 .device-stat-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+    gap: 1.25rem;
+    margin-bottom: 2rem;
 }
 .device-stat-card {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.07);
-    border-radius: 16px;
-    padding: 1.35rem 1.5rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 20px;
+    padding: 1.5rem 1.75rem;
     display: flex;
     align-items: flex-start;
-    gap: 1rem;
-    transition: border-color 0.2s ease;
+    gap: 1.25rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(6px);
 }
 .device-stat-card:hover {
-    border-color: var(--warna-utama, #10b981);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+    transform: translateY(-5px);
 }
+.device-stat-card.card-uptime:hover {
+    border-color: #818cf8;
+    box-shadow: 0 15px 30px -10px rgba(99, 102, 241, 0.2);
+}
+.device-stat-card.card-wifi:hover {
+    border-color: #22d3ee;
+    box-shadow: 0 15px 30px -10px rgba(6, 182, 212, 0.2);
+}
+.device-stat-card.card-memory:hover {
+    border-color: #fbbf24;
+    box-shadow: 0 15px 30px -10px rgba(245, 158, 11, 0.2);
+}
+.device-stat-card.card-temp-chip:hover {
+    border-color: #fb7185;
+    box-shadow: 0 15px 30px -10px rgba(244, 63, 94, 0.2);
+}
+.device-stat-card.card-time:hover {
+    border-color: var(--warna-utama, #10b981);
+    box-shadow: 0 15px 30px -10px rgba(16, 185, 129, 0.2);
+}
+
 .device-stat-card-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
 }
+.device-stat-card-icon::after {
+    content: '';
+    position: absolute;
+    width: 100%; height: 100%;
+    top: 0; left: 0;
+    background: radial-gradient(circle, currentColor 0%, transparent 70%);
+    opacity: 0.18;
+    z-index: 0;
+}
+.device-stat-card-icon i {
+    position: relative;
+    z-index: 1;
+}
+
 .device-stat-card-icon.connected {
     background: rgba(16, 185, 129, 0.1);
     color: #34d399;
@@ -159,9 +215,9 @@
     border: 1px solid rgba(245, 158, 11, 0.18);
 }
 .device-stat-card-icon.time {
-    background: rgba(255, 255, 255, 0.05);
-    color: #9ca3af;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(16, 185, 129, 0.1);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.18);
 }
 .device-stat-card-icon.temp-chip {
     background: rgba(244, 63, 94, 0.1);
@@ -174,25 +230,98 @@
 }
 .device-stat-card-label {
     font-size: 0.7rem;
-    color: #6b7280;
+    color: #9ca3af;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     font-weight: 600;
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.5rem;
 }
 .device-stat-card-value {
-    font-size: 1rem;
-    font-weight: 700;
-    color: #e5e7eb;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #ffffff;
     margin-bottom: 0.25rem;
     line-height: 1.2;
+    letter-spacing: 0.01em;
 }
 .device-stat-card-value.text-green { color: #34d399; }
 .device-stat-card-value.text-red   { color: #f87171; }
 
 .device-stat-card-sub {
-    font-size: 0.72rem;
-    color: #4b5563;
+    font-size: 0.75rem;
+    color: #6b7280;
+}
+
+/* WiFi Signal Strength Indicator Bars */
+.wifi-signal-bars {
+    display: inline-flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 12px;
+    margin-left: 0.75rem;
+    vertical-align: middle;
+}
+.wifi-signal-bars .bar {
+    width: 3px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 1px;
+    transition: all 0.3s ease;
+}
+.wifi-signal-bars .bar-1 { height: 25%; }
+.wifi-signal-bars .bar-2 { height: 50%; }
+.wifi-signal-bars .bar-3 { height: 75%; }
+.wifi-signal-bars .bar-4 { height: 100%; }
+
+.wifi-signal-bars.signal-strong .bar-1,
+.wifi-signal-bars.signal-strong .bar-2,
+.wifi-signal-bars.signal-strong .bar-3,
+.wifi-signal-bars.signal-strong .bar-4 {
+    background: #34d399;
+}
+
+.wifi-signal-bars.signal-medium .bar-1,
+.wifi-signal-bars.signal-medium .bar-2,
+.wifi-signal-bars.signal-medium .bar-3 {
+    background: #fbbf24;
+}
+.wifi-signal-bars.signal-medium .bar-4 {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.wifi-signal-bars.signal-weak .bar-1,
+.wifi-signal-bars.signal-weak .bar-2 {
+    background: #f87171;
+}
+.wifi-signal-bars.signal-weak .bar-3,
+.wifi-signal-bars.signal-weak .bar-4 {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* Mini Progress Bar for Stats */
+.device-stat-progress-bg {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+    margin-top: 0.65rem;
+    overflow: hidden;
+    position: relative;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+.device-stat-progress-bar {
+    height: 100%;
+    width: 0%;
+    border-radius: 4px;
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.5s ease;
+}
+/* Card specific bar colors */
+.card-memory .device-stat-progress-bar {
+    background: #fbbf24;
+    box-shadow: 0 0 6px rgba(251, 191, 36, 0.5);
+}
+.card-temp-chip .device-stat-progress-bar {
+    background: #fb7185;
+    box-shadow: 0 0 6px rgba(251, 113, 133, 0.5);
 }
 
 /* Info footer */
@@ -276,3 +405,53 @@
         padding: 1.15rem 1.25rem;
     }
 }
+
+/* UI V2 OVERRIDES: MINIMALIST DARK FOR DEVICE STATUS */
+html[data-ui-version="v2"] .device-live-badge {
+    background: #101010 !important;
+    border: 1px solid rgba(255, 255, 255, 0.015) !important;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.4);
+}
+html[data-ui-version="v2"] .device-hero-card {
+    background: linear-gradient(135deg, #121212 0%, #0c0c0c 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.015) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6) !important;
+}
+html[data-ui-version="v2"] .device-hero-card.online {
+    box-shadow: 0 12px 35px -10px rgba(16, 185, 129, 0.15), 0 8px 24px rgba(0, 0, 0, 0.6) !important;
+}
+html[data-ui-version="v2"] .device-hero-card.offline {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6) !important;
+    border-color: rgba(239, 68, 68, 0.1) !important;
+}
+html[data-ui-version="v2"] .device-stat-card {
+    background: linear-gradient(135deg, #121212 0%, #0c0c0c 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.015) !important;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5) !important;
+}
+html[data-ui-version="v2"] .device-stat-card:hover {
+    background: linear-gradient(135deg, #161616 0%, #101010 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.03) !important;
+    transform: translateY(-5px) !important;
+}
+html[data-ui-version="v2"] .device-stat-card.card-uptime:hover {
+    box-shadow: 0 15px 30px -10px rgba(99, 102, 241, 0.15), 0 8px 24px rgba(0, 0, 0, 0.6) !important;
+}
+html[data-ui-version="v2"] .device-stat-card.card-wifi:hover {
+    box-shadow: 0 15px 30px -10px rgba(6, 182, 212, 0.15), 0 8px 24px rgba(0, 0, 0, 0.6) !important;
+}
+html[data-ui-version="v2"] .device-stat-card.card-memory:hover {
+    box-shadow: 0 15px 30px -10px rgba(245, 158, 11, 0.15), 0 8px 24px rgba(0, 0, 0, 0.6) !important;
+}
+html[data-ui-version="v2"] .device-stat-card.card-temp-chip:hover {
+    box-shadow: 0 15px 30px -10px rgba(244, 63, 94, 0.15), 0 8px 24px rgba(0, 0, 0, 0.6) !important;
+}
+html[data-ui-version="v2"] .device-stat-card.card-time:hover {
+    box-shadow: 0 15px 30px -10px rgba(16, 185, 129, 0.15), 0 8px 24px rgba(0, 0, 0, 0.6) !important;
+}
+html[data-ui-version="v2"] .device-info-footer {
+    background: #101010 !important;
+    border: 1px solid rgba(255, 255, 255, 0.015) !important;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.4);
+}
+

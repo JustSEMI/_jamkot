@@ -306,8 +306,9 @@
    ======================================================= */
 
 html[data-ui-version="v2"] .panel-card {
-    background: #121212 !important;
-    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    background: linear-gradient(135deg, #121212 0%, #0c0c0c 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.015) !important;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5) !important;
 }
 
 html[data-ui-version="v2"] .spinner-modern {

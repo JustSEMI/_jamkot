@@ -19,9 +19,9 @@
     </header>
 
     {{-- MAIN STATUS CARD --}}
-    <div class="device-hero-card" id="device-hero-card">
+    <div class="device-hero-card {{ $device && $device->isOnline() ? 'online' : 'offline' }}" id="device-hero-card">
         <div class="device-hero-left">
-            <div class="device-hero-icon" id="device-hero-icon">
+            <div class="device-hero-icon {{ $device && $device->isOnline() ? 'online' : 'offline' }}" id="device-hero-icon">
                 <svg viewBox="0 0 64 64" width="38" height="38" xmlns="http://www.w3.org/2000/svg" style="display: block;">
                     <!-- Antenna trace at top -->
                     <path d="M 16 8 L 48 8 L 48 14 L 44 14 L 44 11 L 20 11 L 20 14 L 16 14 Z" fill="#d69e2e" />
@@ -69,7 +69,7 @@
     <div class="device-stat-grid">
 
         {{-- UPTIME --}}
-        <div class="device-stat-card">
+        <div class="device-stat-card card-uptime">
             <div class="device-stat-card-icon uptime">
                 <i class="fa-solid fa-clock-rotate-left"></i>
             </div>
@@ -84,14 +84,20 @@
 
 
         {{-- RSSI --}}
-        <div class="device-stat-card">
+        <div class="device-stat-card card-wifi">
             <div class="device-stat-card-icon wifi" id="icon-rssi">
                 <i class="fa-solid fa-wifi"></i>
             </div>
             <div class="device-stat-card-body">
                 <div class="device-stat-card-label">Sinyal WiFi (RSSI)</div>
-                <div class="device-stat-card-value" id="stat-rssi">
-                    {{ $device?->rssi ? $device->rssi . ' dBm' : '—' }}
+                <div class="device-stat-card-value">
+                    <span id="stat-rssi">{{ $device?->rssi ? $device->rssi . ' dBm' : '—' }}</span>
+                    <div class="wifi-signal-bars {{ $device?->rssi ? ($device->rssi >= -60 ? 'signal-strong' : ($device->rssi >= -80 ? 'signal-medium' : 'signal-weak')) : '' }}" id="wifi-bars">
+                        <div class="bar bar-1"></div>
+                        <div class="bar bar-2"></div>
+                        <div class="bar bar-3"></div>
+                        <div class="bar bar-4"></div>
+                    </div>
                 </div>
                 <div class="device-stat-card-sub" id="sub-rssi">
                     @if($device?->rssi)
@@ -106,7 +112,7 @@
         </div>
 
         {{-- FREE HEAP --}}
-        <div class="device-stat-card">
+        <div class="device-stat-card card-memory">
             <div class="device-stat-card-icon memory">
                 <i class="fa-solid fa-memory"></i>
             </div>
@@ -115,19 +121,49 @@
                 <div class="device-stat-card-value" id="stat-heap">
                     {{ $device?->freeHeapKb() ?? '—' }}
                 </div>
+                <div class="device-stat-progress-bg">
+                    @php
+                        $memPct = 0;
+                        $kbVal = null;
+                        if ($device && $device->free_heap) {
+                            $kbVal = $device->free_heap / 1024;
+                            $memPct = min(max(($kbVal / 280) * 100, 0), 100);
+                        }
+                        $memColor = '#34d399';
+                        if ($kbVal !== null) {
+                            if ($kbVal <= 80) $memColor = '#f87171';
+                            elseif ($kbVal <= 150) $memColor = '#fbbf24';
+                        }
+                    @endphp
+                    <div class="device-stat-progress-bar" id="memory-progress-bar" style="width: {{ $memPct }}%; background-color: {{ $memColor }}; box-shadow: 0 0 6px {{ $memColor }}80;"></div>
+                </div>
                 <div class="device-stat-card-sub">RAM bebas ESP32</div>
             </div>
         </div>
 
         {{-- ESP32 CPU TEMP --}}
-        <div class="device-stat-card">
+        <div class="device-stat-card card-temp-chip">
             <div class="device-stat-card-icon temp-chip" id="icon-esp-temp">
                 <i class="fa-solid fa-microchip"></i>
             </div>
             <div class="device-stat-card-body">
                 <div class="device-stat-card-label">Suhu Internal ESP32</div>
-                <div class="device-stat-card-value" id="stat-esp-temp">
+                <div class="device-stat-card-value" id="stat-esp-temp" style="color: {{ $device?->esp_temp !== null ? ($device->esp_temp >= 85 ? '#ef4444' : ($device->esp_temp >= 70 ? '#fbbf24' : '#34d399')) : '#ffffff' }}">
                     {{ $device?->esp_temp !== null ? number_format($device->esp_temp, 1) . '°C' : '—' }}
+                </div>
+                <div class="device-stat-progress-bg">
+                    @php
+                        $tempPct = 0;
+                        if ($device && $device->esp_temp !== null) {
+                            $tempPct = min(max(($device->esp_temp / 100) * 100, 0), 100);
+                        }
+                        $tempColor = '#34d399';
+                        if ($device && $device->esp_temp !== null) {
+                            if ($device->esp_temp >= 85) $tempColor = '#f87171';
+                            elseif ($device->esp_temp >= 70) $tempColor = '#fbbf24';
+                        }
+                    @endphp
+                    <div class="device-stat-progress-bar" id="temp-progress-bar" style="width: {{ $tempPct }}%; background-color: {{ $tempColor }}; box-shadow: 0 0 6px {{ $tempColor }}80;"></div>
                 </div>
                 <div class="device-stat-card-sub" id="sub-esp-temp">
                     @if($device?->esp_temp !== null)
@@ -143,7 +179,7 @@
         </div>
 
         {{-- LAST SEEN --}}
-        <div class="device-stat-card">
+        <div class="device-stat-card card-time">
             <div class="device-stat-card-icon time">
                 <i class="fa-solid fa-satellite-dish"></i>
             </div>
@@ -192,11 +228,15 @@
         if (!d.found) return;
 
         // Hero card
+        const heroCard  = document.getElementById('device-hero-card');
         const heroBadge = document.getElementById('hero-badge');
         const heroIcon  = document.getElementById('device-hero-icon');
         const heroId    = document.getElementById('hero-device-id');
         const heroIp    = document.getElementById('hero-ip');
 
+        if (heroCard) {
+            heroCard.className = 'device-hero-card ' + (online ? 'online' : 'offline');
+        }
         if (heroBadge) {
             heroBadge.className = 'device-big-badge ' + (online ? 'online' : 'offline');
             heroBadge.textContent = online ? 'ONLINE' : 'OFFLINE';
@@ -212,7 +252,7 @@
         setText('stat-heap',      d.free_heap_kb ?? '—');
         setText('stat-esp-temp',  d.esp_temp_formatted ?? '—');
 
-        // ESP Temp subtext and color
+        // ESP Temp subtext, color and progress bar
         const tempSub = document.getElementById('sub-esp-temp');
         if (tempSub && d.esp_temp !== null && d.esp_temp !== undefined) {
             tempSub.textContent = d.esp_temp >= 85 ? 'Overheat (Kritis)' : d.esp_temp >= 70 ? 'Panas' : 'Normal';
@@ -221,14 +261,48 @@
                 tempEl.style.color = d.esp_temp >= 85 ? '#ef4444' : d.esp_temp >= 70 ? '#fbbf24' : '#34d399';
             }
         }
+        const tempBar = document.getElementById('temp-progress-bar');
+        if (tempBar && d.esp_temp !== null && d.esp_temp !== undefined) {
+            const tempPct = Math.min(Math.max((d.esp_temp / 100) * 100, 0), 100);
+            tempBar.style.width = tempPct + '%';
+            const tempColor = d.esp_temp >= 85 ? '#f87171' : d.esp_temp >= 70 ? '#fbbf24' : '#34d399';
+            tempBar.style.backgroundColor = tempColor;
+            tempBar.style.boxShadow = `0 0 6px ${tempColor}80`;
+        } else if (tempBar) {
+            tempBar.style.width = '0%';
+        }
 
-        // RSSI with colour
-        const rssiEl  = document.getElementById('stat-rssi');
-        const rssiSub = document.getElementById('sub-rssi');
-        if (rssiEl && d.rssi) {
+        // RSSI with colour and bars
+        const rssiEl   = document.getElementById('stat-rssi');
+        const rssiSub  = document.getElementById('sub-rssi');
+        const wifiBars = document.getElementById('wifi-bars');
+        if (rssiEl && d.rssi !== null && d.rssi !== undefined) {
             rssiEl.textContent = d.rssi + ' dBm';
             rssiEl.style.color = d.rssi >= -60 ? '#34d399' : d.rssi >= -80 ? '#fbbf24' : '#f87171';
             if (rssiSub) rssiSub.textContent = d.rssi >= -60 ? 'Sinyal Kuat' : d.rssi >= -80 ? 'Sinyal Sedang' : 'Sinyal Lemah';
+            if (wifiBars) {
+                wifiBars.className = 'wifi-signal-bars ' + (d.rssi >= -60 ? 'signal-strong' : (d.rssi >= -80 ? 'signal-medium' : 'signal-weak'));
+            }
+        } else {
+            if (rssiEl) {
+                rssiEl.textContent = '—';
+                rssiEl.style.color = '';
+            }
+            if (rssiSub) rssiSub.textContent = 'Tidak diketahui';
+            if (wifiBars) wifiBars.className = 'wifi-signal-bars';
+        }
+
+        // Memory progress bar
+        const memoryBar = document.getElementById('memory-progress-bar');
+        if (memoryBar && d.free_heap !== null && d.free_heap !== undefined) {
+            const kbVal = d.free_heap / 1024;
+            const memPct = Math.min(Math.max((kbVal / 280) * 100, 0), 100);
+            memoryBar.style.width = memPct + '%';
+            const memColor = kbVal > 150 ? '#34d399' : kbVal > 80 ? '#fbbf24' : '#f87171';
+            memoryBar.style.backgroundColor = memColor;
+            memoryBar.style.boxShadow = `0 0 6px ${memColor}80`;
+        } else if (memoryBar) {
+            memoryBar.style.width = '0%';
         }
 
         // Sensors
