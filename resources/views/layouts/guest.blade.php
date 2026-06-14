@@ -9,7 +9,7 @@
     <!-- PREVENT FOUC & SETUP UI THEME -->
     <script>
         (function() {
-            const uiVersion = localStorage.getItem('jamkot-ui-version') || 'v2';
+            const uiVersion = localStorage.getItem('jamkot-ui-version') || 'v1';
             document.documentElement.setAttribute('data-ui-version', uiVersion);
         })();
     </script>
