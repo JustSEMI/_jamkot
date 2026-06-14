@@ -15,24 +15,6 @@
     </header>
 
     <div class="settings-container">
-        <div class="glow-card settings-card">
-            <h2 class="section-title" style="margin: 0 0 0.5rem 0; color: #ededed;">Manajemen Data Sensor</h2>
-            <p class="text-muted" style="margin-bottom: 2rem;">Kontrol riwayat pembacaan sensor pada sistem database MariaDB Anda.</p>
-
-            <div class="danger-zone">
-                <div class="danger-header">
-                    <span class="danger-icon material-symbols-rounded">warning</span>
-                    <h3>Zona Berbahaya</h3>
-                </div>
-                <p>Tindakan ini akan menghapus permanen seluruh riwayat suhu, kelembapan, dan status pompa dari database. Aksi ini tidak dapat dibatalkan.</p>
-
-                <form id="resetForm" action="{{ route('settings.reset') }}" method="POST">
-                    @csrf
-                    <button type="button" class="btn-danger" onclick="bukaModal()">Reset Semua Data Sensor</button>
-                </form>
-            </div>
-        </div>
-
         <!-- PILIHAN DESAIN ANTARMUKA -->
         <div class="glow-card settings-card" style="margin-top: 2rem;">
             <h2 class="section-title" style="margin: 0 0 0.5rem 0; color: #ededed;">Desain Antarmuka (UI Version)</h2>
@@ -71,60 +53,8 @@
     </div>
 @endsection
 
-@section('modals')
-    <!-- MODAL -->
-    <div id="modalReset" class="modal-overlay">
-        <div class="modal-box">
-            <div class="modal-icon-wrapper">
-                <i class="fa-solid fa-trash-can"></i>
-            </div>
-            <h3 class="modal-title">Reset Semua Data Sensor?</h3>
-            <p class="modal-subtitle">Tindakan ini akan menghapus permanen seluruh record sensor â€” suhu, kelembapan, intensitas cahaya, dan status pompa.</p>
-            
-            <div class="modal-badges">
-                <span class="modal-badge"><i class="fa-solid fa-chart-line"></i> Grafik akan kosong</span>
-                <span class="modal-badge"><i class="fa-solid fa-table"></i> Tabel akan kosong</span>
-                <span class="modal-badge"><i class="fa-solid fa-circle-xmark"></i> Tidak dapat dikembalikan</span>
-            </div>
-
-            <div class="modal-input-group">
-                <label for="confirm-reset">Ketik <strong>RESET</strong> untuk konfirmasi:</label>
-                <input type="text" id="confirm-reset" placeholder="Ketik RESET di sini..." oninput="checkResetInput(this.value)">
-            </div>
-
-            <div class="modal-actions">
-                <button type="button" class="btn-cancel" onclick="tutupModal()">Batalkan</button>
-                <button type="button" class="btn-danger" id="btn-confirm-reset" onclick="gasReset()" disabled>Hapus Permanen</button>
-            </div>
-        </div>
-    </div>
-@endsection
-
 @push('scripts')
     <script>
-        function bukaModal() {
-            document.getElementById('modalReset').classList.add('active');
-        }
-        function tutupModal() {
-            document.getElementById('modalReset').classList.remove('active');
-            document.getElementById('confirm-reset').value = '';
-            document.getElementById('btn-confirm-reset').setAttribute('disabled', 'true');
-            document.getElementById('btn-confirm-reset').classList.remove('danger-active');
-        }
-        function checkResetInput(val) {
-            const btn = document.getElementById('btn-confirm-reset');
-            if (val === 'RESET') {
-                btn.removeAttribute('disabled');
-                btn.classList.add('danger-active');
-            } else {
-                btn.setAttribute('disabled', 'true');
-                btn.classList.remove('danger-active');
-            }
-        }
-        function gasReset() {
-            document.getElementById('resetForm').submit();
-        }
-
         window.addEventListener('click', function(e) {
             const dropdown = document.getElementById('nav-dropdown-sensor');
             if (dropdown && !dropdown.contains(e.target)) {
@@ -180,7 +110,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            const currentUi = localStorage.getItem('jamkot-ui-version') || 'v2';
+            const currentUi = localStorage.getItem('jamkot-ui-version') || 'v1';
             updateUiCards(currentUi);
         });
     </script>

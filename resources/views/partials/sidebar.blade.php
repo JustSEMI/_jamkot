@@ -111,9 +111,13 @@
         <!-- ADMIN Section -->
         @if($isAdmin)
         <div class="section-title">ADMIN</div>
-        <a href="{{ route('admin.users') }}" class="nav-link nav-link-admin {{ Route::is('admin.*') ? 'active' : '' }}">
+        <a href="{{ route('admin.users') }}" class="nav-link nav-link-admin {{ Route::is('admin.users*') ? 'active' : '' }}">
             <i class="fa-solid fa-users-gear"></i>
             <span>Kelola User</span>
+        </a>
+        <a href="{{ route('admin.reset-data') }}" class="nav-link nav-link-admin {{ Route::is('admin.reset-data*') ? 'active' : '' }}">
+            <i class="fa-solid fa-trash-can"></i>
+            <span>Reset Data</span>
         </a>
         @endif
     </nav>

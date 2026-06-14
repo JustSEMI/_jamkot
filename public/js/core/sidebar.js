@@ -410,18 +410,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="skeleton-bone skeleton-subtitle"></div>
                 </div>
                 <div class="settings-container" style="display: flex; flex-direction: column; gap: 1.5rem; margin-top: 2rem;">
-                    <div class="glow-card settings-card skeleton-card" style="min-height: 220px;">
-                        <div class="skeleton-bone" style="width: 220px; height: 20px; margin-bottom: 0.5rem;"></div>
-                        <div class="skeleton-bone" style="width: 320px; height: 12px; margin-bottom: 1.5rem;"></div>
-                        <div class="skeleton-danger-zone" style="border: 1px dashed rgba(239, 68, 68, 0.2); padding: 1.25rem; border-radius: 12px; background: rgba(239, 68, 68, 0.02); display: flex; flex-direction: column; gap: 0.75rem;">
-                            <div class="skeleton-danger-header" style="display: flex; align-items: center; gap: 0.5rem;">
-                                <div class="skeleton-bone" style="width: 20px; height: 20px; border-radius: 4px; background: rgba(239, 68, 68, 0.2);"></div>
-                                <div class="skeleton-bone" style="width: 120px; height: 14px; background: rgba(239, 68, 68, 0.2);"></div>
-                            </div>
-                            <div class="skeleton-bone" style="width: 90%; height: 12px;"></div>
-                            <div class="skeleton-bone" style="width: 160px; height: 38px; border-radius: 8px; margin-top: 0.5rem; background: rgba(239, 68, 68, 0.15);"></div>
-                        </div>
-                    </div>
                     <div class="glow-card settings-card skeleton-card" style="min-height: 260px;">
                         <div class="skeleton-bone" style="width: 240px; height: 20px; margin-bottom: 0.5rem;"></div>
                         <div class="skeleton-bone" style="width: 380px; height: 12px; margin-bottom: 1.5rem;"></div>
@@ -482,6 +470,29 @@ document.addEventListener('DOMContentLoaded', () => {
                                 </div>
                                 <div class="skeleton-bone" style="width: 110px; height: 32px; border-radius: 8px;"></div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        if (path === '/admin/reset-data') {
+            return `
+                <div class="skeleton-header">
+                    <div class="skeleton-bone skeleton-title"></div>
+                    <div class="skeleton-bone skeleton-subtitle"></div>
+                </div>
+                <div class="settings-container" style="margin-top: 2rem;">
+                    <div class="glow-card settings-card skeleton-card" style="min-height: 220px;">
+                        <div class="skeleton-bone" style="width: 220px; height: 20px; margin-bottom: 0.5rem;"></div>
+                        <div class="skeleton-bone" style="width: 320px; height: 12px; margin-bottom: 1.5rem;"></div>
+                        <div class="skeleton-danger-zone" style="border: 1px dashed rgba(239, 68, 68, 0.2); padding: 1.25rem; border-radius: 12px; background: rgba(239, 68, 68, 0.02); display: flex; flex-direction: column; gap: 0.75rem;">
+                            <div class="skeleton-danger-header" style="display: flex; align-items: center; gap: 0.5rem;">
+                                <div class="skeleton-bone" style="width: 20px; height: 20px; border-radius: 4px; background: rgba(239, 68, 68, 0.2);"></div>
+                                <div class="skeleton-bone" style="width: 120px; height: 14px; background: rgba(239, 68, 68, 0.2);"></div>
+                            </div>
+                            <div class="skeleton-bone" style="width: 90%; height: 12px;"></div>
+                            <div class="skeleton-bone" style="width: 160px; height: 38px; border-radius: 8px; margin-top: 0.5rem; background: rgba(239, 68, 68, 0.15);"></div>
                         </div>
                     </div>
                 </div>

@@ -99,4 +99,12 @@ class AdminController extends Controller
 
         return redirect()->route('admin.users')->with('sukses', "User {$username} berhasil dihapus.");
     }
+
+    /**
+     * Display the reset sensor data page.
+     */
+    public function showResetData(): View
+    {
+        return view('admin.reset-data');
+    }
 }

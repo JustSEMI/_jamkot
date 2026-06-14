@@ -32,6 +32,8 @@ Route::middleware(['auth', 'permission:admin'])->group(function () {
     Route::put('/admin/users/{user}', [AdminController::class, 'update'])->name('admin.users.update');
     Route::post('/admin/users/{user}/permissions', [AdminController::class, 'updatePermissions'])->name('admin.users.permissions');
     Route::delete('/admin/users/{user}', [AdminController::class, 'destroy'])->name('admin.users.destroy');
+    Route::get('/admin/reset-data', [AdminController::class, 'showResetData'])->name('admin.reset-data');
+    Route::post('/admin/settings/reset', [SettingsController::class, 'resetData'])->name('settings.reset');
 });
 
 // PROTEKSI HALAMAN DASHBOARD & PANEL
@@ -65,7 +67,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/schedule', [ScheduleController::class, 'index'])->middleware('permission:schedule')->name('schedule');
     Route::post('/schedule', [ScheduleController::class, 'store'])->middleware('permission:schedule')->name('schedule.store');
     Route::get('/settings', [SettingsController::class, 'index'])->middleware('permission:settings')->name('settings.index');
-    Route::post('/settings/reset', [SettingsController::class, 'resetData'])->middleware('permission:settings')->name('settings.reset');
     Route::get('/view3d', [PanelController::class, 'view3d'])->middleware('permission:view3d')->name('view3d');
 
     // PROFILE MANAGEMENT

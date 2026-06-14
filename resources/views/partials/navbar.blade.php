@@ -74,7 +74,7 @@
     });
 
     function toggleUiVersion() {
-        const currentUi = localStorage.getItem('jamkot-ui-version') || 'v2';
+        const currentUi = localStorage.getItem('jamkot-ui-version') || 'v1';
         const newUi = currentUi === 'v1' ? 'v2' : 'v1';
         
         const overlay = document.getElementById('page-transition-overlay');
@@ -101,7 +101,7 @@
 
     // Set toggle button icon based on active theme
     document.addEventListener('DOMContentLoaded', () => {
-        const currentUi = localStorage.getItem('jamkot-ui-version') || 'v2';
+        const currentUi = localStorage.getItem('jamkot-ui-version') || 'v1';
         const themeBtn = document.getElementById('theme-toggle-btn');
         if (themeBtn) {
             const icon = themeBtn.querySelector('i');
