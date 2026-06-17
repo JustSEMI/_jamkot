@@ -37,10 +37,13 @@ DHT dht(DHTPIN, DHTTYPE);
 const bool RELAY_KIPAS_ACTIVE_HIGH = false;
 const bool RELAY_POMPA_ACTIVE_HIGH = false;
 
-int ldrAdcDark = 4095;
-int ldrAdcBright = 3700;
-const float LDR_CURVE_EXPONENT = 0.45;
-int currentRawLDR = 0;
+const float LDR_R_FIXED  = 100000.0; // 100kΩ (pull-up)
+const float LDR_R10      = 100000.0; // 10 lux (calibrate as needed)
+const float LDR_ALPHA    = 0.6;      // (calibrate as needed)
+const int   LDR_SAMPLES  = 64;       // ADC averaging samples
+const float LDR_VCC_MV   = 3300.0;   // supply voltage in mV
+const float LDR_V_MAX_MV = 3100.0;   // Practical ADC ceiling (mV)
+float currentLux = 0.0;
 unsigned long lastScheduleUpdate = 0;
 const unsigned long scheduleUpdateInterval = 3600000;
 unsigned long lastPumpStatusUpdate = 0;
@@ -57,7 +60,7 @@ int sore_mulai = 0, sore_selesai = 0;
 String manualPumpStatus = "OFF";
 float currentT = 0.0;
 float currentH = 0.0;
-int currentCahaya = 0;
+float currentCahaya = 0.0;
 
 // LOGGER UTILITY
 namespace Logger {
@@ -274,7 +277,7 @@ void sendDataToWeb(String statusPompa) {
     jsonPayload += "\"sensor_id\":\"JAMKOT-01\",";
     jsonPayload += "\"suhu\":" + String(currentT) + ",";
     jsonPayload += "\"kelembapan\":" + String(currentH) + ",";
-    jsonPayload += "\"cahaya\":" + String(currentCahaya) + ",";
+    jsonPayload += "\"cahaya\":" + String(currentCahaya, 2) + ",";
     jsonPayload += "\"pompa_status\":\"" + statusPompa + "\"";
     jsonPayload += "}";
 
@@ -434,17 +437,32 @@ void setup() {
     Logger::warn("Failed to read initial climate values!");
   }
   
-  currentRawLDR = analogRead(LDR_PIN);
-  if (currentRawLDR < 100) { currentRawLDR = 100; }
-  if (currentRawLDR > 4095) { currentRawLDR = 4095; }
-  
-  if (currentRawLDR < ldrAdcBright) { ldrAdcBright = currentRawLDR; }
-  if (currentRawLDR > ldrAdcDark) { ldrAdcDark = currentRawLDR; }
-  if (ldrAdcDark - ldrAdcBright < 300) { ldrAdcDark = ldrAdcBright + 300; }
+  // LDR: average voltage reading
+  {
+    uint32_t totalMv = 0;
+    for (int i = 0; i < LDR_SAMPLES; i++) {
+      totalMv += analogReadMilliVolts(LDR_PIN);
+      delayMicroseconds(50);
+    }
+    float vOutMv = (float)totalMv / LDR_SAMPLES;
 
-  float normLDR = (float)(ldrAdcDark - currentRawLDR) / (ldrAdcDark - ldrAdcBright);
-  normLDR = constrain(normLDR, 0.0, 1.0);
-  currentCahaya = (int)(pow(normLDR, LDR_CURVE_EXPONENT) * 100.0);
+    // Hitung resistansi LDR (LDR on low side, fixed resistor pull-up)
+    float rLdr;
+    if (vOutMv <= 0.1f) {
+      rLdr = 0.0f;
+    } else if (vOutMv >= LDR_V_MAX_MV) {
+      rLdr = 10000000.0f; // sangat gelap
+    } else {
+      rLdr = LDR_R_FIXED * (vOutMv / (LDR_VCC_MV - vOutMv));
+    }
+
+    // Hitung lux: lux = 10 * (R10 / R_LDR)^(1/alpha)
+    if (rLdr <= 0.0f) {
+      currentCahaya = 100000.0f; // sangat terang
+    } else {
+      currentCahaya = 10.0f * pow(LDR_R10 / rLdr, 1.0f / LDR_ALPHA);
+    }
+  }
 
   // Send initial heartbeat
   sendHeartbeat();
@@ -504,31 +522,42 @@ void loop() {
       Logger::warn("Failed to update climate parameters!");
     }
 
-    currentRawLDR = analogRead(LDR_PIN);
-    // Protect ADC boundaries of ESP32
-    if (currentRawLDR < 100) { currentRawLDR = 100; }
-    if (currentRawLDR > 4095) { currentRawLDR = 4095; }
+    // LDR: average voltage reading
+    {
+      uint32_t totalMv = 0;
+      for (int i = 0; i < LDR_SAMPLES; i++) {
+        totalMv += analogReadMilliVolts(LDR_PIN);
+        delayMicroseconds(50);
+      }
+      float vOutMv = (float)totalMv / LDR_SAMPLES;
 
-    // Auto-calibration dynamic (learn dark and bright levels real-time)
-    if (currentRawLDR < ldrAdcBright) { ldrAdcBright = currentRawLDR; }
-    if (currentRawLDR > ldrAdcDark) { ldrAdcDark = currentRawLDR; }
+      // Hitung resistansi LDR (LDR on low side, fixed resistor pull-up)
+      float rLdr;
+      if (vOutMv <= 0.1f) {
+        rLdr = 0.0f;
+      } else if (vOutMv >= LDR_V_MAX_MV) {
+        rLdr = 10000000.0f;
+      } else {
+        rLdr = LDR_R_FIXED * (vOutMv / (LDR_VCC_MV - vOutMv));
+      }
 
-    // Slowly decay/drift bright limit back towards default baseline (3700) to recover from glitches
-    if (ldrAdcBright < 3700) { ldrAdcBright += 5; }
+      // Hitung lux: lux = 10 * (R10 / R_LDR)^(1/alpha)
+      float targetLux;
+      if (rLdr <= 0.0f) {
+        targetLux = 100000.0f;
+      } else {
+        targetLux = 10.0f * pow(LDR_R10 / rLdr, 1.0f / LDR_ALPHA);
+      }
 
-    if (ldrAdcDark - ldrAdcBright < 300) { ldrAdcDark = ldrAdcBright + 300; }
-
-    float normLDR = (float)(ldrAdcDark - currentRawLDR) / (ldrAdcDark - ldrAdcBright);
-    normLDR = constrain(normLDR, 0.0, 1.0);
-    int targetCahaya = (int)(pow(normLDR, LDR_CURVE_EXPONENT) * 100.0);
-    // Exponential Moving Average filter for smooth transitions
-    currentCahaya = (currentCahaya * 0.7) + (targetCahaya * 0.3);
+      // Exponential Moving Average filter for smooth transitions
+      currentCahaya = (currentCahaya * 0.7f) + (targetLux * 0.3f);
+    }
 
     String actualKipasStatus = (currentT > batasSuhuPanas) ? "NYALA" : "MATI";
 
     // Simple, clean single-line telemetry logging
-    Logger::info("Suhu: %.1fC (Batas: %.1fC) | Lembap: %.1f%% (Batas: %.1f%%) | Cahaya: %d%% (ADC: %d) | Kipas: %s | Pompa: %s (Manual: %s)",
-                 currentT, batasSuhuPanas, currentH, batasKelembapanKering, currentCahaya, currentRawLDR,
+    Logger::info("Suhu: %.1fC (Batas: %.1fC) | Lembap: %.1f%% (Batas: %.1f%%) | Cahaya: %.2f Lux | Kipas: %s | Pompa: %s (Manual: %s)",
+                 currentT, batasSuhuPanas, currentH, batasKelembapanKering, currentCahaya,
                  actualKipasStatus.c_str(), actualPumpStatus.c_str(), manualPumpStatus.c_str());
 
     sendDataToWeb(actualPumpStatus);
